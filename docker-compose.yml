@@ -1,0 +1,28 @@
+services:
+  db:
+    image: postgres:14.13-alpine3.20
+    ports:
+      - 5432:5432
+    volumes:
+      - ./.db:/var/lib/postgresql/data
+    networks:
+      - shared
+    environment: 
+      POSTGRES_PASSWORD: root!123
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    environment: 
+      PGADMIN_DEFAULT_EMAIL: renan@dcisuporte.com.br
+      PGADMIN_DEFAULT_PASSWORD: data@123
+    ports:
+      - 8090:80
+    depends_on:
+      - db
+    networks:
+      - shared
+
+networks:
+  shared:
+    driver: bridge
+    name: network-clinics
