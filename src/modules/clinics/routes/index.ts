@@ -1,31 +1,24 @@
-import prisma from '@/db/prisma'
+import prisma from '@/database/prisma'
+import { Router } from 'express'
 import { ClinicsRepository } from '../repositories/prisma/clinics-prisma'
-import { FindAllClinicsUseCase } from '../use-cases/find-all-clinics.use-case'
 import { FindAllClinicsController } from '../use-cases/find-all-clinics.controller'
+import { FindAllClinicsUseCase } from '../use-cases/find-all-clinics.use-case'
 import { FindFirstClinicsUseCase } from '../use-cases/find-first-clinics.use-case'
 import { FindFirstClinicsController } from '../use-cases/find-firts-clinics.controller'
-import { Router } from 'express'
 
-const router = Router()
+const routerClinics = Router()
 
 const clinicsRepository = new ClinicsRepository(prisma)
-
-const findAllClinicsUseCase = new FindAllClinicsUseCase(clinicsRepository)
 const findAllClinicsController = new FindAllClinicsController(
-  findAllClinicsUseCase
+  new FindAllClinicsUseCase(clinicsRepository)
 )
 
-const findFirstClinicsUseCase = new FindFirstClinicsUseCase(clinicsRepository)
 const findFirstClinicsController = new FindFirstClinicsController(
-  findFirstClinicsUseCase
+  new FindFirstClinicsUseCase(clinicsRepository)
 )
 
-router
-  .get('/', (request, response) =>
-    findAllClinicsController.handle(request, response)
-  )
-  .get('/:code', (request, response) =>
-    findFirstClinicsController.handle(request, response)
-  )
+routerClinics
+  .get('/', (req, rep) => findAllClinicsController.handle(req, rep))
+  .get('/:code', (req, rep) => findFirstClinicsController.handle(req, rep))
 
-export { router as routerClinics }
+export { routerClinics }

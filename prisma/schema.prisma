@@ -10,8 +10,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model User {
@@ -20,12 +21,13 @@ model User {
   updatedAt      DateTime  @updatedAt
   deletedAt      DateTime?
   code           String    @default(uuid()) @db.Char(36)
-  fullName       String?   @db.Char(55)
-  email          String    @db.VarChar(45)
+  fullName       String    @db.VarChar(55)
+  email          String    @unique @db.VarChar(45)
   password       String    @db.VarChar(105)
   passwordVerify Boolean   @default(true)
-  token          String?   @db.VarChar(255)
-  refreshToken   String?   @db.VarChar(255)
+  token          String    @db.VarChar(255)
+  refreshToken   String    @db.VarChar(505)
+  clinics        Clinic[]
 
   @@index([code])
 }
@@ -35,10 +37,13 @@ model Clinic {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+  userId    Int?
   code      String    @default(uuid()) @db.Char(36)
-  fantasy   String    @db.Char(55)
+  fantasy   String    @db.VarChar(55)
   address   Json[]
   phones    Json[]
+  user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([code])
+  @@index([userId])
 }
