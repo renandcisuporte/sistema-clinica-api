@@ -1,4 +1,15 @@
 services:
+  dev:
+    image: renandci/clinics:development
+    ports:
+      - 4040:3333
+    command: npm run dev
+    volumes:
+      - ./:/app
+    networks:
+      - shared
+
+
   db:
     image: postgres:14.13-alpine3.20
     ports:
@@ -7,12 +18,12 @@ services:
       - ./.db:/var/lib/postgresql/data
     networks:
       - shared
-    environment: 
+    environment:
       POSTGRES_PASSWORD: root!123
-  
+
   pgadmin:
     image: dpage/pgadmin4
-    environment: 
+    environment:
       PGADMIN_DEFAULT_EMAIL: renan@dcisuporte.com.br
       PGADMIN_DEFAULT_PASSWORD: data@123
     ports:

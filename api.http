@@ -1,0 +1,72 @@
+@hostname = http://localhost:4040/api
+@contentType = application/json
+@authorization = Bearer $2a$08$MTg0MjA2MzQyNDY2ZjQ1ZOGfMiUjH9MGm6vQw0WpJc8N1mAcdyZ4a
+
+
+### UPDATE CLINICS
+PUT {{hostname}}/clinics/b0d70801-9e4d-4b1b-bb30-6f7259c3237d HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{authorization}}
+
+{
+  "fantasy": "nome fantasy editado"
+}
+
+### ALL CLINICS
+GET {{hostname}}/clinics HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{authorization}}
+
+{
+}
+
+### FIRST CLINICS
+GET {{hostname}}/clinics/b0d70801-9e4d-4b1b-bb30-6f7259c3237d HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{authorization}}
+
+{
+}
+
+###
+GET {{hostname}}/users HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{authorization}}
+
+{
+}
+
+###
+GET {{hostname}}/users/39d13466-f343-45df-9207-e988a94ece0a HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{authorization}}
+
+{
+}
+
+### SUCCESS
+POST {{hostname}}/auth HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "email": "renan@prisma.io",
+  "password": "123123"
+}
+
+### NOT USER
+POST {{hostname}}/auth HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "email": "renan@prisma.io",
+  "password": "123123"
+}
+
+### NOT PASS
+POST {{hostname}}/auth HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+  "email": "renan@prisma.io",
+  "password": ""
+}

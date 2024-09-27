@@ -24,7 +24,7 @@ model User {
   fullName       String    @db.VarChar(55)
   email          String    @unique @db.VarChar(45)
   password       String    @db.VarChar(105)
-  passwordVerify Boolean   @default(true)
+  passwordVerify Boolean   @default(false)
   token          String    @db.VarChar(255)
   refreshToken   String    @db.VarChar(505)
   clinics        Clinic[]
