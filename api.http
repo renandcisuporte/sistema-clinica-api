@@ -9,7 +9,11 @@ Content-Type: {{contentType}}
 Authorization: {{authorization}}
 
 {
-  "fantasy": "nome fantasy editado"
+  "fantasy": "nome fantasy editado",
+  "address": [{
+
+    "address": "Amaral Lyra"
+  }]
 }
 
 ### ALL CLINICS
@@ -49,8 +53,8 @@ POST {{hostname}}/auth HTTP/1.1
 Content-Type: {{contentType}}
 
 {
-  "email": "renan@prisma.io",
-  "password": "123123"
+  "email": "dci@dcisuporte.com.br",
+  "password": "dci@6913"
 }
 
 ### NOT USER

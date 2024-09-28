@@ -1,7 +1,20 @@
-import { Clinic, Prisma } from '@prisma/client'
-import { ClinicAbstractRepository } from '../clinic.abstract.repository'
+import { RepositoryAbstract } from '@/common/abstracts/repository.abstract'
+import {
+  AllRepositoryInterface,
+  CreateRepositoryInterface,
+  FirstRepositoryInterface,
+  UpdateRepositoryInterface
+} from '@/common/interfaces/repository.interface'
+import { Clinic, Prisma, PrismaClient } from '@prisma/client'
 
-export class ClinicRepository extends ClinicAbstractRepository {
+export class ClinicRepository
+  extends RepositoryAbstract<PrismaClient>
+  implements
+    CreateRepositoryInterface,
+    UpdateRepositoryInterface,
+    FirstRepositoryInterface,
+    AllRepositoryInterface
+{
   async create(input: Prisma.ClinicCreateInput): Promise<Clinic> {
     return await this.repository.clinic.create({
       data: { ...input }
@@ -23,13 +36,13 @@ export class ClinicRepository extends ClinicAbstractRepository {
     })
   }
 
-  async findFirst(id: string) {
+  async first(id: string) {
     return await this.repository.clinic.findFirst({
       where: { code: id, deletedAt: null }
     })
   }
 
-  async findAll() {
+  async all() {
     return await this.repository.clinic.findMany()
   }
 }

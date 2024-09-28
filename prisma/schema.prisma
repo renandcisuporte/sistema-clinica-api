@@ -16,10 +16,10 @@ datasource db {
 }
 
 model User {
-  id             Int       @id @default(autoincrement())
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   deletedAt      DateTime?
+  id             Int       @id @default(autoincrement())
   code           String    @default(uuid()) @db.Char(36)
   fullName       String    @db.VarChar(55)
   email          String    @unique @db.VarChar(45)
@@ -27,21 +27,24 @@ model User {
   passwordVerify Boolean   @default(false)
   token          String    @db.VarChar(255)
   refreshToken   String    @db.VarChar(505)
-  clinics        Clinic[]
+  clinic         Clinic?
 
   @@index([code])
 }
 
 model Clinic {
-  id        Int       @id @default(autoincrement())
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-  userId    Int?
+  id        Int       @id @default(autoincrement())
+  userId    Int?      @unique
   code      String    @default(uuid()) @db.Char(36)
+  title     String    @db.VarChar(55)
   fantasy   String    @db.VarChar(55)
-  address   Json[]
+  cnpj      String    @db.VarChar(18)
+  ie        String    @db.VarChar(15)
   phones    Json[]
+  address   Json?
   user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([code])

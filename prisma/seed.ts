@@ -1,21 +1,33 @@
 import { PrismaClient } from '@prisma/client'
 import { randomUUID } from 'crypto'
+import { hashPass } from '../src/utils'
 
 const prisma = new PrismaClient()
 
 async function main() {
-  const renan = await prisma.user.upsert({
-    where: { email: 'renan@prisma.io' },
+  const password = hashPass('dci@6913')
+  const dci = await prisma.user.upsert({
+    where: { email: 'dci@dcisuporte.com.br' },
     update: {},
     create: {
       code: randomUUID(),
-      email: 'renan@prisma.io',
-      fullName: 'renan',
-      password: '123',
+      email: 'dci@dcisuporte.com.br',
+      fullName: 'dci suporte',
+      password,
       refreshToken: '',
       token: '',
-      clinics: {
+      clinic: {
         create: {
+          cnpj: '66.686.847/0001-80',
+          ie: '00000000',
+          title: 'Titulo Fantasy',
+          address: {
+            address: 'Amaral Lyra',
+            number: '1155',
+            complement: 'Sala 15',
+            city: 'Itápolis',
+            state: 'SP'
+          },
           code: randomUUID(),
           fantasy: 'fantasy'
         }
@@ -23,7 +35,7 @@ async function main() {
     }
   })
 
-  console.log({ renan })
+  console.log({ dci })
 }
 main()
   .then(async () => {

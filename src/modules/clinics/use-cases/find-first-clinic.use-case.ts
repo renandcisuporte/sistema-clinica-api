@@ -1,9 +1,8 @@
-import { UseCaseFirstAbstract } from '@/common/abstracts/use-cases.abstract'
-import { ClinicAbstractRepository } from '../repositories/clinic.abstract.repository'
+import { FirstUseCaseAbstract } from '@/common/abstracts/use-cases.abstract'
 
-export class FindFirstClinicUseCase extends UseCaseFirstAbstract<ClinicAbstractRepository> {
+export class FindFirstClinicUseCase extends FirstUseCaseAbstract {
   async execute(id: string) {
-    const result = await this.repository.findFirst(id)
+    const result = await this.repository.first(id)
     return { data: result }
   }
 }

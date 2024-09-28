@@ -1,13 +1,12 @@
 import { RepositoryAbstract } from '@/common/abstracts/repository.abstract'
-import { Auth } from '@/modules/auth/dtos/auth.interface'
-import { AuthRepositoryInterface } from '@/modules/auth/repositories/auth-abstract.repository'
+import { FirstRepositoryInterface } from '@/common/interfaces/repository.interface'
 import { PrismaClient } from '@prisma/client'
 
 export class AuthRepository
   extends RepositoryAbstract<PrismaClient>
-  implements AuthRepositoryInterface<Auth>
+  implements FirstRepositoryInterface
 {
-  async auth(email: string) {
+  async first(email: string) {
     const result = await this.repository.user.findFirst({
       where: {
         email,

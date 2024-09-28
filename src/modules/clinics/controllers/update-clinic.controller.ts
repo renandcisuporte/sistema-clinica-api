@@ -1,8 +1,7 @@
-import { ControllerAbstract } from '@/common/abstracts/controller.abstract'
-import { UpdateClinicUseCase } from '@/modules/clinics/use-cases/update-clinic.use-case'
+import { UpdateControllerAbstract } from '@/common/abstracts/controller.abstract'
 import { Request, Response } from 'express'
 
-export class UpdateClinicController extends ControllerAbstract<UpdateClinicUseCase> {
+export class UpdateClinicController extends UpdateControllerAbstract {
   async handle(req: Request, resp: Response) {
     const { id } = req.params
     const body = req.body

@@ -1,14 +1,8 @@
-import { UseCaseAllAbstract } from '@/common/abstracts/use-cases.abstract'
-import { ClinicAbstractRepository } from '@/modules/clinics/repositories/clinic.abstract.repository'
-import { Clinic } from '@prisma/client'
+import { AllUseCaseAbstract } from '@/common/abstracts/use-cases.abstract'
 
-type Common = {
-  data: Clinic[]
-}
-
-export class FindAllClinicUseCase extends UseCaseAllAbstract<ClinicAbstractRepository> {
+export class FindAllClinicUseCase extends AllUseCaseAbstract {
   async execute() {
-    const result = await this.repository.findAll()
+    const result = await this.repository.all()
     return { data: result }
   }
 }

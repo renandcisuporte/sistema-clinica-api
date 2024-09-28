@@ -1,4 +1,4 @@
-import { UseCaseAbstract } from '@/common/abstracts/use-cases.abstract'
+import { FirstUseCaseAbstract } from '@/common/abstracts/use-cases.abstract'
 import { AppError } from '@/common/errors/app.error'
 import { hashJwt, verifyPass } from '@/utils'
 
@@ -19,9 +19,9 @@ type AuthType = {
   password: string
 }
 
-export class AuthUseCase extends UseCaseAbstract {
+export class AuthUseCase extends FirstUseCaseAbstract {
   async execute({ email, password }: AuthType): Promise<TokenType> {
-    const result = await this.repository.auth(email)
+    const result = await this.repository.first(email)
     if (!result) throw new AppError('Usuário não autorizado')
 
     const isMatchPassword = verifyPass(password, result.password)

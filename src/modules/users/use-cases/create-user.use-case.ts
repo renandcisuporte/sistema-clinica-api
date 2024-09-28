@@ -1,9 +1,8 @@
-import { UseCaseAbstract } from '@/common/abstracts/use-cases.abstract'
+import { CreateUseCaseAbstract } from '@/common/abstracts/use-cases.abstract'
 import { hashPass } from '@/utils'
-import { CreateUser } from '../../dtos/create.inteface'
 
-export class CreateUserUseCase extends UseCaseAbstract {
-  async execute(input: CreateUser) {
+export class CreateUserUseCase extends CreateUseCaseAbstract {
+  async execute(input: any) {
     const { fullName, email, password } = input
 
     const result = await this.repository.create({

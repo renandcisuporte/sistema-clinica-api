@@ -1,5 +1,3 @@
-import { Response } from 'express'
-
-export interface ControllerInterface<Res = Response> {
-  handle(...args: any): Promise<Res>
+export interface ControllerInterface<Req = any, Resp = any> {
+  handle(req: Req, res: Resp): Promise<Resp>
 }

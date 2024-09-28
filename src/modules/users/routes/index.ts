@@ -1,24 +1,26 @@
 import prisma from '@/database/prisma'
-import { UserRepository } from '@/modules/users/repositories/prisma/user-prisma'
-import { CreateUserController } from '@/modules/users/use-cases/create-user/create-user.controller'
-import { CreateUserUseCase } from '@/modules/users/use-cases/create-user/create-user.use-case'
-import { FindAllUserController } from '@/modules/users/use-cases/find-all-user/find-all-user.controller'
-import { FindAllUserUseCase } from '@/modules/users/use-cases/find-all-user/find-all-user.use-case'
-import { FindFirstUserUseCase } from '@/modules/users/use-cases/find-first-user/find-first-user.use-case'
-import { FindFirstUserController } from '@/modules/users/use-cases/find-first-user/find-firts-user.controller'
+import { CreateUserController } from '@/modules/users/controller/create-user.controller'
+import { FindAllUserController } from '@/modules/users/controller/find-all-user.controller'
+import { FindFirstUserController } from '@/modules/users/controller/find-firts-user.controller'
+import { UserRepository } from '@/modules/users/repositories/prisma/user-repository.prisma'
+import { CreateUserUseCase } from '@/modules/users/use-cases/create-user.use-case'
+import { FindAllUserUseCase } from '@/modules/users/use-cases/find-all-user.use-case'
+import { FindFirstUserUseCase } from '@/modules/users/use-cases/find-first-user.use-case'
 import { Router } from 'express'
 
 const routerUser = Router()
 
-const repository = new UserRepository(prisma)
-const createUser = new CreateUserController(new CreateUserUseCase(repository))
+const repositoryUser = new UserRepository(prisma)
+const createUser = new CreateUserController(
+  new CreateUserUseCase(repositoryUser)
+)
 
 const findAllUser = new FindAllUserController(
-  new FindAllUserUseCase(repository)
+  new FindAllUserUseCase(repositoryUser)
 )
 
 const findFirstUser = new FindFirstUserController(
-  new FindFirstUserUseCase(repository)
+  new FindFirstUserUseCase(repositoryUser)
 )
 
 routerUser

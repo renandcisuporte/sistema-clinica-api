@@ -1,7 +1,7 @@
-import { FirstControllerAbstract } from '@/common/abstracts/controller.abstract'
+import { DeleteControllerAbstract } from '@/common/abstracts/controller.abstract'
 import { Request, Response } from 'express'
 
-export class FindFirstClinicController extends FirstControllerAbstract {
+export class DeleteClinicController extends DeleteControllerAbstract {
   async handle(req: Request, resp: Response) {
     const { id } = req.params
     const result = await this.useCase.execute(id)
