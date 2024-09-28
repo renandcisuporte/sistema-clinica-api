@@ -29,11 +29,7 @@ export abstract class UseCaseFirstAbstract<
   abstract execute(id: Id): Promise<Resp>
 }
 
-export abstract class UseCaseFilterAbstract<
-  Repo = any,
-  Resp = any,
-  Params = {}
-> {
+export abstract class UseCaseAllAbstract<Repo = any, Resp = any, Params = {}> {
   constructor(protected readonly repository: Repo) {}
 
   abstract execute(params?: Params): Promise<Resp>
