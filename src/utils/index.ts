@@ -10,9 +10,9 @@ export function verifyPass(password: string, hashPass: string): boolean {
 }
 
 export function hashJwt(input: any, expiresIn = '1h') {
-  return sign(input, input.id, { expiresIn })
+  return sign(input, process.env.SUPER_SECRETS!, { expiresIn })
 }
 
-export function verifyJwt(input: any) {
-  return verify({ ...input }, input.id)
+export function verifyJwt(input: any): any {
+  return verify(input, process.env.SUPER_SECRETS!)
 }

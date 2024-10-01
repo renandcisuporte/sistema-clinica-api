@@ -1,10 +1,9 @@
-import { routerAuth } from '@/modules/auth/routes'
-import { routerClinic } from '@/modules/clinics/routes'
-import { routerUser } from '@/modules/users/routes'
+import { authenticated } from '@/middleware/authenticated'
+import { authenticationRouter } from '@/routes/authentication.route'
+import { clinicsRouter } from '@/routes/clinics.route'
 import { Router } from 'express'
 
 export const routes = Router()
 
-routes.use('/auth', routerAuth)
-routes.use('/users', routerUser)
-routes.use('/clinics', routerClinic)
+routes.use('/auth', authenticationRouter)
+routes.use('/clinics', authenticated, clinicsRouter)

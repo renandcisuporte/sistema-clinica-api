@@ -1,4 +1,4 @@
-import { AppError } from '@/common/errors/app.error'
+import { AppError } from '@/common/app.error'
 import { NextFunction, Request, Response } from 'express'
 import { AnyZodObject, ZodError } from 'zod'
 
