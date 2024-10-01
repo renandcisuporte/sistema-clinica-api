@@ -1,5 +1,6 @@
-import { FirstUseCaseAbstract } from '@/common/abstracts/use-cases.abstract'
 import { AppError } from '@/common/errors/app.error'
+import { FirstRepositoryInterface } from '@/common/interfaces/repository.interface'
+import { FirstUseCaseInterface } from '@/common/interfaces/use-case.interface'
 import { hashJwt, verifyPass } from '@/utils'
 
 type TokenType = {
@@ -19,24 +20,27 @@ type AuthType = {
   password: string
 }
 
-export class AuthUseCase extends FirstUseCaseAbstract {
+export class AuthUseCase implements FirstUseCaseInterface {
+  constructor(protected readonly repository: FirstRepositoryInterface) {}
+
   async execute({ email, password }: AuthType): Promise<TokenType> {
     const result = await this.repository.first(email)
     if (!result) throw new AppError('Usuário não autorizado')
 
     const isMatchPassword = verifyPass(password, result.password)
     if (!isMatchPassword) throw new AppError('Usuário não autorizado!')
+    console.log('ap', { ...result })
 
     const user = {
-      id: result.code,
-      email: result.email,
-      fullName: result.fullName
+      id: result.id,
+      fullName: result.fullName,
+      email: result.email
     }
 
     return {
       data: {
-        user: user,
-        accessToken: hashJwt(user),
+        user,
+        accessToken: hashJwt({ ...user }),
         refreshToken: null
       }
     }

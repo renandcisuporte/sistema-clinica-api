@@ -15,7 +15,7 @@ export interface DeleteUseCaseInterface {
 }
 
 export interface FirstUseCaseInterface {
-  execute(id: any): Promise<ResponseInterface>
+  execute(input: any): Promise<ResponseInterface>
 }
 
 export interface AllUseCaseInterface {

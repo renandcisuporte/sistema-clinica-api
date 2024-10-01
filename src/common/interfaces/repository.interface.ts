@@ -10,8 +10,8 @@ export interface DeleteRepositoryInterface {
   delete(id: any): Promise<void>
 }
 
-export interface FirstRepositoryInterface {
-  first(id: any): Promise<any>
+export interface FirstRepositoryInterface<Inp = any, Res = any> {
+  first(input: Inp): Promise<Res>
 }
 
 export interface AllRepositoryInterface {

@@ -50,3 +50,13 @@ model Clinic {
   @@index([code])
   @@index([userId])
 }
+
+model Room {
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  id        Int       @id @default(autoincrement())
+  clinicId  Int?
+  code      String    @default(uuid()) @db.Char(36)
+  name      String    @db.VarChar(18)
+}
