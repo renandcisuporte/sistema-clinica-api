@@ -1,6 +1,6 @@
 @hostname = http://localhost:9000/api
 @contentType = application/json
-@authorization = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJlbWFpbCI6ImRjaUBkY2lzdXBvcnRlLmNvbS5iciIsImZ1bGxOYW1lIjoiZGNpIHN1cG9ydGUiLCJpYXQiOjE3Mjc4MTE4MzMsImV4cCI6MTcyNzgxNTQzM30.F32lMGX8LmKC1WU4QzeQcA-cSobPP13GJY8i_AyNK2E
+@authorization = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJlbWFpbCI6ImRjaUBkY2lzdXBvcnRlLmNvbS5iciIsImZ1bGxOYW1lIjoiZGNpIHN1cG9ydGUiLCJpYXQiOjE3Mjc4NzMxMjQsImV4cCI6MTcyNzg3NjcyNH0.kF6z50Au2paqP5h96UxeGhW5ANNu75jS2UruN19og2o
 
 ### SUCCESS
 POST {{hostname}}/auth HTTP/1.1
@@ -51,7 +51,7 @@ Authorization: {{authorization}}
 }
 
 ### FIRST CLINICS
-GET {{hostname}}/clinics/1 HTTP/1.1
+GET {{hostname}}/clinics/46853464-c32d-43aa-9c08-fb245dd01081 HTTP/1.1
 Content-Type: {{contentType}}
 Authorization: {{authorization}}
 
