@@ -1,5 +1,5 @@
 import prisma from '@/database/prisma'
-import { ClinicsRepository } from '@/repositories/implements/clinics.repository'
+import { ClinicsRepository } from '@/repositories/implementation/clinics.repository'
 import { CreateClinicsController } from './create-clinic/create-clinics.controller'
 import { CreateClinicsUseCase } from './create-clinic/create-clinics.use-case'
 import { DeleteClinicsController } from './delete-clinic/delete-clinics.controller'

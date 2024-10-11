@@ -8,6 +8,6 @@ export class FindFirstClinicsController {
     const { id: userId } = req.user
     const { id } = req.params
     const result = await this.useCase.execute({ id, userId })
-    return res.status(201).json(result)
+    return res.status(200).json(result)
   }
 }

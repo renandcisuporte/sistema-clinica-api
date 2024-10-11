@@ -11,6 +11,6 @@ export class UpdateClinicsController implements ControllerInterface {
     const { body } = req
 
     const resp = await this.useCase.execute(id, { ...body, userId })
-    return res.status(201).json(resp)
+    return res.status(200).json(resp)
   }
 }

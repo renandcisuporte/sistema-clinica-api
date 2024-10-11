@@ -7,7 +7,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/server.ts && tsoa spec",
+    "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/server.ts && tsoa spec-and-routes",
     "build": "babel src --extensions \".js,.ts\" --out-dir build --copy-files",
     "start": "node ./build/server.js"
   },

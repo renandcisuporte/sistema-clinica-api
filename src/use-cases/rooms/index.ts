@@ -1,47 +1,47 @@
 import prisma from '@/database/prisma'
-import { ClinicsRepository } from '@/repositories/implements/clinics.repository'
-import { CreateClinicsController } from './create-clinic/create-clinics.controller'
-import { CreateClinicsUseCase } from './create-clinic/create-clinics.use-case'
-import { DeleteClinicsController } from './delete-clinic/delete-clinics.controller'
-import { DeleteClinicsUseCase } from './delete-clinic/delete-clinics.use-case'
-import { FindAllClinicsController } from './find-all-clinic/find-all-clinics.controller'
-import { FindAllClinicsUseCase } from './find-all-clinic/find-all-clinics.use-case'
-import { FindFirstClinicsController } from './find-first-clinic/find-first-clinics.controller'
-import { FindFirstClinicsUseCase } from './find-first-clinic/find-first-clinics.use-case'
-import { UpdateClinicsController } from './update-clinic/update-clinics.controller'
-import { UpdateClinicsUseCase } from './update-clinic/update-clinics.use-case'
+import { RoomsRepository } from '@/repositories/implementation/rooms.repository'
+import { CreateRoomsController } from '@/use-cases/rooms/create-room/create-rooms.controller'
+import { CreateRoomsUseCase } from '@/use-cases/rooms/create-room/create-rooms.use-case'
+import { DeleteRoomsController } from '@/use-cases/rooms/delete-room/delete-rooms.controller'
+import { DeleteRoomsUseCase } from '@/use-cases/rooms/delete-room/delete-rooms.use-case'
+import { FindAllRoomsController } from '@/use-cases/rooms/find-all-room/find-all-rooms.controller'
+import { FindAllRoomsUseCase } from '@/use-cases/rooms/find-all-room/find-all-rooms.use-case'
+import { FindFirstRoomsController } from '@/use-cases/rooms/find-first-room/find-first-rooms.controller'
+import { FindFirstRoomsUseCase } from '@/use-cases/rooms/find-first-room/find-first-rooms.use-case'
+import { UpdateRoomsController } from '@/use-cases/rooms/update-room/update-rooms.controller'
+import { UpdateRoomsUseCase } from '@/use-cases/rooms/update-room/update-rooms.use-case'
 
-const clinicsRepository = new ClinicsRepository(prisma)
+const roomsRepository = new RoomsRepository(prisma)
 
-// all clinics
-const findAllClinicsController = new FindAllClinicsController(
-  new FindAllClinicsUseCase(clinicsRepository)
+// all rooms
+const findAllRoomsController = new FindAllRoomsController(
+  new FindAllRoomsUseCase(roomsRepository)
 )
 
-// first clinics
-const findFirstClinicsController = new FindFirstClinicsController(
-  new FindFirstClinicsUseCase(clinicsRepository)
+// first rooms
+const findFirstRoomsController = new FindFirstRoomsController(
+  new FindFirstRoomsUseCase(roomsRepository)
 )
 
-// create clinics
-const createClinicsController = new CreateClinicsController(
-  new CreateClinicsUseCase(clinicsRepository)
+// create rooms
+const createRoomsController = new CreateRoomsController(
+  new CreateRoomsUseCase(roomsRepository)
 )
 
-// update clinics
-const updateClinicsController = new UpdateClinicsController(
-  new UpdateClinicsUseCase(clinicsRepository)
+// update rooms
+const updateRoomsController = new UpdateRoomsController(
+  new UpdateRoomsUseCase(roomsRepository)
 )
 
-// delte clinics
-const deleteClinicsController = new DeleteClinicsController(
-  new DeleteClinicsUseCase(clinicsRepository)
+// delte rooms
+const deleteRoomsController = new DeleteRoomsController(
+  new DeleteRoomsUseCase(roomsRepository)
 )
 
 export {
-  createClinicsController,
-  deleteClinicsController,
-  findAllClinicsController,
-  findFirstClinicsController,
-  updateClinicsController
+  createRoomsController,
+  deleteRoomsController,
+  findAllRoomsController,
+  findFirstRoomsController,
+  updateRoomsController
 }

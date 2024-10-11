@@ -1,16 +1,16 @@
 import { PrismaClient } from '@prisma/client'
-import { randomUUID } from 'crypto'
-import { hashPass } from '../src/utils'
+import * as bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
 async function main() {
-  const password = hashPass('dci@6913')
+  const salt = bcrypt.genSaltSync(10)
+  const password = bcrypt.hashSync('dci@6913', salt)
+
   const dci = await prisma.user.upsert({
     where: { email: 'dci@dcisuporte.com.br' },
     update: {},
     create: {
-      code: randomUUID(),
       email: 'dci@dcisuporte.com.br',
       fullName: 'dci suporte',
       password,
@@ -18,18 +18,15 @@ async function main() {
       token: '',
       clinic: {
         create: {
+          fantasy: 'fantasy',
           cnpj: '66.686.847/0001-80',
           ie: '00000000',
           title: 'Titulo Fantasy',
-          address: {
-            address: 'Amaral Lyra',
-            number: '1155',
-            complement: 'Sala 15',
-            city: 'Itápolis',
-            state: 'SP'
-          },
-          code: randomUUID(),
-          fantasy: 'fantasy'
+          address: 'Amaral Lyra',
+          number: '1155',
+          complement: 'Sala 15',
+          city: 'Itápolis',
+          state: 'SP'
         }
       }
     }

@@ -1,31 +1,31 @@
 import { validated } from '@/middleware/validated'
 import {
-  createClinicSchema,
-  deleteOrFirstClinicSchema,
-  updateClinicSchema
-} from '@/schemas/clinics.schema'
+  createRoomSchema,
+  deleteOrFirstRoomSchema,
+  updateRoomSchema
+} from '@/schemas/rooms.schema'
 import {
-  createClinicsController,
-  deleteClinicsController,
-  findAllClinicsController,
-  findFirstClinicsController,
-  updateClinicsController
-} from '@/use-cases/clinics'
+  createRoomsController,
+  deleteRoomsController,
+  findAllRoomsController,
+  findFirstRoomsController,
+  updateRoomsController
+} from '@/use-cases/rooms'
 import { Router } from 'express'
 
-export const clinicsRouter = Router()
+export const roomsRouter = Router()
 
-clinicsRouter
-  .get('/', (req, rep) => findAllClinicsController.handle(req, rep))
-  .get('/:id', validated(deleteOrFirstClinicSchema), (req, rep) =>
-    findFirstClinicsController.handle(req, rep)
+roomsRouter
+  .get('/', (req, rep) => findAllRoomsController.handle(req, rep))
+  .get('/:id', validated(deleteOrFirstRoomSchema), (req, rep) =>
+    findFirstRoomsController.handle(req, rep)
   )
-  .post('/', validated(createClinicSchema), (req, rep) =>
-    createClinicsController.handle(req, rep)
+  .post('/', validated(createRoomSchema), (req, rep) =>
+    createRoomsController.handle(req, rep)
   )
-  .put('/:id', validated(updateClinicSchema), (req, rep) =>
-    updateClinicsController.handle(req, rep)
+  .put('/:id', validated(updateRoomSchema), (req, rep) =>
+    updateRoomsController.handle(req, rep)
   )
-  .delete('/:id', validated(deleteOrFirstClinicSchema), (req, rep) =>
-    deleteClinicsController.handle(req, rep)
+  .delete('/:id', validated(deleteOrFirstRoomSchema), (req, rep) =>
+    deleteRoomsController.handle(req, rep)
   )

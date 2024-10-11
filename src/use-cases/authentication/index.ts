@@ -1,5 +1,5 @@
 import prisma from '@/database/prisma'
-import { AuthenticationRepository } from '@/repositories/implements/authentication.repository'
+import { AuthenticationRepository } from '@/repositories/implementation/authentication.repository'
 import { AuthenticationRefreshTokenController } from '@/use-cases/authentication/authentication-refresh-token.controller'
 import { AuthenticationRefreshTokenUseCase } from '@/use-cases/authentication/authentication-refresh-token.use-case'
 import { AuthenticationController } from '@/use-cases/authentication/authentication.controller'
