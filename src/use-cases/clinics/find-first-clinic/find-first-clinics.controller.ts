@@ -5,8 +5,9 @@ export class FindFirstClinicsController {
   constructor(protected readonly useCase: FirstUseCaseInterface) {}
 
   async handle(req: Request, res: Response): Promise<Response> {
-    const { params } = req
-    const result = await this.useCase.execute(params.id)
+    const { id: userId } = req.user
+    const { id } = req.params
+    const result = await this.useCase.execute({ id, userId })
     return res.status(201).json(result)
   }
 }

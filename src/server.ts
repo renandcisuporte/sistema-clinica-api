@@ -1,6 +1,6 @@
 import { app } from '@/app'
 
-const PORT = process.env.PORT || 9000
+const PORT = process.env.PORT || 3333
 const start = (): void => {
   try {
     app.listen(PORT, () =>
@@ -11,4 +11,5 @@ const start = (): void => {
     process.exit(1)
   }
 }
+
 start()

@@ -1,5 +1,5 @@
+import { AuthenticationUseCaseInterface } from '@/use-cases/authentication/authentication.interface'
 import { Request, Response } from 'express'
-import { AuthenticationUseCaseInterface } from './authentication-interface'
 
 export class AuthenticationController {
   constructor(protected readonly useCase: AuthenticationUseCaseInterface) {}

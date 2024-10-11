@@ -1,27 +1,19 @@
 import { AppError } from '@/common/app.error'
 import { AuthenticationRepositoryInterface } from '@/repositories/authentication.interface'
-import * as bcrypt from 'bcryptjs'
+import { AuthenticationRefreshTokenResponseUseCase } from '@/use-cases/authentication/authentication-refresh-token.interface'
 import * as jwt from 'jsonwebtoken'
-import {
-  AuthenticationIntefaceDTO,
-  AuthenticationResponseUseCase
-} from './authentication.interface'
 
-export class AuthenticationUseCase {
+export class AuthenticationRefreshTokenUseCase {
   constructor(
     protected readonly repository: AuthenticationRepositoryInterface
   ) {}
 
   async execute(
-    input: AuthenticationIntefaceDTO
-  ): Promise<AuthenticationResponseUseCase> {
-    const result = await this.repository.first(input.email)
+    id: string
+  ): Promise<AuthenticationRefreshTokenResponseUseCase> {
+    const result = await this.repository.find(id)
     if (!result) throw new AppError('Usuário não autorizado')
-
-    if (!(await bcrypt.compare(input.password, result.password)))
-      throw new AppError('Usuário não autorizado!')
-
-    const { password, ...user } = result
+    const { ...user } = result
 
     return {
       data: {

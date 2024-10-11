@@ -1,21 +1,18 @@
 import { AppError } from '@/common/app.error'
-import { verifyJwt } from '@/utils'
 import { NextFunction, Request, Response } from 'express'
+import * as jwt from 'jsonwebtoken'
 
-export function authenticated(
-  request: Request,
-  response: Response,
-  next: NextFunction
-) {
-  const { authorization } = request.headers
-  if (!authorization) throw new AppError('token jwt is missing.')
-
+export function authenticated(req: Request, _: Response, next: NextFunction) {
   try {
-    const [, token] = authorization.split(' ')
-    const { id } = verifyJwt(token)
-    request.user = { id }
+    const { authorization } = req.headers
+    const token = authorization!.replace('Bearer ', '')
+    const decoded = jwt.verify(token, process.env.SUPER_SECRETS!) as {
+      id: string
+    }
+
+    req.user = { id: decoded.id }
     return next()
   } catch {
-    throw new AppError('token jwt invalid.')
+    throw new AppError('O Token JWT passado é inválido.')
   }
 }

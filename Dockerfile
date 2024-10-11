@@ -6,7 +6,7 @@ COPY --chown=node:node . .
 
 FROM node:16-alpine as build
 WORKDIR /app
-COPY --chown=node:node --from=development . .
+COPY --chown=node:node --from=development /app /app
 RUN npm run build
 
 FROM node:16-alpine as production

@@ -5,8 +5,16 @@ export class FindAllClinicsController {
   constructor(protected readonly useCase: AllUseCaseInterface) {}
 
   async handle(req: Request, res: Response): Promise<Response> {
-    const { params } = req
-    const result = await this.useCase.execute(params)
+    const { id: userId } = req.user
+    const { title, fantasy, cnpj, limit, page } = req.query
+    const result = await this.useCase.execute({
+      userId,
+      title,
+      fantasy,
+      cnpj,
+      limit,
+      page
+    })
     return res.status(201).json(result)
   }
 }

@@ -2,7 +2,7 @@ services:
   dev:
     image: renandci/clinics:development
     ports:
-      - 4040:3333
+      - ${PORT:-3333}:${PORT:-3333}
     command: npm run dev
     volumes:
       - ./:/app

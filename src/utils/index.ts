@@ -16,3 +16,16 @@ export function hashJwt(input: any, expiresIn = '1h') {
 export function verifyJwt(input: any): any {
   return verify(input, process.env.SUPER_SECRETS!)
 }
+
+export function formatErrors(errors: any[]) {
+  const formattedErrors: any = {}
+
+  errors.forEach((error) => {
+    // Pegue o último valor do caminho (neste caso, 'ie')
+    const field = error.path[error.path.length - 1]
+    // Adicione a chave com a mensagem no objeto resultante
+    formattedErrors[field] = error.message
+  })
+
+  return formattedErrors
+}

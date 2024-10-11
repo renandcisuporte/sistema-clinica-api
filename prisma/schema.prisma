@@ -12,7 +12,7 @@ generator client {
 datasource db {
   provider     = "postgresql"
   url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  relationMode = "foreignKeys"
 }
 
 model User {
@@ -30,31 +30,41 @@ model User {
 }
 
 model Clinic {
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  id        String    @id @default(uuid())
-  userId    String?   @db.Char(36)
-  title     String    @db.VarChar(55)
-  fantasy   String    @db.VarChar(55)
-  cnpj      String    @db.VarChar(18)
-  ie        String    @db.VarChar(15)
-  phones    Json[]
-  address   Json?
-  user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  rooms     Room[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+  id           String    @id @default(uuid())
+  userId       String?   @db.Char(36)
+  title        String    @db.VarChar(55)
+  fantasy      String    @db.VarChar(55)
+  cnpj         String    @db.VarChar(18)
+  ie           String?   @db.VarChar(15)
+  phone        String?   @db.VarChar(15)
+  mobilePhone  String?   @db.VarChar(15)
+  address      String?   @db.VarChar(50)
+  number       String?   @db.VarChar(5)
+  neighborhood String?   @db.VarChar(40)
+  complement   String?   @db.VarChar(50)
+  reference    String?   @db.VarChar(65)
+  city         String?   @db.VarChar(30)
+  state        String?   @db.VarChar(2)
+  zipCode      String?   @db.VarChar(9)
+
+  user  User?  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  rooms Room[]
 
   @@index([userId])
 }
 
 model Room {
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  id        String    @id @default(uuid())
-  clinicId  String?   @db.Char(36)
-  name      String    @db.VarChar(18)
-  Clinic    Clinic?   @relation(fields: [clinicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  id          String    @id @default(uuid())
+  clinicId    String?   @db.Char(36)
+  room        String    @db.VarChar(18)
+  description String?   @db.Text()
+  clinic      Clinic?   @relation(fields: [clinicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([clinicId])
 }

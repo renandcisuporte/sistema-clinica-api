@@ -7,6 +7,19 @@ export class AuthenticationRepository
 {
   constructor(protected readonly db: PrismaClient) {}
 
+  async find(
+    userId: string
+  ): Promise<Omit<AuthenticationInterface, 'password'> | null> {
+    const result = await this.db.user.findFirst({
+      where: { id: userId, deletedAt: null }
+    })
+    if (!result) return null
+
+    const { id, email, fullName } = result
+
+    return { id, email, fullName }
+  }
+
   async first(email: string): Promise<AuthenticationInterface | null> {
     const result = await this.db.user.findFirst({
       where: {
