@@ -5,12 +5,11 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["postgresqlExtensions"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider     = "postgresql"
+  provider     = "mysql"
   url          = env("DATABASE_URL")
   relationMode = "foreignKeys"
 }
@@ -50,10 +49,42 @@ model Clinic {
   state        String?   @db.VarChar(2)
   zipCode      String?   @db.VarChar(9)
 
-  user  User?  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  rooms Room[]
+  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  rooms     Room[]
+  workTimes WorkTime[]
+  // workTimeRecommendation WorkTimeRecommendation[]
+  setting   Setting[]
 
   @@index([userId])
+}
+
+// colors|times|recommendation
+model Setting {
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  id        String    @id @default(uuid())
+  clinicId  String?   @db.Char(36)
+  code      String    @db.VarChar(28)
+  payload   Json?
+  checked   Boolean   @default(false)
+  clinic    Clinic?   @relation(fields: [clinicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([clinicId])
+}
+
+model WorkTime {
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  id        String    @id @default(uuid())
+  clinicId  String?   @db.Char(36)
+  week      String    @db.VarChar(12)
+  time      String?   @db.Text
+  checked   Boolean   @default(false)
+  clinic    Clinic?   @relation(fields: [clinicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([clinicId])
 }
 
 model Room {

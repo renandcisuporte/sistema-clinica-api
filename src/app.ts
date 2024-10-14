@@ -7,8 +7,7 @@ import * as swaggerUI from 'swagger-ui-express'
 import * as swaggerJson from '../public/swagger.json'
 import { http } from './middleware/http'
 import { validated } from './middleware/validated'
-import { RegisterRoutes } from './routes'
-import { routes } from './routes/index'
+import routes from './routes/index'
 
 export const app: Application = express()
 
@@ -24,4 +23,3 @@ app.use(express.static('public'))
 app.use(['/docs'], swaggerUI.serve, swaggerUI.setup(swaggerJson))
 app.use('/api', routes)
 app.use(validated, http)
-RegisterRoutes(app)
