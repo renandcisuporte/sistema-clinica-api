@@ -40,7 +40,6 @@ export class ClinicsRepository implements ClinicsRepositoryInterface {
 
   async first(args: any): Promise<ClinicInterface | null> {
     const { id, userId } = args
-    console.log({ id, userId })
     const res = await this.db.clinic.findUnique({
       where: {
         id,

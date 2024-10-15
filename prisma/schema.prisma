@@ -80,8 +80,8 @@ model WorkTime {
   id        String    @id @default(uuid())
   clinicId  String?   @db.Char(36)
   week      String    @db.VarChar(12)
-  time      String?   @db.Text
-  checked   Boolean   @default(false)
+  times     String?   @db.Text
+  open      Boolean   @default(false)
   clinic    Clinic?   @relation(fields: [clinicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([clinicId])

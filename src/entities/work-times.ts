@@ -9,8 +9,8 @@ export class WorkTime implements Omit<WorkTimePrisma, 'deletedAt'> {
   id!: string
   clinicId!: string | null
   week!: string
-  time!: string | null
-  checked!: boolean
+  times!: string | null
+  open!: boolean
 
   constructor(
     props: Omit<WorkTime, 'createdAt' | 'updatedAt' | 'deletedAt'>,

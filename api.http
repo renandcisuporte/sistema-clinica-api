@@ -1,8 +1,8 @@
 @hostname = http://localhost:9000/api
 @contentType = application/json
-@accessToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ2ODUzNDY0LWMzMmQtNDNhYS05YzA4LWZiMjQ1ZGQwMTA4MiIsImVtYWlsIjoiZGNpQGRjaXN1cG9ydGUuY29tLmJyIiwiZnVsbE5hbWUiOiJkY2kgc3Vwb3J0ZSIsImlhdCI6MTcyODY0OTQyMiwiZXhwIjoxNzI4NjU2NjIyfQ.KvWxavy7jIqH0ryfx_uMBTZ7UsmWNs880erde7L_46c
+@accessToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlhOTc1YWVmLTY1MTEtNDRkOS1hZmMyLWM4MTA3ZDllYmNhZSIsImVtYWlsIjoiZGNpQGRjaXN1cG9ydGUuY29tLmJyIiwiZnVsbE5hbWUiOiJkY2kgc3Vwb3J0ZSIsImlhdCI6MTcyODkzNDE5MiwiZXhwIjoxNzMxNTI2MTkyfQ.KFs6pdhQYdDVuSN75mLGrBf-jtwVx5MFd-WUYOH5exg
 
-@refreshToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ2ODUzNDY0LWMzMmQtNDNhYS05YzA4LWZiMjQ1ZGQwMTA4MiIsImVtYWlsIjoiZGNpQGRjaXN1cG9ydGUuY29tLmJyIiwiZnVsbE5hbWUiOiJkY2kgc3Vwb3J0ZSIsImlhdCI6MTcyODY0OTQyMiwiZXhwIjoxNzMxMjQxNDIyfQ.Ew0mxWepR-gideGuAUlt_uGHBm5gLu4fq11MAAhKFWA
+@refreshToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlhOTc1YWVmLTY1MTEtNDRkOS1hZmMyLWM4MTA3ZDllYmNhZSIsImVtYWlsIjoiZGNpQGRjaXN1cG9ydGUuY29tLmJyIiwiZnVsbE5hbWUiOiJkY2kgc3Vwb3J0ZSIsImlhdCI6MTcyODkzNDE5MiwiZXhwIjoxNzMxNTI2MTkyfQ.KFs6pdhQYdDVuSN75mLGrBf-jtwVx5MFd-WUYOH5exg
 
 ### SUCCESS
 POST {{hostname}}/auth/refresh-token HTTP/1.1
@@ -71,7 +71,23 @@ Authorization: {{accessToken}}
 }
 
 ### FIRST CLINICS
-GET {{hostname}}/clinics/1c384148-ea73-4dc3-95c7-7b4f2891b4a1 HTTP/1.1
+GET {{hostname}}/clinics/b399670b-8e8d-4850-af4b-38de322febfb HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{accessToken}}
+
+{
+}
+
+### FIRST CLINICS
+GET {{hostname}}/clinics/b399670b-8e8d-4850-af4b-38de322febfb/works HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{accessToken}}
+
+{
+}
+
+### CHART CLINICS
+GET {{hostname}}/clinics/charts HTTP/1.1
 Content-Type: {{contentType}}
 Authorization: {{accessToken}}
 

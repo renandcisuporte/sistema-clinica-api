@@ -17,6 +17,7 @@ export const app: Application = express()
 
 app.use(cors())
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 // app.use(morgan(':ip'))
 // app.use(morgan(':id :method :url :response-time'))

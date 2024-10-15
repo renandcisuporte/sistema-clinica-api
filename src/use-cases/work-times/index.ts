@@ -1,12 +1,31 @@
 import prisma from '@/database/prisma'
-import { WrokTimesRepository } from '@/repositories/implementation/wokr-times.repository'
-import { CreateWorkTimesController } from './create-work-times/create-work-times.controller'
-import { CreateWorkTimesUseCase } from './create-work-times/create-work-times.use-case'
+import { ClinicsRepository } from '@/repositories/implementation/clinics.repository'
+import { WorkTimesRepository } from '@/repositories/implementation/work-times.repository'
 
-const workTimesRepository = new WrokTimesRepository(prisma)
+import { UpdateWorkTimesController } from '@/use-cases/work-times/update-work-times/update-work-times.controller'
+import { UpdateWorkTimesUseCase } from '@/use-cases/work-times/update-work-times/update-work-times.use-case'
+import { FindChartWorkTimesController } from './find-chart-work-times/find-chart-work-times.controller'
+import { FindChartWorkTimesUseCase } from './find-chart-work-times/find-chart-work-times.use-case'
+import { FindFirstWorkTimesController } from './find-first-work-times/find-first-work-times.controller'
+import { FindFirstWorkTimesUseCase } from './find-first-work-times/find-first-work-times.use-case'
 
-const createWorkTimesController = new CreateWorkTimesController(
-  new CreateWorkTimesUseCase(workTimesRepository)
+const clinicsRepository = new ClinicsRepository(prisma)
+const workTimesRepository = new WorkTimesRepository(prisma)
+
+const updateWorkTimesController = new UpdateWorkTimesController(
+  new UpdateWorkTimesUseCase(workTimesRepository)
 )
 
-export { createWorkTimesController }
+const findFirstWorkTimesController = new FindFirstWorkTimesController(
+  new FindFirstWorkTimesUseCase(clinicsRepository, workTimesRepository)
+)
+
+const findChartWorkTimesController = new FindChartWorkTimesController(
+  new FindChartWorkTimesUseCase(workTimesRepository)
+)
+
+export {
+  findChartWorkTimesController,
+  findFirstWorkTimesController,
+  updateWorkTimesController
+}
