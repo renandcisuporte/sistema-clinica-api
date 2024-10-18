@@ -12,7 +12,6 @@ module.exports = {
       restart_delay: 5000,
       autorestart: true,
       ignore_watch: ['node_modules'],
-      watch: true,
       env: {
         ...process.env,
         NODE_ENV: 'develop',
