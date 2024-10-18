@@ -5,45 +5,111 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["postgresqlExtensions"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider     = "postgresql"
+  provider     = "mysql"
   url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  relationMode = "foreignKeys"
 }
 
 model User {
-  id             Int       @id @default(autoincrement())
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   deletedAt      DateTime?
-  code           String    @default(uuid()) @db.Char(36)
+  id             String    @id @default(uuid())
   fullName       String    @db.VarChar(55)
   email          String    @unique @db.VarChar(45)
   password       String    @db.VarChar(105)
-  passwordVerify Boolean   @default(true)
+  passwordVerify Boolean   @default(false)
   token          String    @db.VarChar(255)
   refreshToken   String    @db.VarChar(505)
-  clinics        Clinic[]
-
-  @@index([code])
+  clinic         Clinic[]
 }
 
 model Clinic {
-  id        Int       @id @default(autoincrement())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+  id           String    @id @default(uuid())
+  userId       String?   @db.Char(36)
+  title        String    @db.VarChar(55)
+  fantasy      String    @db.VarChar(55)
+  cnpj         String    @db.VarChar(18)
+  ie           String?   @db.VarChar(15)
+  phone        String?   @db.VarChar(15)
+  mobilePhone  String?   @db.VarChar(15)
+  address      String?   @db.VarChar(50)
+  number       String?   @db.VarChar(5)
+  neighborhood String?   @db.VarChar(40)
+  complement   String?   @db.VarChar(50)
+  reference    String?   @db.VarChar(65)
+  city         String?   @db.VarChar(30)
+  state        String?   @db.VarChar(2)
+  zipCode      String?   @db.VarChar(9)
+
+  user               User?               @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  rooms              Room[]
+  workTimes          WorkTime[]
+  workTimesRecommend WorkTimeRecommend[]
+  setting            Setting[]
+
+  @@index([userId])
+}
+
+// colors|times|recommendation
+model Setting {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-  userId    Int?
-  code      String    @default(uuid()) @db.Char(36)
-  fantasy   String    @db.VarChar(55)
-  address   Json[]
-  phones    Json[]
-  user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id        String    @id @default(uuid())
+  clinicId  String?   @db.Char(36)
+  code      String    @db.VarChar(28)
+  payload   Json?
+  checked   Boolean   @default(false)
+  clinic    Clinic?   @relation(fields: [clinicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@index([code])
-  @@index([userId])
+  @@index([clinicId])
+}
+
+model WorkTime {
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  id        String    @id @default(uuid())
+  clinicId  String?   @db.Char(36)
+  week      String    @db.VarChar(12)
+  times     String?   @db.Text
+  open      Boolean   @default(false)
+  clinic    Clinic?   @relation(fields: [clinicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([clinicId])
+}
+
+model WorkTimeRecommend {
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  id        String    @id @default(uuid())
+  clinicId  String?   @db.Char(36)
+  week      String    @db.VarChar(12)
+  times     String?   @db.Text
+  open      Boolean   @default(false)
+  clinic    Clinic?   @relation(fields: [clinicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([clinicId])
+}
+
+model Room {
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  id          String    @id @default(uuid())
+  clinicId    String?   @db.Char(36)
+  room        String    @db.VarChar(18)
+  description String?   @db.Text()
+  clinic      Clinic?   @relation(fields: [clinicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([clinicId])
 }
