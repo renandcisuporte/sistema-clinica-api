@@ -29,6 +29,8 @@ jobs:
             npx prisma db push
             echo "# Running generateschema"
             npx prisma generate
+            echo "# Running seed"
+            npx prisma db seed
             echo "# Running build"
             npm run build
             echo "# Running server PM2"

@@ -9,13 +9,42 @@ async function main() {
 
   const dci = await prisma.user.upsert({
     where: { email: 'dci@dcisuporte.com.br' },
-    update: {},
+    update: {
+      email: 'dci@dcisuporte.com.br',
+      fullName: 'dci suporte',
+      password,
+      role: 'ROOT'
+    },
     create: {
       email: 'dci@dcisuporte.com.br',
       fullName: 'dci suporte',
       password,
-      refreshToken: '',
-      token: '',
+      role: 'ROOT',
+      clinic: {
+        create: {
+          fantasy: 'fantasy',
+          cnpj: '66.686.847/0001-80',
+          ie: '00000000',
+          title: 'Titulo Fantasy',
+          address: 'Amaral Lyra',
+          number: '1155',
+          complement: 'Sala 15',
+          city: 'Itápolis',
+          state: 'SP'
+        }
+      }
+    }
+  })
+
+  const passwordFidelis = bcrypt.hashSync('daniela@1365', salt)
+  const fidelis = await prisma.user.upsert({
+    where: { email: 'daniela@dclinicas.com.br' },
+    update: {},
+    create: {
+      email: 'daniela@dclinicas.com.br',
+      fullName: 'daniela',
+      password: passwordFidelis,
+      role: 'ADMIN',
       clinic: {
         create: {
           fantasy: 'fantasy',

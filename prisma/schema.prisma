@@ -14,6 +14,12 @@ datasource db {
   relationMode = "foreignKeys"
 }
 
+enum Roles {
+  USER
+  ADMIN
+  ROOT
+}
+
 model User {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
@@ -23,8 +29,9 @@ model User {
   email          String    @unique @db.VarChar(45)
   password       String    @db.VarChar(105)
   passwordVerify Boolean   @default(false)
-  token          String    @db.VarChar(255)
-  refreshToken   String    @db.VarChar(505)
+  token          String?   @db.VarChar(255)
+  refreshToken   String?   @db.VarChar(505)
+  roles          Roles     @default(USER)
   clinic         Clinic[]
 }
 
