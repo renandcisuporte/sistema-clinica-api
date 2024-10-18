@@ -2,6 +2,8 @@ import cors from 'cors'
 import 'dotenv/config'
 import express, { Application } from 'express'
 import 'express-async-errors'
+import morgan from 'morgan'
+import path from 'path'
 import 'reflect-metadata'
 import * as swaggerUI from 'swagger-ui-express'
 import * as swaggerJson from '../public/swagger.json'
@@ -11,14 +13,11 @@ import routes from './routes/index'
 
 export const app: Application = express()
 
-// morgan.token('id', function (req) {
-//   return req.headers.authorization
-// })
-
 app.use(cors())
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(express.static('public'))
+app.use(express.json({ limit: '5MB' }))
+app.use(express.urlencoded({ limit: '5MB', extended: true }))
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: 5 * 1024 }))
+app.use(morgan('dev'))
 // app.use(morgan(':ip'))
 // app.use(morgan(':id :method :url :response-time'))
 app.use(['/docs'], swaggerUI.serve, swaggerUI.setup(swaggerJson))

@@ -2,11 +2,13 @@ import { WorkTimeInterface } from '@/entities/work-times'
 import { WorkTimesRepositoryInterface } from '@/repositories/work-times.inteface'
 import { PrismaClient } from '@prisma/client'
 
-export class WorkTimesRepository implements WorkTimesRepositoryInterface {
+export class WorkTimesRecommendedRepository
+  implements WorkTimesRepositoryInterface
+{
   constructor(protected readonly db: PrismaClient) {}
 
   async delete(id: string): Promise<void> {
-    await this.db.workTime.deleteMany({
+    await this.db.workTimeRecommend.deleteMany({
       where: { clinicId: id }
     })
   }
@@ -14,7 +16,7 @@ export class WorkTimesRepository implements WorkTimesRepositoryInterface {
   async create(input: WorkTimeInterface): Promise<WorkTimeInterface> {
     const { createdAt, updatedAt, ...restInput } = input
 
-    const res = await this.db.workTime.create({
+    const res = await this.db.workTimeRecommend.create({
       data: {
         ...restInput
       }
@@ -25,7 +27,7 @@ export class WorkTimesRepository implements WorkTimesRepositoryInterface {
   }
 
   async all(clinicId: string): Promise<WorkTimeInterface[] | null> {
-    const res = await this.db.workTime.findMany({
+    const res = await this.db.workTimeRecommend.findMany({
       where: { clinicId, deletedAt: null }
     })
 

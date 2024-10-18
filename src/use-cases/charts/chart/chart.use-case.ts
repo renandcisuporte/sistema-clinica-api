@@ -1,8 +1,8 @@
 import { ChartsInterface } from '@/entities/charts'
-import { WorkTimesRepositoryInterface } from '@/repositories/work-times.inteface'
+import { ChartRepositoryInterface } from '@/repositories/char.interface'
 
-export class FindChartWorkTimesUseCase {
-  constructor(protected readonly repository: WorkTimesRepositoryInterface) {}
+export class ChartUseCase {
+  constructor(protected readonly repository: ChartRepositoryInterface) {}
 
   async execute(userId: string): Promise<{ data: ChartsInterface[] }> {
     const workTimesAll = await this.repository.chart(userId)

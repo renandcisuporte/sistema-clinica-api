@@ -58,10 +58,18 @@ export class ClinicsRepository implements ClinicsRepositoryInterface {
 
     const { userId, title, fantasy, cnpj, limit = 15, page = 1 } = args
 
-    if (title) conditions.push({ title: { contains: title } })
-    if (fantasy) conditions.push({ fantasy: { contains: fantasy } })
+    if (title || fantasy) {
+      conditions.push({ title: { contains: title, caseInsensitive: false } })
+
+      conditions.push({
+        fantasy: { contains: title, caseInsensitive: false }
+      })
+    }
+
     if (cnpj) conditions.push({ cnpj: { contains: cnpj } })
     if (conditions.length > 0) Object.assign(where, { OR: conditions })
+
+    console.log(conditions)
 
     const [total, data] = await this.db.$transaction([
       this.db.clinic.count({

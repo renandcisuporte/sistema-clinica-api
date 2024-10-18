@@ -1,16 +1,14 @@
 FROM node:16-alpine as development
-RUN apk update && apk add --no-cache libc6-compat \
-  bash \
+WORKDIR /app
+EXPOSE ${PORT:-3333}
+RUN apk update && apk add --no-cache bash \
   git \
   npm
-WORKDIR /app
-COPY --chown=node:node package*.json .
-RUN npm ci
+COPY package*.json .
+RUN npm install
 COPY --chown=node:node . .
-RUN npx prisma generate --schema=./prisma/schema.prisma
-# RUN npx prisma db push --schema=./prisma/schema.prisma
+RUN npx prisma generate
 USER node
-EXPOSE ${PORT:-3333}
 CMD npm run dev
 
 FROM node:16-alpine as build

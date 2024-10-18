@@ -3,24 +3,14 @@ services:
   #   image: renandci/clinics:development
   #   ports:
   #     - ${PORT:-3333}:${PORT:-3333}
-  #   # command: npm run dev
+  #   command: sh -c "npm run dev"
   #   volumes:
   #     - ./:/app
+  #     - /app/node_modules
   #   networks:
   #     - shared
-
-  db:
-    image: mysql:5.7
-    command: --default-authentication-plugin=mysql_native_password
-    ports:
-      - 3306:3306
-    volumes:
-       - ./.db/:/var/lib/mysql
-    networks:
-      - shared
-    environment:
-      MYSQL_DATABASE: clinics_db
-      MYSQL_ROOT_PASSWORD: root
+  #   depends_on:
+  #     - db
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -38,6 +28,19 @@ services:
       - db
     networks:
       - shared
+
+  db:
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - 3306:3306
+    volumes:
+       - ./.db/:/var/lib/mysql
+    networks:
+      - shared
+    environment:
+      MYSQL_DATABASE: clinics_db
+      MYSQL_ROOT_PASSWORD: root
 
 networks:
   shared:
