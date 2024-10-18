@@ -13,13 +13,13 @@ async function main() {
       email: 'dci@dcisuporte.com.br',
       fullName: 'dci suporte',
       password,
-      role: 'ROOT'
+      roles: 'ROOT'
     },
     create: {
       email: 'dci@dcisuporte.com.br',
       fullName: 'dci suporte',
       password,
-      role: 'ROOT',
+      roles: 'ROOT',
       clinic: {
         create: {
           fantasy: 'fantasy',
@@ -44,7 +44,7 @@ async function main() {
       email: 'daniela@dclinicas.com.br',
       fullName: 'daniela',
       password: passwordFidelis,
-      role: 'ADMIN',
+      roles: 'ADMIN',
       clinic: {
         create: {
           fantasy: 'fantasy',
@@ -61,7 +61,7 @@ async function main() {
     }
   })
 
-  console.log({ dci })
+  console.log({ dci, fidelis })
 }
 main()
   .then(async () => {
