@@ -9,8 +9,7 @@
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/server.ts",
     "build": "babel src --extensions \".js,.ts\" --out-dir build --copy-files",
-    "start": "node ./build/server.js",
-    "deploy": "git pull && npm run install && npm run build && pm2 restart ecosystem.config.js --env production",
+    "start": "node ./build/server.js"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
