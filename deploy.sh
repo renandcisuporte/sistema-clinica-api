@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /home/dclinica/public_html/
+cd /home/dclinica/api.dclinicas.com.br/
 
 echo '# Stop project'
 pm2 stop ecosystem.config.js
