@@ -6,7 +6,7 @@ module.exports = {
       name: 'daniela-fidellis-api',
       script: './build/server.js',
       instances: 1,
-      exec_mode: 'cluster',
+      exec_mode: 'fork',
       max_restarts: 500,
       max_memory_restart: '96M',
       restart_delay: 5000,
