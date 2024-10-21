@@ -61,7 +61,7 @@ model Clinic {
   updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
   id           String    @id @default(uuid())
-  clinicId     String?   @db.Char(7)
+  clinicId     String?   @unique @db.Char(7)
   title        String    @db.VarChar(55)
   fantasy      String    @db.VarChar(55)
   cnpj         String    @db.VarChar(18)
