@@ -13,57 +13,13 @@ async function main() {
       email: 'dci@dcisuporte.com.br',
       fullName: 'dci suporte',
       password,
-      admin: 'ROOT',
-      clinic: {
-        create: {
-          fantasy: 'fantasy',
-          cnpj: '66.686.847/0001-80',
-          ie: '00000000',
-          title: 'Titulo Fantasy',
-          address: 'Amaral Lyra',
-          number: '1155',
-          complement: 'Sala 15',
-          city: 'Itápolis',
-          state: 'SP',
-          userAdmin: {
-            create: {
-              user: {
-                connect: {
-                  email: 'dci@dcisuporte.com.br'
-                }
-              }
-            }
-          }
-        }
-      }
+      admin: 'ROOT'
     },
     update: {
       email: 'dci@dcisuporte.com.br',
       fullName: 'dci suporte',
       password,
-      admin: 'ROOT',
-      clinic: {
-        create: {
-          fantasy: 'fantasy',
-          cnpj: '66.686.847/0001-80',
-          ie: '00000000',
-          title: 'Titulo Fantasy',
-          address: 'Amaral Lyra',
-          number: '1155',
-          complement: 'Sala 15',
-          city: 'Itápolis',
-          state: 'SP',
-          userAdmin: {
-            create: {
-              user: {
-                connect: {
-                  email: 'dci@dcisuporte.com.br'
-                }
-              }
-            }
-          }
-        }
-      }
+      admin: 'ROOT'
     }
   })
 
@@ -75,20 +31,43 @@ async function main() {
       email: 'daniela@dclinicas.com.br',
       fullName: 'daniela',
       password: passwordFidelis,
-      admin: 'ADMIN',
-      clinic: {
-        create: {
-          fantasy: 'fantasy',
-          cnpj: '66.686.847/0001-80',
-          ie: '00000000',
-          title: 'Titulo Fantasy',
-          address: 'Amaral Lyra',
-          number: '1155',
-          complement: 'Sala 15',
-          city: 'Itápolis',
-          state: 'SP'
-        }
-      }
+      admin: 'ADMIN'
+    }
+  })
+
+  const clinic = {
+    fantasy: 'fantasy',
+    cnpj: '66.686.847/0001-80',
+    ie: '00000000',
+    title: 'Titulo Fantasy',
+    address: 'Amaral Lyra',
+    number: '1155',
+    complement: 'Sala 15',
+    city: 'Itápolis',
+    state: 'SP'
+  }
+
+  await prisma.clinic.upsert({
+    where: { clinicId: '010-010' },
+    update: {
+      ...clinic,
+      clinicId: '010-010'
+    },
+    create: {
+      ...clinic,
+      clinicId: '010-010'
+    }
+  })
+
+  await prisma.clinic.upsert({
+    where: { clinicId: '020-020' },
+    update: {
+      ...clinic,
+      clinicId: '020-020'
+    },
+    create: {
+      ...clinic,
+      clinicId: '020-020'
     }
   })
 
