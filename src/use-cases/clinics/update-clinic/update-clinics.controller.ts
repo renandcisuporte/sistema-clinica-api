@@ -6,11 +6,11 @@ export class UpdateClinicsController implements ControllerInterface {
   constructor(protected readonly useCase: UpdateUseCaseInterface) {}
 
   async handle(req: Request, res: Response): Promise<Response> {
-    const { id: userId } = req.user
     const { id } = req.params
-    const { body } = req
+    const { body, clinicId } = req
+    body.clinicId = clinicId
 
-    const resp = await this.useCase.execute(id, { ...body, userId })
+    const resp = await this.useCase.execute(id, { ...body })
     return res.status(200).json(resp)
   }
 }

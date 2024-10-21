@@ -24,6 +24,7 @@ export class Authentication {
   public passwordVerify!: Boolean
   public token!: string
   public refreshToken!: string
+  public admin!: string
 
   constructor(
     props: Omit<Authentication, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt'>,

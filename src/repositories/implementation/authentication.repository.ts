@@ -15,9 +15,9 @@ export class AuthenticationRepository
     })
     if (!result) return null
 
-    const { id, email, fullName } = result
+    const { id, email, fullName, admin } = result
 
-    return { id, email, fullName }
+    return { id, email, fullName, admin }
   }
 
   async first(email: string): Promise<AuthenticationInterface | null> {
@@ -34,6 +34,7 @@ export class AuthenticationRepository
     return {
       id,
       email: result.email,
+      admin: result.admin,
       fullName,
       password
     }

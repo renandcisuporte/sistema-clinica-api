@@ -6,9 +6,9 @@ export class DeleteClinicsController implements ControllerInterface {
   constructor(protected readonly useCase: DeleteUseCaseInterface) {}
 
   async handle(req: Request, res: Response): Promise<Response> {
-    const { id: userId } = req.user
+    const { clinicId } = req
     const { id } = req.params
-    await this.useCase.execute({ id, userId })
+    await this.useCase.execute({ id, clinicId })
     return res.status(204).json()
   }
 }

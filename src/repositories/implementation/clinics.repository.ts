@@ -1,4 +1,4 @@
-import { ClinicInterface } from '@/entities/clinics'
+import { ClinicInput, ClinicOutput } from '@/entities/clinics'
 import { ClinicsRepositoryInterface } from '@/repositories/clinics.interface'
 import { PrismaClient } from '@prisma/client'
 
@@ -8,59 +8,89 @@ export class ClinicsRepository implements ClinicsRepositoryInterface {
   async delete(args: any): Promise<void> {
     const { id, userId } = args
     await this.db.clinic.update({
-      where: { deletedAt: null, id, userId },
+      where: { deletedAt: null, id },
       data: { deletedAt: new Date() }
     })
   }
 
-  async update(id: string, input: ClinicInterface): Promise<ClinicInterface> {
-    const { createdAt, updatedAt, userId, ...restInput } = input
-    const res = await this.db.clinic.update({
-      where: { id, userId, deletedAt: null },
+  async update(_id: string, input: ClinicInput): Promise<ClinicOutput> {
+    const { clinicId, ...restInput } = input
+
+    const result = await this.db.clinic.update({
+      where: { id: _id, deletedAt: null },
       data: {
         ...restInput
       }
     })
 
-    const { deletedAt, ...rest } = res
+    const { deletedAt, ...rest } = result
     return { ...rest }
   }
 
-  async create(input: ClinicInterface): Promise<ClinicInterface> {
-    const { id, createdAt, updatedAt, ...restInput } = input
-    const res = await this.db.clinic.create({
+  async create(input: ClinicInput): Promise<ClinicOutput> {
+    const { ...restInput } = input
+    const result = await this.db.clinic.create({
       data: {
         ...restInput
       }
     })
 
-    const { deletedAt, ...rest } = res
+    const { deletedAt, ...rest } = result
     return { ...rest }
   }
 
-  async first(args: any): Promise<ClinicInterface | null> {
-    const { id, userId } = args
-    const res = await this.db.clinic.findUnique({
+  async findClinicCode(code: string): Promise<string | null> {
+    const response = await this.db.clinic.findFirst({
+      where: {
+        clinicId: code,
+        deletedAt: null
+      },
+      include: {
+        userAdmin: {
+          select: {
+            user: true
+          }
+        }
+      }
+    })
+
+    if (!response) return null
+
+    const { id } = response
+    return id
+  }
+
+  async first(args: any): Promise<ClinicOutput | null> {
+    const { id } = args
+
+    const response = await this.db.clinic.findUnique({
       where: {
         id,
-        userId,
         deletedAt: null
+      },
+      include: {
+        userAdmin: {
+          select: {
+            user: true
+          }
+        }
       }
     })
-    if (!res) return null
-    const { deletedAt, ...rest } = res
+
+    if (!response) return null
+
+    const { deletedAt, userAdmin, ...rest } = response
     return { ...rest }
   }
 
-  async all(args: any): Promise<{ data: ClinicInterface[]; total: number }> {
+  async all(args: any): Promise<{ data: ClinicOutput[]; total: number }> {
     const where: any = {}
     const conditions: any = []
 
-    const { userId, title, fantasy, cnpj, limit = 15, page = 1 } = args
+    const { title, fantasy, cnpj, clinicId, limit = 15, page = 1 } = args
 
     if (title || fantasy) {
       conditions.push({ title: { contains: title, caseInsensitive: false } })
-
       conditions.push({
         fantasy: { contains: title, caseInsensitive: false }
       })
@@ -69,14 +99,12 @@ export class ClinicsRepository implements ClinicsRepositoryInterface {
     if (cnpj) conditions.push({ cnpj: { contains: cnpj } })
     if (conditions.length > 0) Object.assign(where, { OR: conditions })
 
-    console.log(conditions)
-
     const [total, data] = await this.db.$transaction([
       this.db.clinic.count({
-        where: { deletedAt: null, userId, ...where }
+        where: { deletedAt: null, id: clinicId, ...where }
       }),
       this.db.clinic.findMany({
-        where: { deletedAt: null, userId, ...where },
+        where: { deletedAt: null, id: clinicId, ...where },
         skip: Number((page - 1) * limit),
         take: Number(limit)
       })

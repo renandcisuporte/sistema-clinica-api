@@ -14,7 +14,7 @@ datasource db {
   relationMode = "foreignKeys"
 }
 
-enum Roles {
+enum Admin {
   USER
   ADMIN
   ROOT
@@ -27,12 +27,33 @@ model User {
   id             String    @id @default(uuid())
   fullName       String    @db.VarChar(55)
   email          String    @unique @db.VarChar(45)
+  admin          Admin     @default(USER)
   password       String    @db.VarChar(105)
   passwordVerify Boolean   @default(false)
   token          String?   @db.VarChar(255)
   refreshToken   String?   @db.VarChar(505)
-  roles          Roles     @default(USER)
-  clinic         Clinic[]
+  coverImage     String?   @db.VarChar(255)
+
+  roules    Roules[]
+  userAdmin UserAdmin[]
+}
+
+model UserAdmin {
+  id       String  @id @default(uuid())
+  userId   String? @db.Char(36)
+  clinicId String? @db.Char(36)
+  user     User?   @relation(fields: [userId], references: [id])
+  clinic   Clinic? @relation(fields: [clinicId], references: [id])
+}
+
+model Roules {
+  id         String  @id @default(uuid())
+  userId     String? @db.Char(36)
+  module     String  @db.VarChar(30)
+  permission String  @db.VarChar(10)
+  user       User?   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([userId])
 }
 
 model Clinic {
@@ -40,7 +61,7 @@ model Clinic {
   updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
   id           String    @id @default(uuid())
-  userId       String?   @db.Char(36)
+  clinicId     String?   @db.Char(7)
   title        String    @db.VarChar(55)
   fantasy      String    @db.VarChar(55)
   cnpj         String    @db.VarChar(18)
@@ -56,13 +77,11 @@ model Clinic {
   state        String?   @db.VarChar(2)
   zipCode      String?   @db.VarChar(9)
 
-  user               User?               @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   rooms              Room[]
   workTimes          WorkTime[]
   workTimesRecommend WorkTimeRecommend[]
   setting            Setting[]
-
-  @@index([userId])
+  userAdmin          UserAdmin[]
 }
 
 // colors|times|recommendation

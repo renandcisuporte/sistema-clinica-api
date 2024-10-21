@@ -6,8 +6,8 @@ export class ChartController implements ControllerInterface {
   constructor(protected readonly useCase: AllUseCaseInterface) {}
 
   async handle(req: Request, res: Response): Promise<Response> {
-    const { id: userId } = req.user
-    const resp = await this.useCase.execute(userId)
+    const { clinicId } = req
+    const resp = await this.useCase.execute(clinicId)
     return res.status(200).json(resp)
   }
 }

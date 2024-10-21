@@ -50,12 +50,12 @@ export class ChartRepository implements ChartRepositoryInterface {
     return mergedResult
   }
 
-  async chart(userId: string): Promise<ChartsInterface[]> {
+  async chart(clinicId: string): Promise<ChartsInterface[]> {
     const workTimeResult = (
       await this.db.workTime.findMany({
         where: {
           clinic: {
-            userId
+            id: clinicId
           }
         },
         include: {
@@ -112,7 +112,7 @@ export class ChartRepository implements ChartRepositoryInterface {
       await this.db.workTimeRecommend.findMany({
         where: {
           clinic: {
-            userId
+            id: clinicId
           }
         },
         include: {
