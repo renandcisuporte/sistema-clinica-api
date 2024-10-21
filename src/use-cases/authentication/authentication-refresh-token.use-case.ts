@@ -9,8 +9,16 @@ export class AuthenticationRefreshTokenUseCase {
   ) {}
 
   async execute(
-    id: string
+    authorization: any
   ): Promise<AuthenticationRefreshTokenResponseUseCase> {
+    const token = authorization!.replace('Bearer ', '')
+    const decoded = jwt.verify(token, process.env.SUPER_SECRETS!) as {
+      id: string
+      admin: string
+      clinicId: string
+    }
+    const { clinicId, id } = decoded
+
     const result = await this.repository.find(id)
     if (!result) throw new AppError('Usuário não autorizado')
     const { ...user } = result
@@ -18,10 +26,11 @@ export class AuthenticationRefreshTokenUseCase {
     return {
       data: {
         user,
-        accessToken: jwt.sign(user, process.env.SUPER_SECRETS!, {
-          expiresIn: '2h'
+        clinicId,
+        accessToken: jwt.sign({ clinicId, user }, process.env.SUPER_SECRETS!, {
+          expiresIn: '10min'
         }),
-        refreshToken: jwt.sign(user, process.env.SUPER_SECRETS!, {
+        refreshToken: jwt.sign({ clinicId, user }, process.env.SUPER_SECRETS!, {
           expiresIn: '30d'
         })
       }

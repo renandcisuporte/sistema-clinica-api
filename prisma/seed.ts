@@ -9,17 +9,11 @@ async function main() {
 
   const dci = await prisma.user.upsert({
     where: { email: 'dci@dcisuporte.com.br' },
-    update: {
-      email: 'dci@dcisuporte.com.br',
-      fullName: 'dci suporte',
-      password,
-      roles: 'ROOT'
-    },
     create: {
       email: 'dci@dcisuporte.com.br',
       fullName: 'dci suporte',
       password,
-      roles: 'ROOT',
+      admin: 'ROOT',
       clinic: {
         create: {
           fantasy: 'fantasy',
@@ -30,7 +24,44 @@ async function main() {
           number: '1155',
           complement: 'Sala 15',
           city: 'Itápolis',
-          state: 'SP'
+          state: 'SP',
+          userAdmin: {
+            create: {
+              user: {
+                connect: {
+                  email: 'dci@dcisuporte.com.br'
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    update: {
+      email: 'dci@dcisuporte.com.br',
+      fullName: 'dci suporte',
+      password,
+      admin: 'ROOT',
+      clinic: {
+        create: {
+          fantasy: 'fantasy',
+          cnpj: '66.686.847/0001-80',
+          ie: '00000000',
+          title: 'Titulo Fantasy',
+          address: 'Amaral Lyra',
+          number: '1155',
+          complement: 'Sala 15',
+          city: 'Itápolis',
+          state: 'SP',
+          userAdmin: {
+            create: {
+              user: {
+                connect: {
+                  email: 'dci@dcisuporte.com.br'
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -44,7 +75,7 @@ async function main() {
       email: 'daniela@dclinicas.com.br',
       fullName: 'daniela',
       password: passwordFidelis,
-      roles: 'ADMIN',
+      admin: 'ADMIN',
       clinic: {
         create: {
           fantasy: 'fantasy',

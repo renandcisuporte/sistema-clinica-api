@@ -1,8 +1,8 @@
 @hostname = http://localhost:9000/api
 @contentType = application/json
-@accessToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlhOTc1YWVmLTY1MTEtNDRkOS1hZmMyLWM4MTA3ZDllYmNhZSIsImVtYWlsIjoiZGNpQGRjaXN1cG9ydGUuY29tLmJyIiwiZnVsbE5hbWUiOiJkY2kgc3Vwb3J0ZSIsImlhdCI6MTcyODkzNDE5MiwiZXhwIjoxNzMxNTI2MTkyfQ.KFs6pdhQYdDVuSN75mLGrBf-jtwVx5MFd-WUYOH5exg
+@accessToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGluaWNJZCI6IjE3YTNmYWExLWM1Y2MtNGY1Zi04OGI3LWUzNjk0NDA2MWIzZCIsInVzZXIiOnsiaWQiOiI5YTk3NWFlZi02NTExLTQ0ZDktYWZjMi1jODEwN2Q5ZWJjYWUiLCJlbWFpbCI6ImRjaUBkY2lzdXBvcnRlLmNvbS5iciIsImFkbWluIjoiUk9PVCIsImZ1bGxOYW1lIjoiZGNpIHN1cG9ydGUifSwiaWF0IjoxNzI5NTIwOTg2LCJleHAiOjE3MzIxMTI5ODZ9.Y1RB5bA5GZ5Jz_Xlcp5qFjiLPFJtW1_4zIvIZ5PP7LI
 
-@refreshToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlhOTc1YWVmLTY1MTEtNDRkOS1hZmMyLWM4MTA3ZDllYmNhZSIsImVtYWlsIjoiZGNpQGRjaXN1cG9ydGUuY29tLmJyIiwiZnVsbE5hbWUiOiJkY2kgc3Vwb3J0ZSIsImlhdCI6MTcyODkzNDE5MiwiZXhwIjoxNzMxNTI2MTkyfQ.KFs6pdhQYdDVuSN75mLGrBf-jtwVx5MFd-WUYOH5exg
+@refreshToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGluaWNJZCI6IjE3YTNmYWExLWM1Y2MtNGY1Zi04OGI3LWUzNjk0NDA2MWIzZCIsInVzZXIiOnsiaWQiOiI5YTk3NWFlZi02NTExLTQ0ZDktYWZjMi1jODEwN2Q5ZWJjYWUiLCJlbWFpbCI6ImRjaUBkY2lzdXBvcnRlLmNvbS5iciIsImFkbWluIjoiUk9PVCIsImZ1bGxOYW1lIjoiZGNpIHN1cG9ydGUifSwiaWF0IjoxNzI5NTIwOTg2LCJleHAiOjE3MzIxMTI5ODZ9.Y1RB5bA5GZ5Jz_Xlcp5qFjiLPFJtW1_4zIvIZ5PP7LI
 
 ### SUCCESS
 POST {{hostname}}/auth/refresh-token HTTP/1.1
@@ -17,6 +17,7 @@ POST {{hostname}}/auth HTTP/1.1
 Content-Type: {{contentType}}
 
 {
+  "code": "010-010",
   "email": "dci@dcisuporte.com.br",
   "password": "dci@6913"
 }
@@ -43,7 +44,7 @@ Authorization: {{accessToken}}
 }
 
 ### UPDATE CLINICS
-PUT {{hostname}}/clinics/46853464-c32d-43aa-9c08-fb245dd01081 HTTP/1.1
+PUT {{hostname}}/clinics/17a3faa1-c5cc-4f5f-88b7-e36944061b3d HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 
@@ -71,7 +72,7 @@ Authorization: {{accessToken}}
 }
 
 ### FIRST CLINICS
-GET {{hostname}}/clinics/b399670b-8e8d-4850-af4b-38de322febfb HTTP/1.1
+GET {{hostname}}/clinics/17a3faa1-c5cc-4f5f-88b7-e36944061b3d HTTP/1.1
 Content-Type: {{contentType}}
 Authorization: {{accessToken}}
 
@@ -79,7 +80,7 @@ Authorization: {{accessToken}}
 }
 
 ### FIRST CLINICS
-GET {{hostname}}/clinics/b399670b-8e8d-4850-af4b-38de322febfb/works HTTP/1.1
+GET {{hostname}}/clinics/17a3faa1-c5cc-4f5f-88b7-e36944061b3d/works HTTP/1.1
 Content-Type: {{contentType}}
 Authorization: {{accessToken}}
 

@@ -6,6 +6,7 @@ export class AuthenticationController {
 
   async handle(req: Request, res: Response): Promise<Response> {
     const { body } = req
+
     const result = await this.useCase.execute(body)
     return res.status(201).json(result)
   }

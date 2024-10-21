@@ -3,6 +3,7 @@ export interface AuthenticationResponseUseCase<T = any> {
 }
 
 export interface AuthenticationIntefaceDTO {
+  code: string
   email: string
   password: string
 }

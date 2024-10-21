@@ -1,12 +1,11 @@
-import { ClinicInterface } from '@/entities/clinics'
+import { ClinicInput, ClinicOutput } from '@/entities/clinics'
 
 export interface ClinicsRepositoryInterface {
-  all(...args: any): Promise<{
-    data: ClinicInterface[]
-    total: number
-  }>
-  first(...args: any): Promise<ClinicInterface | null>
-  create(input: ClinicInterface): Promise<ClinicInterface>
-  update(id: string, input: ClinicInterface): Promise<ClinicInterface>
+  findClinicCode(code: string): Promise<string | null>
+
+  all(...args: any): Promise<{ data: ClinicOutput[]; total: number }>
+  first(...args: any): Promise<ClinicOutput | null>
+  create(input: ClinicInput): Promise<ClinicOutput>
+  update(id: string, input: ClinicInput): Promise<ClinicOutput>
   delete(...args: any): Promise<void>
 }
