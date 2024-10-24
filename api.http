@@ -1,16 +1,9 @@
 @hostname = http://localhost:9000/api
+# @hostname = https://api.dclinicas.com.br/api
 @contentType = application/json
-@accessToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGluaWNJZCI6IjE3YTNmYWExLWM1Y2MtNGY1Zi04OGI3LWUzNjk0NDA2MWIzZCIsInVzZXIiOnsiaWQiOiI5YTk3NWFlZi02NTExLTQ0ZDktYWZjMi1jODEwN2Q5ZWJjYWUiLCJlbWFpbCI6ImRjaUBkY2lzdXBvcnRlLmNvbS5iciIsImFkbWluIjoiUk9PVCIsImZ1bGxOYW1lIjoiZGNpIHN1cG9ydGUifSwiaWF0IjoxNzI5NTIwOTg2LCJleHAiOjE3MzIxMTI5ODZ9.Y1RB5bA5GZ5Jz_Xlcp5qFjiLPFJtW1_4zIvIZ5PP7LI
+@accessToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGluaWNJZCI6IjE3YTNmYWExLWM1Y2MtNGY1Zi04OGI3LWUzNjk0NDA2MWIzZCIsInVzZXIiOnsiaWQiOiI5YTk3NWFlZi02NTExLTQ0ZDktYWZjMi1jODEwN2Q5ZWJjYWUiLCJmdWxsTmFtZSI6ImRjaSBzdXBvcnRlIiwiZW1haWwiOiJkY2lAZGNpc3Vwb3J0ZS5jb20uYnIiLCJhZG1pbiI6InJvb3QiLCJjb3ZlckltYWdlIjpudWxsfSwiaWF0IjoxNzI5NzE0NTY4LCJleHAiOjE3MzIzMDY1Njh9.owwP0NRNK6GsIaRVqqPPFeyLzUHWfKq7jSWBM8EPGHI
 
-@refreshToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGluaWNJZCI6IjE3YTNmYWExLWM1Y2MtNGY1Zi04OGI3LWUzNjk0NDA2MWIzZCIsInVzZXIiOnsiaWQiOiI5YTk3NWFlZi02NTExLTQ0ZDktYWZjMi1jODEwN2Q5ZWJjYWUiLCJlbWFpbCI6ImRjaUBkY2lzdXBvcnRlLmNvbS5iciIsImFkbWluIjoiUk9PVCIsImZ1bGxOYW1lIjoiZGNpIHN1cG9ydGUifSwiaWF0IjoxNzI5NTIwOTg2LCJleHAiOjE3MzIxMTI5ODZ9.Y1RB5bA5GZ5Jz_Xlcp5qFjiLPFJtW1_4zIvIZ5PP7LI
-
-### SUCCESS
-POST {{hostname}}/auth/refresh-token HTTP/1.1
-Content-Type: {{contentType}}
-Authorization: {{refreshToken}}
-
-{
-}
+@refreshToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGluaWNJZCI6IjE3YTNmYWExLWM1Y2MtNGY1Zi04OGI3LWUzNjk0NDA2MWIzZCIsInVzZXIiOnsiaWQiOiI5YTk3NWFlZi02NTExLTQ0ZDktYWZjMi1jODEwN2Q5ZWJjYWUiLCJmdWxsTmFtZSI6ImRjaSBzdXBvcnRlIiwiZW1haWwiOiJkY2lAZGNpc3Vwb3J0ZS5jb20uYnIiLCJhZG1pbiI6InJvb3QiLCJjb3ZlckltYWdlIjpudWxsfSwiaWF0IjoxNzI5NzE0NTY4LCJleHAiOjE3MzIzMDY1Njh9.owwP0NRNK6GsIaRVqqPPFeyLzUHWfKq7jSWBM8EPGHI
 
 ### SUCCESS
 POST {{hostname}}/auth HTTP/1.1
@@ -22,6 +15,21 @@ Content-Type: {{contentType}}
   "password": "dci@6913"
 }
 
+### SUCCESS
+POST {{hostname}}/auth/refresh-token HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{refreshToken}}
+
+{
+}
+
+###
+GET {{hostname}}/users HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+}
 
 ### CREATE CLINIC
 POST {{hostname}}/clinics HTTP/1.1
@@ -29,8 +37,8 @@ Content-Type: {{contentType}}
 Authorization: {{accessToken}}
 
 {
-  "fantasy":"",
-  "title":"",
+  "fantasy":"Campo obrigatório",
+  "title":"Campo obrigatório",
   "cnpj":"12.345.678/9999-99",
   "ie": "",
   "phone":"(98) 7653-2111",
@@ -63,6 +71,15 @@ Authorization:{{accessToken}}
   "zipCode":""
 }
 
+### UPDATE CLINICS
+PUT {{hostname}}/clinics/17a3faa1-c5cc-4f5f-88b7-e36944061b3d/average-service HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+  "time": "00:20"
+}
+
 ### ALL CLINICS
 GET {{hostname}}/clinics?limit=15&page=1&title=&fantasy= HTTP/1.1
 Content-Type: {{contentType}}
@@ -87,6 +104,48 @@ Authorization: {{accessToken}}
 {
 }
 
+### DELETE CLINICS
+DELETE {{hostname}}/clinics/80028469-3636-4c5d-a5af-ed60d924d506 HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+}
+
+### UPDDATE CLINICS WORKS
+PUT {{hostname}}/clinics/17a3faa1-c5cc-4f5f-88b7-e36944061b3d/works HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{accessToken}}
+
+[
+  {
+    "clinicId": "17a3faa1-c5cc-4f5f-88b7-e36944061b3d",
+    "week": "Terça",
+    "open": "false",
+    "times": [{"description":"Abre à(s)","time":"08:00"},{"description":"Fecha à(s)","time":"12:00"}]
+  }
+]
+
+### UPDDATE CLINICS SERVICE
+PUT {{hostname}}/clinics/17a3faa1-c5cc-4f5f-88b7-e36944061b3d/works-service HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{accessToken}}
+
+[
+  {
+    "clinicId": "17a3faa1-c5cc-4f5f-88b7-e36944061b3d",
+    "week": "Terça",
+    "open": "true",
+    "times": [{"description":"Abre à(s)","time":"09:00"},{"description":"Fecha à(s)","time":"13:00"}]
+  },
+  {
+    "clinicId": "17a3faa1-c5cc-4f5f-88b7-e36944061b3d",
+    "week": "Domingo",
+    "open": "false",
+    "times": [{"description":"Abre à(s)","time":"09:00"},{"description":"Fecha à(s)","time":"13:00"}]
+  }
+]
+
 ### CHART CLINICS
 GET {{hostname}}/clinics/charts HTTP/1.1
 Content-Type: {{contentType}}
@@ -95,21 +154,8 @@ Authorization: {{accessToken}}
 {
 }
 
-### DELETE CLINICS
-DELETE {{hostname}}/clinics/46853464-c32d-43aa-9c08-fb245dd01081 HTTP/1.1
-Content-Type: {{contentType}}
-Authorization:{{accessToken}}
 
-{
-}
 
-###
-GET {{hostname}}/users HTTP/1.1
-Content-Type: {{contentType}}
-Authorization:{{accessToken}}
-
-{
-}
 
 ###
 GET {{hostname}}/users/39d13466-f343-45df-9207-e988a94ece0a HTTP/1.1
@@ -119,8 +165,17 @@ Authorization:{{accessToken}}
 {
 }
 
+
 ### ROOMS
-GET {{hostname}}/rooms HTTP/1.1
+GET {{hostname}}/rooms?room= HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+}
+
+### ROOMS
+GET {{hostname}}/rooms/6b8e8160-3b5f-491c-9b48-c3f9914679c3 HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 
@@ -133,7 +188,29 @@ Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 
 {
-  "clinicId": "46853464-c32d-43aa-9c08-fb245dd01082",
+  "clinicId": "17a3faa1-c5cc-4f5f-88b7-e36944061b3d",
   "room": "Depilação",
   "description": ""
+}
+
+### ROOMS
+PUT {{hostname}}/rooms/6b8e8160-3b5f-491c-9b48-c3f9914679c3 HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+  "clinicId": "17a3faa1-c5cc-4f5f-88b7-e36944061b3d",
+  "code": "001",
+  "room": "Depilação",
+  "description": "",
+  "averageService": "00:30",
+  "active": true
+}
+
+### ROOMS
+PUT {{hostname}}/rooms/6b8e8160-3b5f-491c-9b48-c3f9914679c3/active-inative HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
 }

@@ -13,13 +13,13 @@ async function main() {
       email: 'dci@dcisuporte.com.br',
       fullName: 'dci suporte',
       password,
-      admin: 'ROOT'
+      admin: 'root'
     },
     update: {
       email: 'dci@dcisuporte.com.br',
       fullName: 'dci suporte',
       password,
-      admin: 'ROOT'
+      admin: 'root'
     }
   })
 
@@ -31,7 +31,7 @@ async function main() {
       email: 'daniela@dclinicas.com.br',
       fullName: 'daniela',
       password: passwordFidelis,
-      admin: 'ADMIN'
+      admin: 'admin'
     }
   })
 
