@@ -6,15 +6,13 @@ const params = z.object({
 
 const body = z.object({
   clinicId: z.string().uuid({ message: 'Selecione uma Clinica' }).optional(),
-  room: z
-    .string()
-    .min(1, { message: 'Campo obrigatório!' })
-    .max(18, { message: 'Máximo de 18 caracteres' }),
+  code: z.string().min(1, { message: 'Campo obrigatório!' }),
+  room: z.string().min(1, { message: 'Campo obrigatório!' }),
   description: z.string().optional()
 })
 
-const deleteOrFirstRoomSchema = z.object({ params })
+const paramsRoomSchema = z.object({ params })
 const createRoomSchema = z.object({ body })
 const updateRoomSchema = z.object({ params, body })
 
-export { createRoomSchema, deleteOrFirstRoomSchema, updateRoomSchema }
+export { createRoomSchema, paramsRoomSchema, updateRoomSchema }

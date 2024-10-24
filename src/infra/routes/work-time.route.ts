@@ -6,6 +6,7 @@ import { UpdateWorkTimeRecommendedUseCase } from '@/use-cases/update-work-time-r
 import { UpdateWorkTimeServiceUseCase } from '@/use-cases/update-work-time-service-use-case'
 import { UpdateWorkTimeUseCase } from '@/use-cases/update-work-time-use-case'
 import { Router } from 'express'
+import { WorkTimeController } from '../http/controllers/work-time-controller'
 import { validated } from '../http/middleware/validated'
 import { createWokTimeSchema } from '../http/schemas/validations/work-time-schema'
 
@@ -24,50 +25,32 @@ const updateWorkTimeRecommendedUseCase = new UpdateWorkTimeRecommendedUseCase(
 
 const updateWorkTimeServiceUseCase = new UpdateWorkTimeServiceUseCase(workTime)
 
-workTimeRouter.get('/:id/works', async (req, res) => {
-  const { id } = req.params
-  const result = await findFirstClinicWorkTimeUseCase.execute(id)
-  return res.status(200).json(result)
-})
+const workTimeController = new WorkTimeController(
+  findFirstClinicWorkTimeUseCase,
+  updateWorkTimeUseCase,
+  updateWorkTimeRecommendedUseCase,
+  updateWorkTimeServiceUseCase
+)
+
+workTimeRouter.get('/:id/works', async (req, res) =>
+  workTimeController.workTime(req, res)
+)
 
 workTimeRouter.put(
   '/:id/works',
   validated(createWokTimeSchema),
-  async (req, res) => {
-    const { id } = req.params
-    const { body } = req
-    const result = await updateWorkTimeUseCase.execute({
-      clinicId: id,
-      input: body
-    })
-    return res.status(200).json(result)
-  }
+  async (req, res) => await workTimeController.updateWorkTime(req, res)
 )
 
 workTimeRouter.put(
   '/:id/works-recommended',
   validated(createWokTimeSchema),
-  async (req, res) => {
-    const { id } = req.params
-    const { body } = req
-    const result = await updateWorkTimeRecommendedUseCase.execute({
-      clinicId: id,
-      input: body
-    })
-    return res.status(200).json(result)
-  }
+  async (req, res) =>
+    await workTimeController.updateWorkTimeRecommended(req, res)
 )
 
 workTimeRouter.put(
   '/:id/works-service',
   validated(createWokTimeSchema),
-  async (req, res) => {
-    const { id } = req.params
-    const { body } = req
-    const result = await updateWorkTimeServiceUseCase.execute({
-      clinicId: id,
-      input: body
-    })
-    return res.status(200).json(result)
-  }
+  async (req, res) => await workTimeController.updateWorkTimeService(req, res)
 )

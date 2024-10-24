@@ -1,6 +1,6 @@
-import { AppError } from '@/common/app.error'
 import { Chart } from '@/domain/entities/chart'
 import { ChartRepository } from '@/domain/inferfaces/repositories/chart-repository'
+import { AppError } from '@/infra/http/error/app.error'
 import { daysOfWeekOrder } from '@/shared/contants'
 import { calculateTotalHours } from '@/shared/utils'
 import { PrismaClient } from '@prisma/client'

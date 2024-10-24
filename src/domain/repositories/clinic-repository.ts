@@ -39,6 +39,20 @@ export class ClinicRepositoryImp implements ClinicRepository {
     return { ...rest }
   }
 
+  async averageService(_id: string, time: string): Promise<string> {
+    const response = await this.db.clinic.update({
+      where: {
+        id: _id,
+        deletedAt: null
+      },
+      data: {
+        averageService: time
+      }
+    })
+
+    return response.averageService?.toString() ?? ''
+  }
+
   async findByCode(code: string): Promise<string | null> {
     const response = await this.db.clinic.findUnique({
       where: {

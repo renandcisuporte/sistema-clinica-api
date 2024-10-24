@@ -6,6 +6,7 @@ import { authSchema } from '@/infra/http/schemas/validations/auth-schema'
 import { AuthRefreshUseCase } from '@/use-cases/auth-refresh-use-case'
 import { AuthUseCase } from '@/use-cases/auth-use-case'
 import { Router } from 'express'
+import { AuthController } from '../http/controllers/auth-controller'
 
 export const authRouter = Router()
 
@@ -15,18 +16,15 @@ const clinicRepository = new ClinicRepositoryImp(prisma)
 const authUseCase = new AuthUseCase(authRepository, clinicRepository)
 const authRefreshUseCase = new AuthRefreshUseCase(authRepository)
 
-authRouter.post('/', validated(authSchema), async (req, res) => {
-  const { body } = req
-  const resutl = await authUseCase.execute(body)
-  return res.status(201).json(resutl)
-})
+const authController = new AuthController(authUseCase, authRefreshUseCase)
+
+authRouter.post(
+  '/',
+  validated(authSchema),
+  async (req, res) => await authController.auth(req, res)
+)
 
 authRouter.post(
   '/refresh-token',
-  // validated(authRefreshTokenSchema),
-  async (req, res) => {
-    const { authorization } = req.headers
-    const resutl = await authRefreshUseCase.execute(authorization!)
-    return res.status(201).json(resutl)
-  }
+  async (req, res) => await authController.refreshToken(req, res)
 )

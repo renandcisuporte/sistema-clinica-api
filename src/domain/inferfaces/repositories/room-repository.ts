@@ -1,12 +1,11 @@
-import { RoomInterface } from '@/domain/entities/rooms'
+import { RoomInput, RoomOutput } from '@/domain/entities/room'
 
-export interface RoomsRepositoryInterface {
-  all(...args: any): Promise<{
-    data: RoomInterface[]
-    total: number
-  }>
-  first(...args: any): Promise<RoomInterface | null>
-  create(input: RoomInterface): Promise<RoomInterface>
-  update(id: string, input: RoomInterface): Promise<RoomInterface>
-  delete(...args: any): Promise<void>
+export interface RoomsRepository {
+  count(...args: any): Promise<number>
+  all(...args: any): Promise<RoomOutput[]>
+  first(id: string): Promise<RoomOutput | null>
+  create(input: RoomInput): Promise<RoomOutput>
+  update(id: string, input: RoomInput): Promise<RoomOutput>
+  activeInative(id: string): Promise<void>
+  delete(id: string): Promise<void>
 }

@@ -1,6 +1,17 @@
 import { compareSync, genSaltSync, hashSync } from 'bcryptjs'
 import { sign, verify } from 'jsonwebtoken'
 
+export function dateFormated(str: string): string {
+  const dateFormated = new Date(str)
+  const date = dateFormated.toLocaleDateString('pt-br', {
+    timeZone: 'america/sao_paulo'
+  })
+  const time = dateFormated.toLocaleTimeString('pt-br', {
+    timeZone: 'america/sao_paulo'
+  })
+  return [date, time].join(' ')
+}
+
 export function timeToMinutes(time: string) {
   const [hours, minutes] = time.split(':')
   return parseInt(hours) * 60 + parseInt(minutes)
@@ -31,6 +42,7 @@ export function hashPass(password: string): string {
   const salt = genSaltSync(10)
   return hashSync(password, salt)
 }
+
 export function verifyPass(password: string, hashPass: string): boolean {
   return compareSync(password, hashPass)
 }

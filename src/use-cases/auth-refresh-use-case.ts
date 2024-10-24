@@ -1,7 +1,7 @@
-import { AppError } from '@/common/app.error'
 import { AuthToken } from '@/domain/entities/auth'
 import { AuthRepository } from '@/domain/inferfaces/repositories/auth-repository'
 import { UseCase } from '@/domain/inferfaces/use-cases/use-case'
+import { AppError } from '@/infra/http/error/app.error'
 import { hashJwt, verifyJwt } from '@/shared/utils'
 
 type Simple = Pick<AuthToken, 'accessToken'>
@@ -24,7 +24,7 @@ export class AuthRefreshUseCase implements UseCase<string, { data: Simple }> {
 
     return {
       data: {
-        accessToken: hashJwt({ clinicId, user })
+        accessToken: hashJwt({ clinicId, user }, '1m')
       }
     }
   }

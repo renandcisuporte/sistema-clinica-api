@@ -1,11 +1,13 @@
 import prisma from '@/database/prisma'
 import { ClinicRepositoryImp } from '@/domain/repositories/clinic-repository'
+import { AverageServiceClinicUseCase } from '@/use-cases/average-service-clinic-use-case'
 import { CreateClinicUseCase } from '@/use-cases/create-clinic-use-case'
 import { DeleteClinicUseCase } from '@/use-cases/delete-clinic-use-case'
 import { FindAllClinicUseCase } from '@/use-cases/find-all-clinic-use-case'
 import { FindFirstClinicUseCase } from '@/use-cases/find-first-clinic-use-case'
 import { UpdateClinicUseCase } from '@/use-cases/update-clinic-use-case'
 import { Router } from 'express'
+import { ClinicController } from '../http/controllers/clinic-controller'
 import { validated } from '../http/middleware/validated'
 import {
   createClinicSchema,
@@ -16,40 +18,49 @@ import {
 export const clinicRouter = Router()
 
 const clinicRepository = new ClinicRepositoryImp(prisma)
-
 const createClinicUseCase = new CreateClinicUseCase(clinicRepository)
 const updateClinicUseCase = new UpdateClinicUseCase(clinicRepository)
 const deleteClinicUseCase = new DeleteClinicUseCase(clinicRepository)
 const findAllClinicUseCase = new FindAllClinicUseCase(clinicRepository)
 const findFirstClinicUseCase = new FindFirstClinicUseCase(clinicRepository)
+const averageUseCase = new AverageServiceClinicUseCase(clinicRepository)
 
-clinicRouter.get('/', async (req, res) => {
-  const { query } = req
-  const resutl = await findAllClinicUseCase.execute(query as any)
-  return res.status(200).json(resutl)
-})
+const clinicController = new ClinicController(
+  findAllClinicUseCase,
+  findFirstClinicUseCase,
+  createClinicUseCase,
+  updateClinicUseCase,
+  deleteClinicUseCase,
+  averageUseCase
+)
 
-clinicRouter.get('/:id', validated(idSchema), async (req, res) => {
-  const { id } = req.params
-  const resutl = await findFirstClinicUseCase.execute(id)
-  return res.status(200).json(resutl)
-})
+clinicRouter.get('/', async (req, res) => await clinicController.all(req, res))
 
-clinicRouter.post('/', validated(createClinicSchema), async (req, res) => {
-  const { body } = req
-  const resutl = await createClinicUseCase.execute(body)
-  return res.status(201).json(resutl)
-})
+clinicRouter.get(
+  '/:id',
+  validated(idSchema),
+  async (req, res) => await clinicController.findFirst(req, res)
+)
 
-clinicRouter.put('/:id', validated(updateClinicSchema), async (req, res) => {
-  const { id } = req.params
-  const { body } = req
-  const resutl = await updateClinicUseCase.execute({ id, input: body })
-  return res.status(200).json(resutl)
-})
+clinicRouter.post(
+  '/',
+  validated(createClinicSchema),
+  async (req, res) => await clinicController.create(req, res)
+)
 
-clinicRouter.delete('/:id', validated(idSchema), async (req, res) => {
-  const { id } = req.params
-  await deleteClinicUseCase.execute(id)
-  return res.status(204).json()
-})
+clinicRouter.put(
+  '/:id',
+  validated(updateClinicSchema),
+  async (req, res) => await clinicController.update(req, res)
+)
+
+clinicRouter.put(
+  '/:id/average-service',
+  async (req, res) => await clinicController.averageUseCase(req, res)
+)
+
+clinicRouter.delete(
+  '/:id',
+  validated(idSchema),
+  async (req, res) => await clinicController.delete(req, res)
+)

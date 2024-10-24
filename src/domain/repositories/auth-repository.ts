@@ -12,17 +12,7 @@ export class AuthRepositoryImp implements AuthRepository {
 
     if (!result) return null
 
-    const {
-      password,
-      createdAt,
-      deletedAt,
-      passwordVerify,
-      refreshToken,
-      updatedAt,
-      token,
-      ...rest
-    } = result
-
+    const { password, createdAt, deletedAt, updatedAt, ...rest } = result
     return { ...rest }
   }
 
@@ -36,16 +26,7 @@ export class AuthRepositoryImp implements AuthRepository {
 
     if (!result) return null
 
-    const {
-      createdAt,
-      updatedAt,
-      deletedAt,
-      passwordVerify,
-      token,
-      refreshToken,
-      ...rest
-    } = result
-
+    const { createdAt, updatedAt, deletedAt, ...rest } = result
     return { ...rest }
   }
 }

@@ -7,7 +7,7 @@ const start = (): void => {
       console.log(`Server is runing port http://localhost:${PORT}`)
     )
   } catch (error) {
-    console.error(error)
+    console.error('[START]: %s', error)
     process.exit(1)
   }
 }

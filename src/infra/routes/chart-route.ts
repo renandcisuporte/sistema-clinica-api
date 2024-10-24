@@ -2,14 +2,16 @@ import prisma from '@/database/prisma'
 import { ChartRepositoryImp } from '@/domain/repositories/chart-repository'
 import { FindFirstChartUseCase } from '@/use-cases/find-first-chart-use-case'
 import { Router } from 'express'
+import { ChartController } from '../http/controllers/chart-controller'
 
 export const chartRouter = Router()
 
 const chartRepository = new ChartRepositoryImp(prisma)
 const findFirstChartUseCase = new FindFirstChartUseCase(chartRepository)
 
-chartRouter.get('/charts', async (req, res) => {
-  const { clinicId } = req
-  const result = await findFirstChartUseCase.execute(clinicId)
-  return res.status(200).json(result)
-})
+const chartController = new ChartController(findFirstChartUseCase)
+
+chartRouter.get(
+  '/charts',
+  async (req, res) => await chartController.handle(req, res)
+)

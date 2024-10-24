@@ -1,8 +1,8 @@
-import { AppError } from '@/common/app.error'
 import { AuthInput, AuthToken } from '@/domain/entities/auth'
 import { AuthRepository } from '@/domain/inferfaces/repositories/auth-repository'
 import { ClinicRepository } from '@/domain/inferfaces/repositories/clinic-repository'
 import { UseCase } from '@/domain/inferfaces/use-cases/use-case'
+import { AppError } from '@/infra/http/error/app.error'
 import { hashJwt, verifyPass } from '@/shared/utils'
 
 export class AuthUseCase implements UseCase<AuthInput, { data: AuthToken }> {
@@ -30,7 +30,7 @@ export class AuthUseCase implements UseCase<AuthInput, { data: AuthToken }> {
       data: {
         user,
         clinicId: input.code,
-        accessToken: hashJwt({ clinicId: input.code, user }),
+        accessToken: hashJwt({ clinicId: input.code, user }, '1m'),
         refreshToken: hashJwt({ clinicId: input.code, user }, '30d')
       }
     }
