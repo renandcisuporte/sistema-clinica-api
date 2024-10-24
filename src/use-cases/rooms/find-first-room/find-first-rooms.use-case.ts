@@ -1,4 +1,4 @@
-import { RoomInterface } from '@/entities/rooms'
+import { RoomInterface } from '@/domain/entities/rooms'
 import { RoomsRepositoryInterface } from '@/repositories/rooms.interface'
 
 export class FindFirstRoomsUseCase {

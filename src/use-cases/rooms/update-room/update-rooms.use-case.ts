@@ -1,5 +1,5 @@
 import { UpdateUseCaseInterface } from '@/common/use-case.interface'
-import { RoomInterface } from '@/entities/rooms'
+import { RoomInterface } from '@/domain/entities/rooms'
 import { RoomsRepositoryInterface } from '@/repositories/rooms.interface'
 
 export class UpdateRoomsUseCase implements UpdateUseCaseInterface {

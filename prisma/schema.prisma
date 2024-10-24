@@ -14,25 +14,27 @@ datasource db {
   relationMode = "foreignKeys"
 }
 
+enum Bool {
+  true
+  false
+}
+
 enum Admin {
-  USER
-  ADMIN
-  ROOT
+  user
+  admin
+  root
 }
 
 model User {
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  deletedAt      DateTime?
-  id             String    @id @default(uuid())
-  fullName       String    @db.VarChar(55)
-  email          String    @unique @db.VarChar(45)
-  admin          Admin     @default(USER)
-  password       String    @db.VarChar(105)
-  passwordVerify Boolean   @default(false)
-  token          String?   @db.VarChar(255)
-  refreshToken   String?   @db.VarChar(505)
-  coverImage     String?   @db.VarChar(255)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+  id         String    @id @default(uuid())
+  fullName   String    @db.VarChar(55)
+  email      String    @unique @db.VarChar(45)
+  admin      Admin     @default(user)
+  password   String    @db.VarChar(105)
+  coverImage String?   @db.VarChar(255)
 
   roules    Roules[]
   userAdmin UserAdmin[]
@@ -61,7 +63,7 @@ model Clinic {
   updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
   id           String    @id @default(uuid())
-  clinicId     String?   @unique @db.Char(7)
+  clinicId     String?   @unique @db.VarChar(11)
   title        String    @db.VarChar(55)
   fantasy      String    @db.VarChar(55)
   cnpj         String    @db.VarChar(18)
@@ -80,6 +82,7 @@ model Clinic {
   rooms              Room[]
   workTimes          WorkTime[]
   workTimesRecommend WorkTimeRecommend[]
+  workTimesService   WorkTimeService[]
   setting            Setting[]
   userAdmin          UserAdmin[]
 }
@@ -107,7 +110,7 @@ model WorkTime {
   clinicId  String?   @db.Char(36)
   week      String    @db.VarChar(12)
   times     String?   @db.Text
-  open      Boolean   @default(false)
+  open      Boolean   @default(true)
   clinic    Clinic?   @relation(fields: [clinicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([clinicId])
@@ -121,7 +124,21 @@ model WorkTimeRecommend {
   clinicId  String?   @db.Char(36)
   week      String    @db.VarChar(12)
   times     String?   @db.Text
-  open      Boolean   @default(false)
+  open      Boolean   @default(true)
+  clinic    Clinic?   @relation(fields: [clinicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([clinicId])
+}
+
+model WorkTimeService {
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  id        String    @id @default(uuid())
+  clinicId  String?   @db.Char(36)
+  week      String    @db.VarChar(12)
+  times     String?   @db.Text
+  open      Boolean   @default(true)
   clinic    Clinic?   @relation(fields: [clinicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([clinicId])
