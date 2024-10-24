@@ -1,7 +1,7 @@
 import { WorkTimeInput } from '@/domain/entities/work-time'
 import { WorkTimeRepository } from '@/domain/inferfaces/repositories/work-time-repository'
 import { UseCase } from '@/domain/inferfaces/use-cases/use-case'
-import { AppError } from '@/infra/http/error/app.error'
+import { AppError } from '@/infra/error/app.error'
 
 type Input = {
   clinicId: string

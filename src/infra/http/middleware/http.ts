@@ -1,4 +1,4 @@
-import { AppError } from '@/infra/http/error/app.error'
+import { AppError } from '@/infra/error/app.error'
 import { NextFunction, Request, Response } from 'express'
 
 export const http = (
