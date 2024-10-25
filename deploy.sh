@@ -9,7 +9,7 @@ echo "# Installing dependencies"
 npm install
 
 echo "# Running migrations"
-npx prisma db push --accept-data-loss
+npx prisma db push deploy --accept-data-loss --skip-generate
 
 echo "# Running generateschema"
 npx prisma generate

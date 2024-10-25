@@ -2,7 +2,7 @@ import { AuthInput, AuthToken } from '@/domain/entities/auth'
 import { AuthRepository } from '@/domain/inferfaces/repositories/auth-repository'
 import { ClinicRepository } from '@/domain/inferfaces/repositories/clinic-repository'
 import { UseCase } from '@/domain/inferfaces/use-cases/use-case'
-import { AppError } from '@/infra/http/error/app.error'
+import { AppError } from '@/infra/error/app.error'
 import { hashJwt, verifyPass } from '@/shared/utils'
 
 export class AuthUseCase implements UseCase<AuthInput, { data: AuthToken }> {

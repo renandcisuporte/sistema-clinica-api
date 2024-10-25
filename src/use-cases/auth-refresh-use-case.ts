@@ -1,7 +1,7 @@
 import { AuthToken } from '@/domain/entities/auth'
 import { AuthRepository } from '@/domain/inferfaces/repositories/auth-repository'
 import { UseCase } from '@/domain/inferfaces/use-cases/use-case'
-import { AppError } from '@/infra/http/error/app.error'
+import { AppError } from '@/infra/error/app.error'
 import { hashJwt, verifyJwt } from '@/shared/utils'
 
 type Simple = Pick<AuthToken, 'accessToken'>

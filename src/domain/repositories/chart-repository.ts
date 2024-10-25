@@ -1,6 +1,6 @@
 import { Chart } from '@/domain/entities/chart'
 import { ChartRepository } from '@/domain/inferfaces/repositories/chart-repository'
-import { AppError } from '@/infra/http/error/app.error'
+import { AppError } from '@/infra/error/app.error'
 import { daysOfWeekOrder } from '@/shared/contants'
 import { calculateTotalHours } from '@/shared/utils'
 import { PrismaClient } from '@prisma/client'
@@ -37,6 +37,7 @@ export class ChartRepositoryImp implements ChartRepository {
         // Se já existe uma entrada para a fantasia, continuamos, caso contrário, criamos uma nova
         if (!acc.has(curr.fantasy)) {
           acc.set(curr.fantasy, {
+            clinicId,
             fantasy: curr.fantasy,
             title: curr.title,
             workHours: []
@@ -137,7 +138,7 @@ export class ChartRepositoryImp implements ChartRepository {
     }
   }
 
-  async chart(clinicId: string): Promise<Chart[]> {
+  async chart(clinicId: string): Promise<Chart> {
     try {
       const workTimeResult = await this.fetchChart(clinicId, 'workTime')
 
@@ -157,7 +158,10 @@ export class ChartRepositoryImp implements ChartRepository {
         workTimeServiceResult
       )
 
-      return Object.values(mergedData)
+      const result = mergedData.find((item) => item.clinicId === clinicId)
+      if (!result) throw Error('Chart not found for the given clinicId')
+
+      return result
     } catch (error) {
       throw new AppError(String(error))
     }

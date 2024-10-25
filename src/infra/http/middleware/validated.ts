@@ -32,7 +32,7 @@ export function validated(schema: AnyZodObject) {
       }
 
       res.status(INTERNAL_SERVER_ERROR).json({
-        errorMessage: 'Erro interno no servidor',
+        errorMessage: 'ERRO INTERNO NO SERVIDOR',
         statusCode: INTERNAL_SERVER_ERROR
       })
     }

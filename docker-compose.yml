@@ -15,7 +15,6 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
-    restart: unless-stopped
     ports:
       - 8004:80
     environment:
@@ -41,6 +40,12 @@ services:
     environment:
       MYSQL_DATABASE: clinics_db
       MYSQL_ROOT_PASSWORD: root
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025
+      - 8005:8025
 
 networks:
   shared:
