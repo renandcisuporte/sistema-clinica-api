@@ -33,31 +33,6 @@ export class RoomRepositoryImp implements RoomsRepository {
     return { ...rest }
   }
 
-  async first(id: string): Promise<RoomOutput | null> {
-    const result = await this.db.room.findUnique({
-      where: { id, deletedAt: null }
-    })
-
-    if (!result) return null
-
-    const { deletedAt, ...rest } = result
-    return { ...rest }
-  }
-
-  async count(args: Record<string, any>): Promise<number> {
-    const where: Record<string, any> = { deletedAt: null }
-    const conditions: Record<string, any> = []
-
-    const { room, clinicId } = args
-    if (room) conditions.push({ room: { contains: room } })
-    if (conditions.length > 0) Object.assign(where, { OR: conditions })
-
-    where.clinicId = clinicId
-    return this.db.room.count({
-      where: { ...where }
-    })
-  }
-
   async activeInative(id: string): Promise<void> {
     const result = await this.db.room.findUnique({
       where: { id, deletedAt: null },
@@ -70,16 +45,44 @@ export class RoomRepositoryImp implements RoomsRepository {
     })
   }
 
-  async all(args: Record<string, any>): Promise<RoomOutput[]> {
-    const where: Record<string, any> = { deletedAt: null }
+  async first(id: string): Promise<RoomOutput | null> {
+    const result = await this.db.room.findUnique({
+      where: { id, deletedAt: null }
+    })
+
+    if (!result) return null
+
+    const { deletedAt, ...rest } = result
+    return { ...rest }
+  }
+
+  async count(args: Record<string, any>): Promise<number> {
+    const { room, active, clinicId } = args
+
+    const where: Record<string, any> = { clinicId, deletedAt: null }
     const conditions: Record<string, any> = []
 
-    const { room, clinicId, limit = 15, page = 1 } = args
-
     if (room) conditions.push({ room: { contains: room } })
+    if (active) where.active = Boolean(active === 'true' ? true : false)
+
     if (conditions.length > 0) Object.assign(where, { OR: conditions })
 
-    where.clinicId = clinicId
+    return this.db.room.count({
+      where: { ...where }
+    })
+  }
+
+  async all(args: Record<string, any>): Promise<RoomOutput[]> {
+    const { room, active, clinicId, limit = 15, page = 1 } = args
+
+    const where: Record<string, any> = { clinicId, deletedAt: null }
+    const conditions: Record<string, any> = []
+
+    if (room) conditions.push({ room: { contains: room } })
+    if (active) where.active = Boolean(active === 'true' ? true : false)
+
+    if (conditions.length > 0) Object.assign(where, { OR: conditions })
+
     const result = await this.db.room.findMany({
       where: { ...where },
       skip: Number((page - 1) * limit),

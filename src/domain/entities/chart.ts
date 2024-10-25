@@ -6,6 +6,7 @@ export type Hour = {
 }
 
 export type Chart = {
+  clinicId: string
   fantasy: string
   title: string
   workHours: Hour[]

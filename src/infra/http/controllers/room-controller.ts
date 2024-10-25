@@ -18,6 +18,12 @@ export class RoomController {
 
   async activeInative(req: Request, res: Response) {
     const { id } = req.params
+    const result = await this.activeInativeUseCase.execute(id)
+    return res.status(200).json(result)
+  }
+
+  async showActiveInative(req: Request, res: Response) {
+    const { id } = req.params
     await this.activeInativeUseCase.execute(id)
     return res.status(200).json({ message: 'Atualizado com sucesso!' })
   }

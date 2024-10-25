@@ -3,6 +3,8 @@ import { RoomsRepository } from '@/domain/inferfaces/repositories/room-repositor
 
 type Output = {
   total: number
+  active: number
+  inative: number
   data: RoomOutput[]
 }
 
@@ -19,12 +21,16 @@ export class FindAllRoomUseCase {
       page
     }
 
-    const [total, data] = await Promise.all([
-      this.repository.count(common),
+    const [active, inative, total, data] = await Promise.all([
+      this.repository.count({ clinicId, room, active: 'true' }),
+      this.repository.count({ clinicId, room, active: 'false' }),
+      this.repository.count({ clinicId, room }),
       this.repository.all(common)
     ])
 
     return {
+      active,
+      inative,
       total,
       data
     }
