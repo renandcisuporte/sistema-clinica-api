@@ -1,7 +1,7 @@
 import prisma from '@/database/prisma'
 import { AuthRepositoryImp } from '@/domain/repositories/auth-repository'
 import { ClinicRepositoryImp } from '@/domain/repositories/clinic-repository'
-import { validated } from '@/infra/http/middleware/validated'
+import { validated } from '@/infra/http/middlewares/validated'
 import { authSchema } from '@/infra/http/schemas/validations/auth-schema'
 import { AuthRefreshUseCase } from '@/use-cases/auth-refresh-use-case'
 import { AuthUseCase } from '@/use-cases/auth-use-case'

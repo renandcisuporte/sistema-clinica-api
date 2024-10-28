@@ -25,6 +25,11 @@ enum Admin {
   root
 }
 
+enum PeopleType {
+  specialist
+  user
+}
+
 model User {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
@@ -86,6 +91,28 @@ model Clinic {
   workTimesService   WorkTimeService[]
   setting            Setting[]
   userAdmin          UserAdmin[]
+}
+
+model People {
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  deletedAt    DateTime?
+  id           String     @id @default(uuid())
+  clinicId     String?    @db.VarChar(36)
+  fullName     String     @db.VarChar(55)
+  document     String?    @db.VarChar(14)
+  dateOfBirth  DateTime?  @db.Date()
+  phones       String?    @db.Text()
+  email        String?    @db.VarChar(45)
+  type         PeopleType @default(specialist)
+  address      String?    @db.VarChar(50)
+  number       String?    @db.VarChar(5)
+  neighborhood String?    @db.VarChar(40)
+  complement   String?    @db.VarChar(50)
+  reference    String?    @db.VarChar(65)
+  city         String?    @db.VarChar(30)
+  state        String?    @db.VarChar(2)
+  zipCode      String?    @db.VarChar(9)
 }
 
 // colors|times|recommendation

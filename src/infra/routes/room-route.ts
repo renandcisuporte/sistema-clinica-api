@@ -1,6 +1,6 @@
 import prisma from '@/database/prisma'
 import { RoomRepositoryImp } from '@/domain/repositories/room-repository'
-import { validated } from '@/infra/http/middleware/validated'
+import { validated } from '@/infra/http/middlewares/validated'
 import {
   createRoomSchema,
   paramsRoomSchema,

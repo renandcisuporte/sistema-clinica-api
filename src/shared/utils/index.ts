@@ -1,15 +1,12 @@
 import { compareSync, genSaltSync, hashSync } from 'bcryptjs'
+import { format as dateFormat } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import { sign, verify } from 'jsonwebtoken'
 
-export function dateFormated(str: string): string {
-  const dateFormated = new Date(str)
-  const date = dateFormated.toLocaleDateString('pt-br', {
-    timeZone: 'america/sao_paulo'
-  })
-  const time = dateFormated.toLocaleTimeString('pt-br', {
-    timeZone: 'america/sao_paulo'
-  })
-  return [date, time].join(' ')
+export function dateFormated(str: Date | string, time = false): string {
+  if (time) return dateFormat(str, 'yyyy-MM-dd HH:mm:ss', { locale: ptBR })
+
+  return dateFormat(str, 'yyyy-MM-dd', { locale: ptBR })
 }
 
 export function timeToMinutes(time: string) {

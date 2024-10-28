@@ -30,7 +30,7 @@ export class AuthUseCase implements UseCase<AuthInput, { data: AuthToken }> {
       data: {
         user,
         clinicId: input.code,
-        accessToken: hashJwt({ clinicId: input.code, user }, '1m'),
+        accessToken: hashJwt({ clinicId: input.code, user }, '5m'),
         refreshToken: hashJwt({ clinicId: input.code, user }, '30d')
       }
     }

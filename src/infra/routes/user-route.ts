@@ -1,7 +1,7 @@
 import prisma from '@/database/prisma'
 import { UserRepositoryImpl } from '@/domain/repositories/user-repository'
 import { UserController } from '@/infra/http/controllers/user-controller'
-import { validated } from '@/infra/http/middleware/validated'
+import { validated } from '@/infra/http/middlewares/validated'
 import { createUserSchema } from '@/infra/http/schemas/validations/user-schema'
 import { CreateUserUseCase } from '@/use-cases/create-user-use-case'
 import { Router } from 'express'
