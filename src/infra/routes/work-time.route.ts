@@ -7,7 +7,7 @@ import { UpdateWorkTimeServiceUseCase } from '@/use-cases/update-work-time-servi
 import { UpdateWorkTimeUseCase } from '@/use-cases/update-work-time-use-case'
 import { Router } from 'express'
 import { WorkTimeController } from '../http/controllers/work-time-controller'
-import { validated } from '../http/middleware/validated'
+import { validated } from '../http/middlewares/validated'
 import { createWokTimeSchema } from '../http/schemas/validations/work-time-schema'
 
 export const workTimeRouter = Router()

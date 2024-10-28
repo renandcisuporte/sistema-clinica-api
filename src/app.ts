@@ -7,8 +7,8 @@ import path from 'path'
 import 'reflect-metadata'
 import * as swaggerUI from 'swagger-ui-express'
 import * as swaggerJson from '../public/swagger.json'
-import { http } from './infra/http/middleware/http'
-import { validated } from './infra/http/middleware/validated'
+import { http } from './infra/http/middlewares/http'
+import { validated } from './infra/http/middlewares/validated'
 import routes from './infra/routes/index'
 
 export const app: Application = express()

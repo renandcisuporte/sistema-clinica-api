@@ -221,3 +221,61 @@ Authorization:{{accessToken}}
 
 {
 }
+
+
+### PEOPLE - show all
+GET {{hostname}}/peoples?full_name=&limit=15&page=1 HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+}
+
+### PEOPLES - show unique
+GET {{hostname}}/peoples/3e5732f4-040e-4923-8ba1-cda76755e64f HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+}
+
+### PEOPLES - create
+POST {{hostname}}/peoples HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+  "fullName": "Renan"
+}
+
+
+#"dateOfBirth": "01/01/1990",
+### PEOPLES - update
+PUT {{hostname}}/peoples/3e5732f4-040e-4923-8ba1-cda76755e64f HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+  "fullName": "Renan - Editado",
+  "document": "000.000.000-00",
+  "dateOfBirth": "01/01/1990",
+  "phones": [{ "phone": "11 99999-9999", "description": "Celular" }],
+  "email": "renan@dcisuporte.com.br",
+  "type": "specialist",
+  "address": "Amaral Lyra",
+  "number": "1155",
+  "neighborhood": "Centro",
+  "complement": "",
+  "reference": "",
+  "city": "Itápolis",
+  "state": "SP",
+  "zipCode": "14990-203"
+}
+
+### PEOPLES - delete
+DELETE {{hostname}}/peoples/3e5732f4-040e-4923-8ba1-cda76755e64f HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+}

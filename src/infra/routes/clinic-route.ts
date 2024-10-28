@@ -8,7 +8,7 @@ import { FindFirstClinicUseCase } from '@/use-cases/find-first-clinic-use-case'
 import { UpdateClinicUseCase } from '@/use-cases/update-clinic-use-case'
 import { Router } from 'express'
 import { ClinicController } from '../http/controllers/clinic-controller'
-import { validated } from '../http/middleware/validated'
+import { validated } from '../http/middlewares/validated'
 import {
   createClinicSchema,
   idSchema,

@@ -24,7 +24,7 @@ export class AuthRefreshUseCase implements UseCase<string, { data: Simple }> {
 
     return {
       data: {
-        accessToken: hashJwt({ clinicId, user }, '1m')
+        accessToken: hashJwt({ clinicId, user }, '30m')
       }
     }
   }
