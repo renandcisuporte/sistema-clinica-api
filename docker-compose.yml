@@ -23,6 +23,7 @@ services:
       - PMA_USER=root
       - PMA_PASSWORD=root
       - PMA_PORT=3306
+      - TZ=America/Sao_Paulo
     depends_on:
       - db
     networks:
@@ -38,6 +39,7 @@ services:
     networks:
       - shared
     environment:
+      TZ: America/Sao_Paulo
       MYSQL_DATABASE: clinics_db
       MYSQL_ROOT_PASSWORD: root
 

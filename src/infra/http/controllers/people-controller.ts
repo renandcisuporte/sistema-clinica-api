@@ -1,7 +1,9 @@
+import { ActiveInativePeopleUseCase } from '@/use-cases/active-inative-people-use-case'
 import { CreatePeopleUseCase } from '@/use-cases/create-people-use-case'
 import { DeletePeopleUseCase } from '@/use-cases/delete-people-use-case'
 import { FindAllPeopleUseCase } from '@/use-cases/find-all-people-use-case'
 import { FindFirstPeopleUseCase } from '@/use-cases/find-first-people-use-case'
+import { ShowActiveInativePeopleUseCase } from '@/use-cases/show-active-inative-people-use-case'
 import { UpdatePeopleUseCase } from '@/use-cases/update-people-use-case'
 import { Request, Response } from 'express'
 
@@ -11,7 +13,9 @@ export class PeopleController {
     private readonly findFirstUseCase: FindFirstPeopleUseCase,
     private readonly createUseCase: CreatePeopleUseCase,
     private readonly updateUseCase: UpdatePeopleUseCase,
-    private readonly deleteUseCase: DeletePeopleUseCase
+    private readonly deleteUseCase: DeletePeopleUseCase,
+    private readonly activeInativeUseCase: ActiveInativePeopleUseCase,
+    private readonly showActiveInativeUseCase: ShowActiveInativePeopleUseCase
   ) {}
 
   async all(req: Request, res: Response) {
@@ -24,6 +28,18 @@ export class PeopleController {
     const { id } = req.params
     const resutl = await this.findFirstUseCase.execute(id)
     return res.status(200).json(resutl)
+  }
+
+  async showActiveInative(req: Request, res: Response) {
+    const { clinicId } = req
+    const resutl = await this.showActiveInativeUseCase.execute(clinicId)
+    return res.status(200).json(resutl)
+  }
+
+  async activeInative(req: Request, res: Response) {
+    const { id } = req.params
+    await this.activeInativeUseCase.execute(id)
+    return res.status(200).json({ message: 'Atualizado com sucesso!' })
   }
 
   async create(req: Request, res: Response) {

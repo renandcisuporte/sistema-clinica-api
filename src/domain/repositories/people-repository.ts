@@ -30,7 +30,7 @@ export class PeopleRepositoryImp implements PeopleRepository {
   }
 
   async create(input: PeopleInput): Promise<PeopleOutput> {
-    const { phones, dateOfBirth, ...restInput } = input
+    const { phones, dateOfBirth, type, ...restInput } = input
 
     const result = await this.db.people.create({
       data: {
@@ -63,12 +63,25 @@ export class PeopleRepositoryImp implements PeopleRepository {
     }
   }
 
+  async activeInative(id: string): Promise<void> {
+    const response = await this.db.people.findUnique({
+      where: { id, deletedAt: null },
+      select: { type: true }
+    })
+
+    await this.db.people.update({
+      where: { id, deletedAt: null },
+      data: { type: response?.type === 'user' ? 'specialist' : 'user' }
+    })
+  }
+
   async count(args: Record<string, any>): Promise<number> {
-    const { full_name, document, clinicId } = args
+    const { full_name, document, clinicId, type } = args
 
     const where: Record<string, any> = { deletedAt: null, clinicId }
-    const conditions: Record<string, any> = []
+    if (type) where.type = type
 
+    const conditions: Record<string, any> = []
     if (full_name) conditions.push({ fullName: { contains: full_name } })
 
     if (document) conditions.push({ document: { contains: document } })
@@ -81,10 +94,12 @@ export class PeopleRepositoryImp implements PeopleRepository {
   }
 
   async findAll(args: Record<string, any>): Promise<PeopleOutput[]> {
-    const { full_name, document, clinicId, limit = 15, page = 1 } = args
-    const where: Record<string, any> = { deletedAt: null, clinicId }
-    const conditions: Record<string, any> = []
+    const { full_name, document, clinicId, type, limit = 15, page = 1 } = args
 
+    const where: Record<string, any> = { deletedAt: null, clinicId, type }
+    if (type) where.type = type
+
+    const conditions: Record<string, any> = []
     if (full_name) conditions.push({ fullName: { contains: full_name } })
 
     if (document) conditions.push({ document: { contains: document } })
@@ -93,8 +108,8 @@ export class PeopleRepositoryImp implements PeopleRepository {
 
     const result = await this.db.people.findMany({
       where: { ...where },
-      skip: (Number(page) - 1) * Number(limit),
-      take: Number(limit),
+      skip: (+page - 1) * +limit,
+      take: +limit,
       orderBy: {
         fullName: 'desc'
       }

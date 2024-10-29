@@ -118,7 +118,7 @@ export class ChartRepositoryImp implements ChartRepository {
           }: any
         ) => {
           const { fantasy, title } = clinic!
-          const sumHours = calculateTotalHours(JSON.parse(times), !open)
+          const sumHours = calculateTotalHours(JSON.parse(times), open)
 
           if (!acc[clinicId]) acc[clinicId] = { title, fantasy, [table]: [] }
 

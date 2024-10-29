@@ -9,25 +9,40 @@ export function dateFormated(str: Date | string, time = false): string {
   return dateFormat(str, 'yyyy-MM-dd', { locale: ptBR })
 }
 
+export function timeToHourMinute(totalMinutes: number): {
+  hours: number
+  minutes: number
+} {
+  const hours = Math.floor(totalMinutes / 60)
+  const minutes = totalMinutes % 60
+
+  return { hours, minutes }
+}
+
 export function timeToMinutes(time: string) {
-  const [hours, minutes] = time.split(':')
-  return parseInt(hours) * 60 + parseInt(minutes)
+  const [hours, minutes] = time.split(':').map(Number)
+  return hours * 60 + minutes
 }
 
 export function calculateTotalHours(
   times: Record<string, any>[],
   open: boolean
 ): number {
-  if (open) return 0
+  if (!open) return 0
 
   let openMinute = 0
   let closedMinute = 0
   let totalMinutes = 0
-  times.forEach(({ description, time }: any) => {
+
+  times.forEach(({ description, time }: Record<string, any>) => {
     if (description === 'Abre à(s)') openMinute = timeToMinutes(time)
-    if (description === 'Fecha à(s)') closedMinute = timeToMinutes(time)
-    if (openMinute && closedMinute) {
-      totalMinutes += closedMinute - openMinute
+    if (description === 'Fecha à(s)') {
+      closedMinute = timeToMinutes(time)
+      if (openMinute && closedMinute) {
+        totalMinutes += closedMinute - openMinute
+        openMinute = 0
+        closedMinute = 0
+      }
     }
   })
 
