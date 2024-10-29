@@ -7,10 +7,12 @@ import {
   paramIdPeopleSchema,
   updatePeopleSchema
 } from '@/infra/http/schemas/validations/people-schema'
+import { ActiveInativePeopleUseCase } from '@/use-cases/active-inative-people-use-case'
 import { CreatePeopleUseCase } from '@/use-cases/create-people-use-case'
 import { DeletePeopleUseCase } from '@/use-cases/delete-people-use-case'
 import { FindAllPeopleUseCase } from '@/use-cases/find-all-people-use-case'
 import { FindFirstPeopleUseCase } from '@/use-cases/find-first-people-use-case'
+import { ShowActiveInativePeopleUseCase } from '@/use-cases/show-active-inative-people-use-case'
 import { UpdatePeopleUseCase } from '@/use-cases/update-people-use-case'
 import { Router } from 'express'
 
@@ -22,16 +24,29 @@ const updatePeopleUseCase = new UpdatePeopleUseCase(peopleRepository)
 const deletePeopleUseCase = new DeletePeopleUseCase(peopleRepository)
 const findAllPeopleUseCase = new FindAllPeopleUseCase(peopleRepository)
 const findFirstPeopleUseCase = new FindFirstPeopleUseCase(peopleRepository)
+const activeInativePeopleUseCase = new ActiveInativePeopleUseCase(
+  peopleRepository
+)
+const showActiveInativePeopleUseCase = new ShowActiveInativePeopleUseCase(
+  peopleRepository
+)
 
 const peopleController = new PeopleController(
   findAllPeopleUseCase,
   findFirstPeopleUseCase,
   createPeopleUseCase,
   updatePeopleUseCase,
-  deletePeopleUseCase
+  deletePeopleUseCase,
+  activeInativePeopleUseCase,
+  showActiveInativePeopleUseCase
 )
 
 peopleRouter.get('/', async (req, res) => await peopleController.all(req, res))
+
+peopleRouter.get(
+  '/active-inative',
+  async (req, res) => await peopleController.showActiveInative(req, res)
+)
 
 peopleRouter.get(
   '/:id',
@@ -49,6 +64,12 @@ peopleRouter.put(
   '/:id',
   validated(updatePeopleSchema),
   async (req, res) => await peopleController.update(req, res)
+)
+
+peopleRouter.put(
+  '/:id/active-inative',
+  validated(paramIdPeopleSchema),
+  async (req, res) => await peopleController.activeInative(req, res)
 )
 
 peopleRouter.delete(
