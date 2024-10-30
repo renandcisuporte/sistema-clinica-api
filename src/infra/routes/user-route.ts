@@ -18,3 +18,8 @@ userRouter.post(
   validated(createUserSchema),
   async (req, res) => await userController.createUser(req, res)
 )
+
+userRouter.post(
+  '/reset-forget-password',
+  async (req, res) => await userController.createUser(req, res)
+)
