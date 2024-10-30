@@ -1,5 +1,5 @@
 import { authenticated } from '@/infra/http/middlewares/authenticated'
-import { processQueueMail, queue } from '@/shared/providers/queue'
+import { queue } from '@/shared/providers/queue'
 import { Router } from 'express'
 import { authRouter } from './auth-route'
 import { chartRouter } from './chart-route'
@@ -12,7 +12,7 @@ import { workTimeRouter } from './work-time.route'
 const routes = Router()
 export default routes
 
-setInterval(processQueueMail, 1000)
+// setInterval(processQueueMail, 1000)
 
 routes.use('/auth', authRouter)
 routes.use('/users', userRouter)
