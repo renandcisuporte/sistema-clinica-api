@@ -18,41 +18,49 @@ export class FindFirstChartUseCase implements UseCase<string, Output> {
   async execute(clinicId: string) {
     const data: Record<string, any> = {}
 
-    const [workTimesAll, countPeople, countRoom, clinic] = await Promise.all([
-      this.repoChart.chart(clinicId),
-      this.repoPeople.count({ clinicId, type: 'specialist' }),
-      this.repoRoom.count({ clinicId, active: 'true' }),
-      this.repoClinic.findFirst(clinicId)
-    ])
+    const [workTimesAll, countPeople, countRoom, countRoomOff, clinic] =
+      await Promise.all([
+        this.repoChart.chart(clinicId),
+        this.repoPeople.count({ clinicId, type: 'specialist' }),
+        this.repoRoom.count({ clinicId, active: 'true' }),
+        this.repoRoom.count({ clinicId, active: 'false' }),
+        this.repoClinic.findFirst(clinicId)
+      ])
 
     const minutes = clinic?.averageService || '0'
 
     const { workHours, ...rest } = workTimesAll as Chart
 
+    let workTimeRecommendSum = 0
     const workHourData: Chart = {
       ...rest,
       workHours: workHours.map((item) => {
         const { workTimeRecommend, ...rest } = item
+        workTimeRecommendSum += workTimeRecommend
         return {
           ...rest,
           workTimeRecommend,
           dailyProcedure: countRoom * ((workTimeRecommend * 60) / +minutes),
           dailyIdleProcedure:
-            (countRoom - countPeople) * ((workTimeRecommend * 60) / +minutes)
+            countRoomOff * ((workTimeRecommend * 60) / +minutes)
         }
       })
     }
 
-    // const workTimeRecommend =
-    //   'workTimeRecommend' in workHourData ? workHourData.workTimeRecommend : 0
-
-    // data.capacidadePorDia = countRoom * ((workTimeRecommend * 60) / +minutes)
-    // data.espacoOciosoDia = (countRoom - countPeople) * ((workTimeRecommend * 60) / +minutes)
-    // data.espacoTotalDia = countRoom * ((workTimeRecommend * 60) / +minutes)
-
-    // data.weekend = 0
-    // data.month = 0
-    // data.year = 0
+    data.weeklyCapacity = {
+      procedure: countRoom * ((workTimeRecommendSum * 60) / +minutes),
+      idleProcedure: countRoomOff * ((workTimeRecommendSum * 60) / +minutes)
+    }
+    data.monthlyCapacity = {
+      procedure: countRoom * ((workTimeRecommendSum * 60) / +minutes) * 30,
+      idleProcedure:
+        countRoomOff * ((workTimeRecommendSum * 60) / +minutes) * 30
+    }
+    data.annualCapacity = {
+      procedure: countRoom * ((workTimeRecommendSum * 60) / +minutes) * 365,
+      idleProcedure:
+        countRoomOff * ((workTimeRecommendSum * 60) / +minutes) * 365
+    }
 
     return {
       data: {
