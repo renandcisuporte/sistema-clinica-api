@@ -9,4 +9,10 @@ export class UserController {
     const user = await this.createUserUseCase.execute(body)
     res.status(201).json({ data: user })
   }
+
+  async resetForgetPassword(req: Request, res: Response) {
+    const { body } = req
+    const user = await this.createUserUseCase.execute(body)
+    res.status(201).json({ data: user })
+  }
 }

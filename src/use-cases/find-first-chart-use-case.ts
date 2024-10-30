@@ -52,14 +52,13 @@ export class FindFirstChartUseCase implements UseCase<string, Output> {
       idleProcedure: countRoomOff * ((workTimeRecommendSum * 60) / +minutes)
     }
     data.monthlyCapacity = {
-      procedure: countRoom * ((workTimeRecommendSum * 60) / +minutes) * 30,
-      idleProcedure:
-        countRoomOff * ((workTimeRecommendSum * 60) / +minutes) * 30
+      procedure: countRoom * ((workTimeRecommendSum * 60) / +minutes) * 4,
+      idleProcedure: countRoomOff * ((workTimeRecommendSum * 60) / +minutes) * 4
     }
     data.annualCapacity = {
-      procedure: countRoom * ((workTimeRecommendSum * 60) / +minutes) * 365,
+      procedure: countRoom * ((workTimeRecommendSum * 60) / +minutes) * 4 * 12,
       idleProcedure:
-        countRoomOff * ((workTimeRecommendSum * 60) / +minutes) * 365
+        countRoomOff * ((workTimeRecommendSum * 60) / +minutes) * 4 * 12
     }
 
     return {

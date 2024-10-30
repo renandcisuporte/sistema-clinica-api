@@ -31,6 +31,7 @@ export class ClinicController {
   async create(req: Request, res: Response) {
     const { body } = req
     const resutl = await this.createUseCase.execute(body)
+
     return res.status(201).json(resutl)
   }
 
