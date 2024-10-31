@@ -1,5 +1,6 @@
-import { UserRepositoryImpl } from '@/domain/repositories/user-repository'
 import { UserController } from '@/modules/users/controllers/user-controller'
+
+import { UserRepositoryImpl } from '@/modules/users/prisma/repositories/implementation/user-repository'
 import { CreateUserUseCase } from '@/modules/users/use-cases/create-user-use-case'
 import { validated } from '@/shared/http/middlewares/validated'
 import { createUserSchema } from '@/shared/http/routes/schemas/validations/user-schema'
