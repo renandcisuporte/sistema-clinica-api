@@ -91,6 +91,7 @@ model Clinic {
   workTimesService   WorkTimeService[]
   setting            Setting[]
   userAdmin          UserAdmin[]
+  Expense            Expense[]
 }
 
 model People {
@@ -184,6 +185,26 @@ model Room {
   averageService String?   @db.VarChar(5)
   active         Boolean   @default(true)
   clinic         Clinic?   @relation(fields: [clinicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([clinicId])
+}
+
+// expense = desspesa
+enum ExpenseType {
+  fixed
+  variable
+}
+
+model Expense {
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  deletedAt   DateTime?
+  id          String      @id @default(uuid())
+  clinicId    String?     @db.Char(36)
+  description String?     @db.VarChar(42)
+  type        ExpenseType @default(fixed)
+  active      Boolean     @default(true)
+  clinic      Clinic?     @relation(fields: [clinicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([clinicId])
 }
