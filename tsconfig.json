@@ -20,5 +20,5 @@
     "forceConsistentCasingInFileNames": true,
     "removeComments": true
   },
-  "include": ["src/**/*", "prisma/**/*", "index.d.ts"],
+  "include": ["src/**/*", "prisma/**/*", "src/types/index.d.ts"],
 }
