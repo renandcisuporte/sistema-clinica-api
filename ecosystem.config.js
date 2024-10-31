@@ -4,7 +4,7 @@ module.exports = {
   apps: [
     {
       name: 'daniela-fidellis-api',
-      script: './build/server.js',
+      script: './build/shared/http/server.js',
       instances: 1,
       exec_mode: 'fork',
       max_restarts: 500,

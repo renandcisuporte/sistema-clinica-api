@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/http/server.ts",
     "build": "rimraf build/* --glob && babel src --extensions \".js,.ts\" --out-dir build --copy-files",
-    "start": "node ./build/shared/http/server.js"
+    "start": "node build/shared/http/server.js"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
