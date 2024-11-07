@@ -304,6 +304,14 @@ Authorization:{{accessToken}}
 {
 }
 
+### EXPENSES - show all
+GET {{hostname}}/expenses/all?type=variable&active=true HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+}
+
 ### EXPENSES
 GET {{hostname}}/expenses/6b8e8160-3b5f-491c-9b48-c3f9914679c3 HTTP/1.1
 Content-Type: {{contentType}}
@@ -351,6 +359,95 @@ Authorization:{{accessToken}}
 
 ### EXPENSES
 DELETE {{hostname}}/expenses/c38ccc35-29a5-4a45-862e-61b865d26cc2 HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+}
+
+### REALESE - show all
+GET {{hostname}}/realeses?description=energia HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+}
+
+### REALESE - show all
+GET {{hostname}}/realeses/all?type=variable&active=true HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+}
+
+### REALESE
+GET {{hostname}}/realeses/6b8e8160-3b5f-491c-9b48-c3f9914679c3 HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+}
+
+### REALESE
+POST {{hostname}}/realeses HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+  "328c78f7-74ef-4c9c-8fab-6fb158e090f8": {
+    "2024-01-01": {
+      "price": ""
+    },
+    "2024-02-01": {
+      "price": ""
+    },
+    "2024-03-01": {
+      "price": ""
+    },
+    "2024-04-01": {
+      "price": ""
+    },
+    "2024-05-01": {
+      "price": ""
+    },
+    "2024-06-01": {
+      "price": ""
+    },
+    "2024-07-01": {
+      "price": ""
+    },
+    "2024-08-01": {
+      "price": ""
+    },
+    "2024-09-01": {
+      "price": ""
+    },
+    "2024-10-01": {
+      "price": ""
+    },
+    "2024-11-01": {
+      "price": ""
+    },
+    "2024-12-01": {
+      "price": "10,23"
+    }
+  }
+}
+
+### REALESE
+PUT {{hostname}}/realeses/a830b495-48a9-46f7-adbd-0e5c37926e59 HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+  "description": "Depilação",
+  "type": "variable",
+  "active": false
+}
+
+### REALESE
+DELETE {{hostname}}/realeses/c38ccc35-29a5-4a45-862e-61b865d26cc2 HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 

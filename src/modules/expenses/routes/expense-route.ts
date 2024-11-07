@@ -4,7 +4,9 @@ import { ActiveInativeExpenseUseCase } from '@/modules/expenses/use-cases/active
 import { CreateExpenseUseCase } from '@/modules/expenses/use-cases/create-expense-use-case'
 import { DeleteExpenseUseCase } from '@/modules/expenses/use-cases/delete-expense-use-case'
 import { FindAllExpenseUseCase } from '@/modules/expenses/use-cases/find-all-expense-use-case'
+import { FindAllListExpenseUseCase } from '@/modules/expenses/use-cases/find-all-list-expense-use-case'
 import { FindFirstExpenseUseCase } from '@/modules/expenses/use-cases/find-first-expense-use-case'
+import { TypeExpenseUseCase } from '@/modules/expenses/use-cases/type-expense-use-case'
 import { UpdateExpenseUseCase } from '@/modules/expenses/use-cases/update-expense-use-case'
 import { validated } from '@/shared/http/middlewares/validated'
 import {
@@ -14,12 +16,14 @@ import {
 } from '@/shared/http/routes/schemas/validations/expense-schema'
 import prisma from '@/shared/prisma'
 import { Router } from 'express'
-import { TypeExpenseUseCase } from '../use-cases/type-expense-use-case'
 
 export const expenseRouter = Router()
 
 const expenseRepository = new ExpenseRepositoryImp(prisma)
 const findAllExpenseUseCase = new FindAllExpenseUseCase(expenseRepository)
+const findAllListExpenseUseCase = new FindAllListExpenseUseCase(
+  expenseRepository
+)
 const findFirstExpenseUseCase = new FindFirstExpenseUseCase(expenseRepository)
 const createExpenseUseCase = new CreateExpenseUseCase(expenseRepository)
 const updateExpenseUseCase = new UpdateExpenseUseCase(expenseRepository)
@@ -31,6 +35,7 @@ const typeExpenseUseCase = new TypeExpenseUseCase(expenseRepository)
 
 const expenseController = new ExpenseController(
   findAllExpenseUseCase,
+  findAllListExpenseUseCase,
   findFirstExpenseUseCase,
   createExpenseUseCase,
   updateExpenseUseCase,
@@ -42,6 +47,11 @@ const expenseController = new ExpenseController(
 expenseRouter.get(
   '/',
   async (req, res) => await expenseController.findAll(req, res)
+)
+
+expenseRouter.get(
+  '/all',
+  async (req, res) => await expenseController.findAllList(req, res)
 )
 
 expenseRouter.get(

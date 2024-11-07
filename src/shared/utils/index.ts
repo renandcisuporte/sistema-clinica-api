@@ -3,6 +3,11 @@ import { format as dateFormat } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { sign, verify } from 'jsonwebtoken'
 
+export function priceFormated(price: string | number): number {
+  price = Number(price.toString().replace(/\D/g, ''))
+  return Number((price / 100).toFixed(2))
+}
+
 export function dateFormated(str: Date | string, time = false): string {
   if (time) return dateFormat(str, 'yyyy-MM-dd HH:mm:ss', { locale: ptBR })
 
