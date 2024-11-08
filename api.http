@@ -373,16 +373,8 @@ Authorization:{{accessToken}}
 {
 }
 
-### REALESE - show all
-GET {{hostname}}/realeses/all?type=variable&active=true HTTP/1.1
-Content-Type: {{contentType}}
-Authorization:{{accessToken}}
-
-{
-}
-
 ### REALESE
-GET {{hostname}}/realeses/6b8e8160-3b5f-491c-9b48-c3f9914679c3 HTTP/1.1
+GET {{hostname}}/realeses/fixed HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 

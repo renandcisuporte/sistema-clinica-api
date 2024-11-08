@@ -58,40 +58,46 @@ export class RealeseRepositoryImp implements RealeseRepository {
   }
 
   async count(args: Record<string, any>): Promise<number> {
-    const { description, active, type, clinicId } = args
+    const { type, clinicId } = args
 
-    const where: Record<string, any> = { clinicId, deletedAt: null }
-    const conditions: Record<string, any> = []
+    const where = Object.assign({}, { clinicId, deletedAt: null })
 
-    if (description) conditions.push({ description: { contains: description } })
-    if (active) where.active = Boolean(active === 'true' ? true : false)
-    if (type) where.type = type
-
-    if (conditions.length > 0) Object.assign(where, { OR: conditions })
+    if (type) Object.assign(where, { AND: { expense: { active: true, type } } })
 
     return this.db.realese.count({
-      where: { ...where }
+      where: {
+        ...where
+      }
     })
   }
 
   async all(args: Record<string, any>): Promise<RealeseOutput[]> {
-    const { description, active, type, clinicId, limit = 15, page = 1 } = args
+    const { type, clinicId } = args
 
-    const where: Record<string, any> = { clinicId, deletedAt: null }
-    const conditions: Record<string, any> = []
+    const where = Object.assign({}, { clinicId, deletedAt: null })
 
-    if (description) conditions.push({ description: { contains: description } })
-    if (active) where.active = Boolean(active === 'true' ? true : false)
-    if (type) where.type = type
-
-    if (conditions.length > 0) Object.assign(where, { OR: conditions })
+    if (type) Object.assign(where, { AND: { expense: { active: true, type } } })
 
     const result = await this.db.realese.findMany({
-      where: { ...where },
-      skip: Number((page - 1) * limit),
-      take: Number(limit)
+      include: {
+        expense: {
+          select: {
+            description: true
+          }
+        }
+      },
+      orderBy: {
+        expense: {
+          description: 'asc'
+        }
+      },
+      where: {
+        ...where
+      }
     })
 
-    return result.map(({ deletedAt, ...rest }) => ({ ...rest }))
+    return result.map(({ deletedAt, createdAt, id, updatedAt, ...rest }) => ({
+      ...rest
+    }))
   }
 }

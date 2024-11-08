@@ -15,8 +15,12 @@ export class RealeseController {
   ) {}
 
   async findAll(req: Request, res: Response) {
-    const { query, clinicId } = req
-    const result = await this.findAllUseCase.execute({ clinicId, ...query })
+    const { query, clinicId, params } = req
+    const result = await this.findAllUseCase.execute({
+      clinicId,
+      ...params,
+      ...query
+    })
     return res.status(200).json(result)
   }
 

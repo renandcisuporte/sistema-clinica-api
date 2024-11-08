@@ -31,7 +31,7 @@ const realeseController = new RealeseController(
 )
 
 realeseRouter.get(
-  '/',
+  '/:type?',
   async (req, res) => await realeseController.findAll(req, res)
 )
 

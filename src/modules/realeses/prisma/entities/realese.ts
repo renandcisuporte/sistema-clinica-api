@@ -7,7 +7,10 @@ export type RealeseInput = Omit<
   price: number
 }
 
-export type RealeseOutput = Omit<RealesePrisma, 'deletedAt'>
+export type RealeseOutput = Omit<
+  RealesePrisma,
+  'deletedAt' | 'createdAt' | 'updatedAt' | 'id'
+>
 
 export type RealeseUpSave = {
   [key: string]: {
