@@ -103,7 +103,8 @@ export class ExpenseRepositoryImp implements ExpenseRepository {
     const result = await this.db.expense.findMany({
       where: { ...where },
       skip: Number((page - 1) * limit),
-      take: Number(limit)
+      take: Number(limit),
+      orderBy: { description: 'asc' }
     })
 
     return result.map(({ deletedAt, ...rest }) => ({ ...rest }))

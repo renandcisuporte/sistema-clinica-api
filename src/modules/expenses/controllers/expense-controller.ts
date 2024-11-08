@@ -5,11 +5,13 @@ import { FindAllExpenseUseCaseInterface } from '@/modules/expenses/use-cases/fin
 import { FindFirstExpenseUseCaseInterface } from '@/modules/expenses/use-cases/find-first-expense-use-case'
 import { UpdateExpenseUseCaseInterface } from '@/modules/expenses/use-cases/update-expense-use-case'
 import { Request, Response } from 'express'
+import { FindAllListExpenseUseCaseInterface } from '../use-cases/find-all-list-expense-use-case'
 import { TypeExpenseUseCaseInterface } from '../use-cases/type-expense-use-case'
 
 export class ExpenseController {
   constructor(
     private readonly findAllUseCase: FindAllExpenseUseCaseInterface,
+    private readonly findAllListUseCase: FindAllListExpenseUseCaseInterface,
     private readonly findFirstUseCase: FindFirstExpenseUseCaseInterface,
     private readonly createUseCase: CreateExpenseUseCaseInterface,
     private readonly updateUseCase: UpdateExpenseUseCaseInterface,
@@ -36,9 +38,14 @@ export class ExpenseController {
     return res.status(200).json({ message: 'Atualizado com sucesso!' })
   }
 
+  async findAllList(req: Request, res: Response) {
+    const { query, clinicId } = req
+    const result = await this.findAllListUseCase.execute({ clinicId, ...query })
+    return res.status(200).json(result)
+  }
+
   async findAll(req: Request, res: Response) {
     const { query, clinicId } = req
-
     const result = await this.findAllUseCase.execute({ clinicId, ...query })
     return res.status(200).json(result)
   }

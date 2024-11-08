@@ -5,7 +5,8 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
 }
 
 datasource db {
@@ -91,7 +92,8 @@ model Clinic {
   workTimesService   WorkTimeService[]
   setting            Setting[]
   userAdmin          UserAdmin[]
-  Expense            Expense[]
+  expenses           Expense[]
+  realeses           Realese[]
 }
 
 model People {
@@ -201,10 +203,27 @@ model Expense {
   deletedAt   DateTime?
   id          String      @id @default(uuid())
   clinicId    String?     @db.Char(36)
-  description String?     @db.VarChar(42)
+  description String?     @db.VarChar(105)
   type        ExpenseType @default(fixed)
   active      Boolean     @default(true)
   clinic      Clinic?     @relation(fields: [clinicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  realese     Realese[]
 
   @@index([clinicId])
+}
+
+model Realese {
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  id        String    @id @default(uuid())
+  clinicId  String?   @db.Char(36)
+  expenseId String?   @db.Char(36)
+  price     Decimal   @default(0) @db.Decimal(precision: 10, scale: 2)
+  date      DateTime  @db.Date()
+  clinic    Clinic?   @relation(fields: [clinicId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  expense   Expense?  @relation(fields: [expenseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([clinicId])
+  @@index([expenseId])
 }
