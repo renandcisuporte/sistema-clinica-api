@@ -227,3 +227,35 @@ model Realese {
   @@index([clinicId])
   @@index([expenseId])
 }
+
+model Product {
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  deletedAt        DateTime?
+  id               String             @id @default(uuid())
+  clinicId         String?            @db.Char(36)
+  name             String             @db.VarChar(105)
+  quantity         String             @db.VarChar(26)
+  price            Decimal            @default(0) @db.Decimal(precision: 10, scale: 2)
+  retail           Int                @default(0)
+  priceRetail      Decimal            @default(0) @db.Decimal(precision: 10, scale: 2)
+  serviceInProduct ServiceInProduct[]
+}
+
+model Service {
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  deletedAt        DateTime?
+  id               String             @id @default(uuid())
+  clinicId         String?            @db.Char(36)
+  name             String             @db.VarChar(105)
+  serviceInProduct ServiceInProduct[]
+}
+
+model ServiceInProduct {
+  id        String   @id @default(uuid())
+  produtId  String?  @db.Char(36)
+  product   Product? @relation(fields: [produtId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  serviceId String?  @db.Char(36)
+  service   Service? @relation(fields: [serviceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
