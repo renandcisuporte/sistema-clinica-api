@@ -510,3 +510,56 @@ Authorization: {{accessToken}}
 
 {
 }
+
+
+### PRODUCTS - show all
+GET {{hostname}}/products HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{accessToken}}
+
+{
+}
+
+
+### PRODUCTS - create
+# @name product
+POST {{hostname}}/products HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{accessToken}}
+
+{
+  "name": " massagem/manta termica",
+  "price": 100,
+  "quantity": "10"
+}
+
+###
+@productId = {{product.response.body.$.data.id}}
+
+### PRODUCTS - show unique
+GET {{hostname}}/products/{{productId}} HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{accessToken}}
+
+{
+  "name": " massagem/manta termica",
+  "price": 100.56,
+  "quantity": "10"
+}
+
+### PRODUCTS - update
+PUT {{hostname}}/products/{{productId}} HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{accessToken}}
+
+{
+  "name": "Facial (limpeza de pele) - Editado"
+}
+
+### PRODUCTS - delete
+DELETE {{hostname}}/products/{{productId}} HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{accessToken}}
+
+{
+}
