@@ -1,11 +1,9 @@
 @hostname = http://localhost:9000/api
 # @hostname = https://api.dclinicas.com.br/api
 @contentType = application/json
-@accessToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGluaWNJZCI6ImE1YjMzMDMxLTU5ZTMtNGQxMi1hOTNmLTgxOGE0MWMyNzhlMSIsInVzZXIiOnsiaWQiOiJkMmE4MTgxNC0xYjc3LTQ3YjktOTQ5OS0yMzgxMTYxNDhjYjciLCJmdWxsTmFtZSI6ImRjaSBzdXBvcnRlIiwiZW1haWwiOiJkY2lAZGNpc3Vwb3J0ZS5jb20uYnIiLCJhZG1pbiI6InJvb3QiLCJjb3ZlckltYWdlIjpudWxsfSwiaWF0IjoxNzMwMTI0ODM0LCJleHAiOjE3MzI3MTY4MzR9.vbJHAsMdbBYWK1FRLZCGBmy13tFycQn0MHcRmBz_GTg
-
-@refreshToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGluaWNJZCI6ImE1YjMzMDMxLTU5ZTMtNGQxMi1hOTNmLTgxOGE0MWMyNzhlMSIsInVzZXIiOnsiaWQiOiJkMmE4MTgxNC0xYjc3LTQ3YjktOTQ5OS0yMzgxMTYxNDhjYjciLCJmdWxsTmFtZSI6ImRjaSBzdXBvcnRlIiwiZW1haWwiOiJkY2lAZGNpc3Vwb3J0ZS5jb20uYnIiLCJhZG1pbiI6InJvb3QiLCJjb3ZlckltYWdlIjpudWxsfSwiaWF0IjoxNzMwMTI0ODM0LCJleHAiOjE3MzI3MTY4MzR9.vbJHAsMdbBYWK1FRLZCGBmy13tFycQn0MHcRmBz_GTg
 
 ### SUCCESS
+# @name auth
 POST {{hostname}}/auth HTTP/1.1
 Content-Type: {{contentType}}
 
@@ -15,10 +13,13 @@ Content-Type: {{contentType}}
   "password": "dci@6913"
 }
 
+###
+@accessToken = Bearer {{auth.response.body.$.data.refreshToken}}
+
 ### SUCCESS
 POST {{hostname}}/auth/refresh-token HTTP/1.1
 Content-Type: {{contentType}}
-Authorization: {{refreshToken}}
+Authorization: {{accessToken}}
 
 {
 }
@@ -51,6 +52,7 @@ Authorization:{{accessToken}}
 }
 
 ### CLINIC - create
+# @name clinic
 POST {{hostname}}/clinics HTTP/1.1
 Content-Type: {{contentType}}
 Authorization: {{accessToken}}
@@ -70,10 +72,13 @@ Authorization: {{accessToken}}
   "zipCode":""
 }
 
+###
+@clinicId = {{clinic.response.body.$.data.id}}
+
 ### CLINICS - update
-PUT {{hostname}}/clinics/17a3faa1-c5cc-4f5f-88b7-e36944061b3d HTTP/1.1
+PUT {{hostname}}/clinics/{{clinicId}} HTTP/1.1
 Content-Type: {{contentType}}
-Authorization:{{accessToken}}
+Authorization: {{accessToken}}
 
 {
   "fantasy":"TESTE",
@@ -91,7 +96,7 @@ Authorization:{{accessToken}}
 }
 
 ### CLINICS - average-service
-PUT {{hostname}}/clinics/17a3faa1-c5cc-4f5f-88b7-e36944061b3d/average-service HTTP/1.1
+PUT {{hostname}}/clinics/{{clinicId}}/average-service HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 
@@ -108,7 +113,7 @@ Authorization: {{accessToken}}
 }
 
 ### CLINICS - show unique
-GET {{hostname}}/clinics/a5b33031-59e3-4d12-a93f-818a41c278e1 HTTP/1.1
+GET {{hostname}}/clinics/{{clinicId}} HTTP/1.1
 Content-Type: {{contentType}}
 Authorization: {{accessToken}}
 
@@ -116,7 +121,7 @@ Authorization: {{accessToken}}
 }
 
 ### CLINICS - show all works
-GET {{hostname}}/clinics/a5b33031-59e3-4d12-a93f-818a41c278e1/works HTTP/1.1
+GET {{hostname}}/clinics/{{clinicId}}/works HTTP/1.1
 Content-Type: {{contentType}}
 Authorization: {{accessToken}}
 
@@ -132,13 +137,13 @@ Authorization:{{accessToken}}
 }
 
 ### CLINICS - update works
-PUT {{hostname}}/clinics/17a3faa1-c5cc-4f5f-88b7-e36944061b3d/works HTTP/1.1
+PUT {{hostname}}/clinics/{{clinicId}}/works HTTP/1.1
 Content-Type: {{contentType}}
 Authorization: {{accessToken}}
 
 [
   {
-    "clinicId": "17a3faa1-c5cc-4f5f-88b7-e36944061b3d",
+    "clinicId": "{{clinicId}}",
     "week": "Terça",
     "open": "false",
     "times": [{"description":"Abre à(s)","time":"08:00"},{"description":"Fecha à(s)","time":"12:00"}]
@@ -146,19 +151,19 @@ Authorization: {{accessToken}}
 ]
 
 ### CLINICS - update works-service
-PUT {{hostname}}/clinics/17a3faa1-c5cc-4f5f-88b7-e36944061b3d/works-service HTTP/1.1
+PUT {{hostname}}/clinics/{{clinicId}}/works-service HTTP/1.1
 Content-Type: {{contentType}}
 Authorization: {{accessToken}}
 
 [
   {
-    "clinicId": "17a3faa1-c5cc-4f5f-88b7-e36944061b3d",
+    "clinicId": "{{clinicId}}",
     "week": "Terça",
     "open": "true",
     "times": [{"description":"Abre à(s)","time":"09:00"},{"description":"Fecha à(s)","time":"13:00"}]
   },
   {
-    "clinicId": "17a3faa1-c5cc-4f5f-88b7-e36944061b3d",
+    "clinicId": "{{clinicId}}",
     "week": "Domingo",
     "open": "false",
     "times": [{"description":"Abre à(s)","time":"09:00"},{"description":"Fecha à(s)","time":"13:00"}]
@@ -182,31 +187,37 @@ Authorization:{{accessToken}}
 }
 
 ### ROOMS
-GET {{hostname}}/rooms/6b8e8160-3b5f-491c-9b48-c3f9914679c3 HTTP/1.1
-Content-Type: {{contentType}}
-Authorization:{{accessToken}}
-
-{
-}
-
-### ROOMS
+# @name room
 POST {{hostname}}/rooms HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 
 {
-  "clinicId": "17a3faa1-c5cc-4f5f-88b7-e36944061b3d",
+  "code": "001",
+  "clinicId": "{{clinicId}}",
   "room": "Depilação",
   "description": ""
 }
 
+###
+@roomId = {{room.response.body.$.data.id}}
+
+
 ### ROOMS
-PUT {{hostname}}/rooms/6b8e8160-3b5f-491c-9b48-c3f9914679c3 HTTP/1.1
+GET {{hostname}}/rooms/{{roomId}} HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 
 {
-  "clinicId": "17a3faa1-c5cc-4f5f-88b7-e36944061b3d",
+}
+
+### ROOMS
+PUT {{hostname}}/rooms/{{roomId}} HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+  "clinicId": "{{clinicId}}",
   "code": "001",
   "room": "Depilação",
   "description": "",
@@ -215,7 +226,7 @@ Authorization:{{accessToken}}
 }
 
 ### ROOMS
-PUT {{hostname}}/rooms/6b8e8160-3b5f-491c-9b48-c3f9914679c3/active-inative HTTP/1.1
+PUT {{hostname}}/rooms/{{roomId}}/active-inative HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 
@@ -231,15 +242,8 @@ Authorization:{{accessToken}}
 {
 }
 
-### PEOPLES - show unique
-GET {{hostname}}/peoples/3e5732f4-040e-4923-8ba1-cda76755e64f HTTP/1.1
-Content-Type: {{contentType}}
-Authorization:{{accessToken}}
-
-{
-}
-
 ### PEOPLES - create
+# @name people
 POST {{hostname}}/peoples HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
@@ -248,10 +252,20 @@ Authorization:{{accessToken}}
   "fullName": "Renan"
 }
 
+###
+@peopleId = {{people.response.body.$.data.id}}
+
+### PEOPLES - show unique
+GET {{hostname}}/peoples/{{peopleId}} HTTP/1.1
+Content-Type: {{contentType}}
+Authorization:{{accessToken}}
+
+{
+}
 
 #"dateOfBirth": "01/01/1990",
 ### PEOPLES - update
-PUT {{hostname}}/peoples/3e5732f4-040e-4923-8ba1-cda76755e64f HTTP/1.1
+PUT {{hostname}}/peoples/{{peopleId}} HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 
@@ -273,7 +287,7 @@ Authorization:{{accessToken}}
 }
 
 ### PEOPLES - delete
-DELETE {{hostname}}/peoples/3e5732f4-040e-4923-8ba1-cda76755e64f HTTP/1.1
+DELETE {{hostname}}/peoples/{{peopleId}} HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 
@@ -281,7 +295,7 @@ Authorization:{{accessToken}}
 }
 
 ### People - active-inative
-PUT {{hostname}}/peoples/c8f95fbb-8301-4b86-a97d-598239c991dc/active-inative HTTP/1.1
+PUT {{hostname}}/peoples/{{peopleId}}/active-inative HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 
@@ -313,7 +327,7 @@ Authorization:{{accessToken}}
 }
 
 ### EXPENSES
-GET {{hostname}}/expenses/6b8e8160-3b5f-491c-9b48-c3f9914679c3 HTTP/1.1
+GET {{hostname}}/expenses/{{roomId}} HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 
@@ -321,17 +335,21 @@ Authorization:{{accessToken}}
 }
 
 ### EXPENSES
+# @name expense
 POST {{hostname}}/expenses HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 
 {
-  "clinicId": "a5b33031-59e3-4d12-a93f-818a41c278e1",
+  "clinicId": "{{clinicId}}",
   "description": "Aluguel"
 }
 
+###
+@expenseId = {{expense.response.body.$.data.id}}
+
 ### EXPENSES
-PUT {{hostname}}/expenses/a830b495-48a9-46f7-adbd-0e5c37926e59 HTTP/1.1
+PUT {{hostname}}/expenses/{{expenseId}} HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 
@@ -342,7 +360,7 @@ Authorization:{{accessToken}}
 }
 
 ### EXPENSES
-PUT {{hostname}}/expenses/c38ccc35-29a5-4a45-862e-61b865d26cc2/active-inative HTTP/1.1
+PUT {{hostname}}/expenses/{{expenseId}}/active-inative HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 
@@ -350,7 +368,7 @@ Authorization:{{accessToken}}
 }
 
 ### EXPENSES
-PUT {{hostname}}/expenses/c38ccc35-29a5-4a45-862e-61b865d26cc2/types/active-inative HTTP/1.1
+PUT {{hostname}}/expenses/{{expenseId}}/types/active-inative HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 
@@ -358,7 +376,7 @@ Authorization:{{accessToken}}
 }
 
 ### EXPENSES
-DELETE {{hostname}}/expenses/c38ccc35-29a5-4a45-862e-61b865d26cc2 HTTP/1.1
+DELETE {{hostname}}/expenses/{{expenseId}} HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 
@@ -428,7 +446,7 @@ Authorization:{{accessToken}}
 }
 
 ### REALESE
-PUT {{hostname}}/realeses/a830b495-48a9-46f7-adbd-0e5c37926e59 HTTP/1.1
+PUT {{hostname}}/realeses/{{expenseId}} HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
 
@@ -442,6 +460,53 @@ Authorization:{{accessToken}}
 DELETE {{hostname}}/realeses/c38ccc35-29a5-4a45-862e-61b865d26cc2 HTTP/1.1
 Content-Type: {{contentType}}
 Authorization:{{accessToken}}
+
+{
+}
+
+
+### SERVICES - show all
+GET {{hostname}}/services HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{accessToken}}
+
+{
+}
+
+
+### SERVICES - create
+# @name service
+POST {{hostname}}/services HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{accessToken}}
+
+{
+  "name": " massagem/manta termica"
+}
+
+###
+@serviceId = {{service.response.body.$.data.id}}
+
+### SERVICES - show unique
+GET {{hostname}}/services/{{serviceId}} HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{accessToken}}
+
+{}
+
+### SERVICES - update
+PUT {{hostname}}/services/{{serviceId}} HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{accessToken}}
+
+{
+  "name": "Facial (limpeza de pele) - Editado"
+}
+
+### SERVICES - delete
+DELETE {{hostname}}/services/{{serviceId}} HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: {{accessToken}}
 
 {
 }
