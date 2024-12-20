@@ -5,6 +5,7 @@ import { expenseRouter } from '@/modules/expenses/routes/expense-route'
 import { peopleRouter } from '@/modules/peoples/routes/people-route'
 import { realeseRouter } from '@/modules/realeses/routes/expense-route'
 import { roomRouter } from '@/modules/rooms/routes/room-route'
+import { serviceRouter } from '@/modules/services/routes/service-route'
 import { userRouter } from '@/modules/users/routes/user-route'
 import { workTimeRouter } from '@/modules/work-times/routes/work-time-route'
 import { authenticated } from '@/shared/http/middlewares/authenticated'
@@ -23,6 +24,7 @@ routes.use('/rooms', authenticated, roomRouter)
 routes.use('/peoples', authenticated, peopleRouter)
 routes.use('/expenses', authenticated, expenseRouter)
 routes.use('/realeses', authenticated, realeseRouter)
+routes.use('/services', authenticated, serviceRouter)
 
 routes.use('/job', (req, res) => {
   let mail = 'mail'
