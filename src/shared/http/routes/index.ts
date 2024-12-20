@@ -3,6 +3,7 @@ import { chartRouter } from '@/modules/chart/routes/chart-route'
 import { clinicRouter } from '@/modules/clinics/routes/clinic-route'
 import { expenseRouter } from '@/modules/expenses/routes/expense-route'
 import { peopleRouter } from '@/modules/peoples/routes/people-route'
+import { productRouter } from '@/modules/products/routes/product-route'
 import { realeseRouter } from '@/modules/realeses/routes/expense-route'
 import { roomRouter } from '@/modules/rooms/routes/room-route'
 import { serviceRouter } from '@/modules/services/routes/service-route'
@@ -25,6 +26,7 @@ routes.use('/peoples', authenticated, peopleRouter)
 routes.use('/expenses', authenticated, expenseRouter)
 routes.use('/realeses', authenticated, realeseRouter)
 routes.use('/services', authenticated, serviceRouter)
+routes.use('/products', authenticated, productRouter)
 
 routes.use('/job', (req, res) => {
   let mail = 'mail'
