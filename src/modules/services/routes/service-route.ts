@@ -1,3 +1,4 @@
+import { ServiceInProductRepositoryImp } from '@/modules/services-in-products/prisma/repositories/implementation/service-in-product-repository'
 import { ServiceController } from '@/modules/services/controllers/service-controller'
 import { ServiceRepositoryImp } from '@/modules/services/prisma/repositories/implementation/service-repository'
 import { CreateServiceUseCase } from '@/modules/services/use-cases/create-service-use-case'
@@ -11,7 +12,11 @@ import { Router } from 'express'
 export const serviceRouter = Router()
 
 const serviceRepository = new ServiceRepositoryImp(prisma)
-const findAllServiceUseCase = new FindAllServiceUseCase(serviceRepository)
+const serviceInProductRepository = new ServiceInProductRepositoryImp(prisma)
+const findAllServiceUseCase = new FindAllServiceUseCase(
+  serviceRepository,
+  serviceInProductRepository
+)
 const findFirstServiceUseCase = new FindFirstServiceUseCase(serviceRepository)
 const createServiceUseCase = new CreateServiceUseCase(serviceRepository)
 const updateServiceUseCase = new UpdateServiceUseCase(serviceRepository)

@@ -23,8 +23,8 @@ export class ProductRepositoryImp implements ProductsRepository {
       }
     })
 
-    const { deletedAt, ...rest } = result
-    return { ...rest }
+    const { deletedAt, price, ...rest } = result
+    return { ...rest, price: price.toFixed(2) }
   }
 
   async create(input: ProductInput): Promise<ProductOutput> {
@@ -32,8 +32,8 @@ export class ProductRepositoryImp implements ProductsRepository {
       data: { ...input }
     })
 
-    const { deletedAt, ...rest } = result
-    return { ...rest }
+    const { deletedAt, price, ...rest } = result
+    return { ...rest, price: price.toFixed(2) }
   }
 
   async first(id: string): Promise<ProductOutput | null> {
@@ -43,8 +43,8 @@ export class ProductRepositoryImp implements ProductsRepository {
 
     if (!result) return null
 
-    const { deletedAt, ...rest } = result
-    return { ...rest }
+    const { deletedAt, price, ...rest } = result
+    return { ...rest, price: price.toFixed(2) }
   }
 
   async count(args: Record<string, any>): Promise<number> {
@@ -79,6 +79,9 @@ export class ProductRepositoryImp implements ProductsRepository {
       take: Number(limit)
     })
 
-    return result.map(({ deletedAt, ...rest }) => ({ ...rest }))
+    return result.map(({ deletedAt, price, ...rest }) => ({
+      ...rest,
+      price: price.toFixed(2)
+    }))
   }
 }

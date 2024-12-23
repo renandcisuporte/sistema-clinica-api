@@ -3,6 +3,7 @@ import {
   ProductOutput
 } from '@/modules/products/prisma/entities/product'
 import { ProductsRepository } from '@/modules/products/prisma/repositories/product-repository'
+import { priceFormated } from '@/shared/utils'
 
 export class UpdateProductUseCase implements UpdateProductUseCaseInterface {
   constructor(protected readonly repository: ProductsRepository) {}
@@ -13,8 +14,7 @@ export class UpdateProductUseCase implements UpdateProductUseCaseInterface {
   ): Promise<{ data: ProductOutput }> {
     const { price, ...rest } = input
     const result = await this.repository.update(id, {
-      // @ts-ignore
-      price: parseFloat(`${price}`.replace(/\D/, '') / 100),
+      price: priceFormated(`${price}`),
       ...rest
     })
 

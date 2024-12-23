@@ -1,3 +1,4 @@
+import { ServiceInProductsRepository } from '@/modules/services-in-products/prisma/repositories/service-in-product-repository'
 import { ServiceOutput } from '@/modules/services/prisma/entities/service'
 import { ServicesRepository } from '@/modules/services/prisma/repositories/service-repository'
 
@@ -6,7 +7,10 @@ export interface FindAllServiceUseCaseInterface {
 }
 
 export class FindAllServiceUseCase implements FindAllServiceUseCaseInterface {
-  constructor(protected readonly repository: ServicesRepository) {}
+  constructor(
+    protected readonly repository: ServicesRepository,
+    protected readonly serviceInProduct: ServiceInProductsRepository
+  ) {}
 
   async execute(args: any): Promise<Output> {
     const { clinicId, name = '', limit, page } = args
@@ -23,14 +27,28 @@ export class FindAllServiceUseCase implements FindAllServiceUseCaseInterface {
       this.repository.all(common)
     ])
 
+    const dataOutup: Temp[] = []
+    for (const item of data) {
+      const total = await this.serviceInProduct.count({
+        clinicId: item.clinicId,
+        serviceId: item.id
+      })
+      dataOutup.push({
+        ...item,
+        total: total
+      })
+    }
+
     return {
       total,
-      data
+      data: dataOutup
     }
   }
 }
 
+type Temp = ServiceOutput & { total: number }
+
 type Output = {
   total: number
-  data: ServiceOutput[]
+  data: Temp[]
 }

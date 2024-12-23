@@ -3,6 +3,7 @@ import {
   ProductOutput
 } from '@/modules/products/prisma/entities/product'
 import { ProductsRepository } from '@/modules/products/prisma/repositories/product-repository'
+import { priceFormated } from '@/shared/utils'
 
 export interface CreateProductUseCaseInterface {
   execute(input: ProductInput): Promise<{ data: ProductOutput }>
@@ -15,8 +16,7 @@ export class CreateProductUseCase implements CreateProductUseCaseInterface {
     const { price, ...rest } = input
 
     const result = await this.repository.create({
-      // @ts-ignore
-      price: parseFloat(`${price}`.replace(/\D/, '') / 100),
+      price: priceFormated(`${price}`),
       ...rest
     })
 
