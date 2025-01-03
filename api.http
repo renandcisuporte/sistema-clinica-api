@@ -520,6 +520,16 @@ Authorization: {{accessToken}}
 {
 }
 
+### PRODUCTS - reports
+GET {{hostname}}/reports/product HTTP/1.1
+# Content-Type: {{contentType}}
+Accept: application/pdf
+Authorization: {{accessToken}}
+
+@saveResponse ./document.pdf
+{
+}
+
 
 ### PRODUCTS - create
 # @name product
