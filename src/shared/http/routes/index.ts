@@ -27,7 +27,7 @@ routes.use('/peoples', authenticated, peopleRouter)
 routes.use('/expenses', authenticated, expenseRouter)
 routes.use('/realeses', authenticated, realeseRouter)
 routes.use('/services', authenticated, serviceRouter)
-routes.use('/products', authenticated, productRouter)
+routes.use('/products', productRouter)
 routes.use('/service', authenticated, serviceInProductRouter)
 
 routes.use('/job', (req, res) => {
