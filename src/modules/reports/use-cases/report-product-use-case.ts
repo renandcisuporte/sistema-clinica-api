@@ -1,5 +1,5 @@
+import { ProductsRepository } from '@/modules/products/prisma/repositories/product-repository'
 import { PdfGenerator } from '@/shared/providers/pdf-generator'
-import { ProductsRepository } from '../prisma/repositories/product-repository'
 
 export class ReportProductUseCase implements ReportProductUseCaseInterface {
   constructor(
@@ -7,9 +7,12 @@ export class ReportProductUseCase implements ReportProductUseCaseInterface {
     protected readonly pdfGenerator: PdfGenerator
   ) {}
 
-  async execute() {
+  async execute(args: { clinicId: string }) {
     try {
-      const products = await this.repository.all({ limit: 10000 })
+      const products = await this.repository.all({
+        limit: 10000,
+        clinicId: args.clinicId
+      })
       const pdfBuffer = await this.pdfGenerator.generate(products)
       return pdfBuffer
     } catch (error) {
@@ -20,5 +23,5 @@ export class ReportProductUseCase implements ReportProductUseCaseInterface {
 }
 
 export interface ReportProductUseCaseInterface {
-  execute(): Promise<Buffer>
+  execute(args: { clinicId: string }): Promise<Buffer>
 }

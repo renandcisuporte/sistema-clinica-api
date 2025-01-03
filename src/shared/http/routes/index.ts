@@ -5,6 +5,7 @@ import { expenseRouter } from '@/modules/expenses/routes/expense-route'
 import { peopleRouter } from '@/modules/peoples/routes/people-route'
 import { productRouter } from '@/modules/products/routes/product-route'
 import { realeseRouter } from '@/modules/realeses/routes/expense-route'
+import { reportRouter } from '@/modules/reports/routes/report-route'
 import { roomRouter } from '@/modules/rooms/routes/room-route'
 import { serviceInProductRouter } from '@/modules/services-in-products/routes/service-in-product-route'
 import { serviceRouter } from '@/modules/services/routes/service-route'
@@ -27,8 +28,10 @@ routes.use('/peoples', authenticated, peopleRouter)
 routes.use('/expenses', authenticated, expenseRouter)
 routes.use('/realeses', authenticated, realeseRouter)
 routes.use('/services', authenticated, serviceRouter)
-routes.use('/products', productRouter)
+routes.use('/products', authenticated, productRouter)
 routes.use('/service', authenticated, serviceInProductRouter)
+routes.use('/reports', authenticated, reportRouter)
+// routes.use('/reports', reportRouter)
 
 routes.use('/job', (req, res) => {
   let mail = 'mail'
