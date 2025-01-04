@@ -23,7 +23,7 @@ export class ReportProductUseCase implements ReportProductUseCaseInterface {
       const pdfBuffer = await this.pdfGenerator.generate(products)
       fs.writeFileSync(namePath, pdfBuffer)
     } catch (error) {
-      console.error('Error generating PDF:', error)
+      console.log('Error generating PDF:', error)
       throw new Error('Error generating PDF')
     }
   }
