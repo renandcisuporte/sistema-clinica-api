@@ -64,16 +64,31 @@ export class ProductRepositoryImp implements ProductsRepository {
   }
 
   async all(args: Record<string, any>): Promise<ProductOutput[]> {
-    const { name, clinicId, limit = 15, page = 1 } = args
+    const {
+      name,
+      clinicId,
+      limit = 15,
+      page = 1,
+      nameAsc,
+      nameDesc,
+      priceAsc,
+      priceDesc
+    } = args
 
     const where: Record<string, any> = { clinicId, deletedAt: null }
     const conditions: Record<string, any> = []
 
     if (name) conditions.push({ name: { contains: name } })
-
     if (conditions.length > 0) Object.assign(where, { OR: conditions })
 
+    const orderBy: Record<string, any> = []
+    if (nameAsc) orderBy.push({ name: 'asc' })
+    if (nameDesc) orderBy.push({ name: 'desc' })
+    if (priceAsc) orderBy.push({ price: 'asc' })
+    if (priceDesc) orderBy.push({ price: 'desc' })
+
     const result = await this.db.product.findMany({
+      orderBy,
       where: { ...where },
       skip: Number((page - 1) * limit),
       take: Number(limit)

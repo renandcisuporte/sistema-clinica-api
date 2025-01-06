@@ -43,3 +43,5 @@ routes.use('/job', (req, res) => {
 
   res.status(200).json({ mail, message: 'Trabalho adicionado à fila' })
 })
+
+routes.use('/', (req, res) => res.send('Bem vindo a API'))

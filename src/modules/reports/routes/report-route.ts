@@ -41,3 +41,8 @@ reportRouter.post(
   '/procediment-in-product',
   async (req, res) => await reportProductController.pdfProcediment(req, res)
 )
+
+// reportRouter.get(
+//   '/procediment-in-product',
+//   async (req, res) => await reportProductController.pdfProcediment(req, res)
+// )

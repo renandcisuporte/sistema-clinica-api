@@ -11,6 +11,9 @@ export class ReportPdfController {
 
   async pdfProduct(req: Request, res: Response): Promise<void> {
     const { clinicId } = req
+    const { nameDesc, nameAsc } = req.body
+
+    const name = ['product-pdf', '.pdf'].join('')
     const namePath = path.join(
       __dirname,
       '..',
@@ -18,17 +21,20 @@ export class ReportPdfController {
       '..',
       '..',
       'public',
-      'product-pdf.pdf'
+      name
     )
 
-    await this.useCaseProduct.execute({ clinicId, namePath })
+    await this.useCaseProduct.execute({ clinicId, namePath, nameDesc, nameAsc })
 
-    const data = `${req.protocol}://${req.get('host')}/product-pdf.pdf`
+    const data = `${req.protocol}://${req.get('host')}/${name}`
     res.status(201).send({ data })
   }
 
   async pdfProcediment(req: Request, res: Response): Promise<void> {
     const { clinicId } = req
+    const { nameDesc, nameAsc } = req.body
+
+    const name = 'procediment-pdf.pdf'
     const namePath = path.join(
       __dirname,
       '..',
@@ -36,15 +42,22 @@ export class ReportPdfController {
       '..',
       '..',
       'public',
-      'procediment-pdf.pdf'
+      name
     )
 
-    const pdfBuffer = await this.useCaseProcediment.execute({
+    await this.useCaseProcediment.execute({
       clinicId,
-      namePath
+      namePath,
+      nameDesc,
+      nameAsc
     })
 
-    const data = `${req.protocol}://${req.get('host')}/procediment-pdf.pdf`
+    const data = `${req.protocol}://${req.get('host')}/${name}`
     res.status(201).send({ data })
+
+    // const buffer = fs.readFileSync(namePath)
+    // res.setHeader('Content-Length', buffer.length)
+    // res.setHeader('Content-Type', 'application/pdf')
+    // res.send(buffer)
   }
 }
