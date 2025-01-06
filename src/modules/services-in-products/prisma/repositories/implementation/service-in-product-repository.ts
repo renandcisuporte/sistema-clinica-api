@@ -28,7 +28,7 @@ export class ServiceInProductRepositoryImp
     })
 
     const { rentalPrice, ...rest } = result
-    return { ...rest, rentalPrice: rentalPrice.toString() }
+    return { ...rest, rentalPrice: rentalPrice.toString() } as unknown as any
   }
 
   async upsave(input: ServiceInProductInput): Promise<void> {
@@ -48,7 +48,10 @@ export class ServiceInProductRepositoryImp
       data: { ...input }
     })
 
-    return { ...result, rentalPrice: result.rentalPrice.toString() }
+    return {
+      ...result,
+      rentalPrice: result.rentalPrice.toString()
+    } as unknown as any
   }
 
   async allService(clinicId: string, serviceId: string): Promise<any[] | null> {
@@ -80,7 +83,7 @@ export class ServiceInProductRepositoryImp
     if (!result) return null
 
     const { rentalPrice, ...rest } = result
-    return { ...rest, rentalPrice: rentalPrice.toString() }
+    return { ...rest, rentalPrice: rentalPrice.toString() } as unknown as any
   }
 
   async count(args: Record<string, any>): Promise<number> {
@@ -102,7 +105,7 @@ export class ServiceInProductRepositoryImp
     const where: Record<string, any> = { clinicId }
     const conditions: Record<string, any> = []
 
-    // if (name) conditions.push({ name: { contains: name } })
+    if (name) conditions.push({ name: { contains: name } })
 
     if (conditions.length > 0) Object.assign(where, { OR: conditions })
 

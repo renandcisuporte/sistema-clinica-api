@@ -19,7 +19,11 @@ app.use(express.urlencoded({ limit: '5MB', extended: true }))
 app.use(morgan('dev'))
 // app.use(morgan(':ip'))
 // app.use(morgan(':id :method :url :response-time'))
-app.use(express.static(path.join(__dirname, '..', 'public'), { maxAge: '1d' }))
+app.use(
+  express.static(path.join(__dirname, '..', 'public'), {
+    maxAge: '0'
+  })
+)
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerJson))
 app.use('/api', routes)
 app.use(validated, http)

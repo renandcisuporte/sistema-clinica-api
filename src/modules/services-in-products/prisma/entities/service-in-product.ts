@@ -8,4 +8,4 @@ export type ServiceInProductInput = Pick<
 export type ServiceInProductOutput = Omit<
   ServiceInProductPrisma,
   'deletedAt' | 'rentalPrice'
-> & { rentalPrice: string }
+> & { rentalPrice: string; serviceName: string; productName: string }

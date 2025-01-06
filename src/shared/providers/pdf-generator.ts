@@ -1,14 +1,16 @@
-import jsPDF, { CellConfig } from 'jspdf'
+import jsPDF from 'jspdf'
 import autoTable, { RowInput } from 'jspdf-autotable'
 
-export interface PdfGenerator {
-  generate(data: Record<string, any>[]): Promise<Buffer>
-}
-
 export abstract class JsPdfGenerator implements PdfGenerator {
-  protected readonly pdf: jsPDF
+  protected pdf!: jsPDF
 
   constructor() {
+    this.init()
+  }
+
+  abstract generate(data: Record<string, any>[]): Promise<Buffer>
+
+  protected init() {
     this.pdf = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
@@ -16,25 +18,42 @@ export abstract class JsPdfGenerator implements PdfGenerator {
     })
   }
 
-  abstract generate(data: Record<string, any>[]): Promise<Buffer>
+  // Adiciona cabeçalho
+  protected addHeader(text: string, pageNumber: number) {
+    this.pdf.setFontSize(12)
+    this.pdf.setFillColor(202, 202, 202)
+    this.pdf.rect(0, 0, 212, 15, 'F')
+    const pageWidth = this.pdf.internal.pageSize.getWidth() // Largura da página
+    const textWidth = this.pdf.getTextWidth(text) // Largura do texto
+    const x = (pageWidth - textWidth) / 2 // Posição X centralizada
+    this.pdf.text(text, x, 7)
+  }
+
+  // Adiciona rodapé
+  protected addFooter(pageNumber: number) {
+    const pageHeight = this.pdf.internal.pageSize.height - 10
+    this.pdf.setFontSize(8)
+    this.pdf.text(
+      `Gerado em: ${new Date().toLocaleDateString()}\nPágina ${pageNumber} de ${this.pdf.getNumberOfPages()}`,
+      5,
+      pageHeight
+    )
+    this.pdf.text(
+      `Desenvolvido por Data Control Informatica (16) 3262-1365 / (16) 16 99760-3861`,
+      205,
+      pageHeight,
+      {
+        align: 'right'
+      }
+    )
+  }
 }
 
-type PdfProductProps = {
-  name: string
-  quantity: string
-  price: string
-}
 export class PdfProduct extends JsPdfGenerator implements PdfGenerator {
   async generate(data: PdfProductProps[]): Promise<Buffer> {
-    this.pdf.text('Relatório de Produtos', 100, 15, {
-      maxWidth: 200,
-      align: 'center'
-    })
-
     const tableData: RowInput[] = []
-    for (const item of data.sort((a, b) => {
-      return a.name.localeCompare(b.name)
-    })) {
+
+    for (const item of data) {
       const { name, quantity, price } = item
 
       tableData.push([
@@ -53,17 +72,18 @@ export class PdfProduct extends JsPdfGenerator implements PdfGenerator {
       ])
     }
 
+    this.init()
+    this.addHeader('RELATÓRIO DE PRODUTOS', 1)
     autoTable(this.pdf, {
       head: [
         [
           {
             content: 'Produto',
-            styles: { fillColor: [105, 105, 105], valign: 'middle' }
+            styles: { valign: 'middle' }
           },
           {
             content: 'Qtde (ml/unid)',
             styles: {
-              fillColor: [105, 105, 105],
               valign: 'middle',
               halign: 'center'
             }
@@ -71,7 +91,6 @@ export class PdfProduct extends JsPdfGenerator implements PdfGenerator {
           {
             content: 'Preço',
             styles: {
-              fillColor: [105, 105, 105],
               valign: 'middle',
               halign: 'center'
             }
@@ -80,9 +99,14 @@ export class PdfProduct extends JsPdfGenerator implements PdfGenerator {
       ],
       body: tableData,
       theme: 'grid',
-      margin: { top: 20 },
+      margin: { top: 20, left: 5, right: 5 },
       styles: { fontSize: 10 },
-      headStyles: { fillColor: [100, 100, 255] }
+      headStyles: { fillColor: [25, 140, 115] },
+      didDrawPage: () => {
+        const pageHeight = this.pdf.getNumberOfPages()
+        this.addHeader('RELATÓRIO DE PRODUTOS', pageHeight)
+        this.addFooter(pageHeight)
+      }
     })
 
     const pdfOutput = this.pdf.output('arraybuffer')
@@ -90,72 +114,18 @@ export class PdfProduct extends JsPdfGenerator implements PdfGenerator {
   }
 }
 
-type PdfGeneratorProps = {
-  serviceName: string
-  productName: string
-  productPrice: string
-  productQuantity: string
-  id: string
-  clinicId: string
-  productId: string
-  serviceId: string
-  rental: number
-  rentalPrice: number
-}
-
 export class PdfProcedimentProduct
   extends JsPdfGenerator
   implements PdfGenerator
 {
-  private readonly cells: CellConfig[] = [
-    {
-      align: 'left',
-      padding: 1,
-      prompt: 'Categoria',
-      width: 57,
-      name: 'serviceName'
-    },
-    {
-      align: 'left',
-      padding: 1,
-      prompt: 'Produto',
-      width: 57,
-      name: 'productName'
-    },
-    {
-      align: 'center',
-      padding: 1,
-      prompt: 'QTDE',
-      width: 25,
-      name: 'productQuantity'
-    },
-    {
-      align: 'center',
-      padding: 1,
-      prompt: 'Rendimento',
-      width: 45,
-      name: 'rental'
-    },
-    {
-      align: 'center',
-      padding: 1,
-      prompt: 'Preço',
-      width: 45,
-      name: 'rentalPrice'
-    }
-  ]
-
-  async generate(data: PdfGeneratorProps[]): Promise<Buffer> {
-    this.pdf.text('Relatório de Procedimentos', 100, 15, {
-      maxWidth: 200,
-      align: 'center'
-    })
-
-    let group: string = ''
+  async generate(items: PdfGeneratorProps[]): Promise<Buffer> {
+    let headGroup = ''
+    let groupTotal = 0
     const tableData: RowInput[] = []
-    for (const item of data.sort((a, b) => {
-      return a.serviceName.localeCompare(b.serviceName)
-    })) {
+
+    for (const item of items) {
+      const nextItem = items[items.indexOf(item) + 1]
+
       const {
         serviceName,
         productName,
@@ -165,14 +135,15 @@ export class PdfProcedimentProduct
         rentalPrice,
         serviceId
       } = item
-      if (group !== serviceId) {
-        group = serviceId
+      if (headGroup !== serviceId) {
+        headGroup = serviceId
         tableData.push([
           {
             content: serviceName,
             styles: {
               halign: 'center',
-              fillColor: [199, 199, 199],
+              fillColor: [105, 105, 105],
+              textColor: '#fff',
               fontStyle: 'bold'
             },
             colSpan: 5
@@ -201,44 +172,105 @@ export class PdfProcedimentProduct
         },
         {
           content: `R$: ${rentalPrice.toFixed(2).replace('.', ',')}`,
-          styles: { halign: 'center', valign: 'middle' }
+          styles: { halign: 'right', valign: 'middle' }
         }
       ])
+
+      groupTotal += +rentalPrice
+      if (!nextItem || nextItem.serviceId !== serviceId) {
+        tableData.push([
+          {
+            content: `Total do Grupo: R$ ${groupTotal
+              .toFixed(2)
+              .replace('.', ',')}`,
+            styles: {
+              halign: 'right',
+              fillColor: [240, 240, 240],
+              fontSize: 12,
+              fontStyle: 'bold'
+            },
+            colSpan: 5
+          }
+        ])
+        groupTotal = 0 // Resetar o total do grupo
+      }
     }
 
+    this.init()
+    this.addHeader('RELATÓRIO DE PROCEDIMENTO', 1)
     autoTable(this.pdf, {
       head: [
         [
           {
             content: 'Produto',
-            styles: { fillColor: [105, 105, 105], valign: 'middle' }
+            styles: { fillColor: [25, 140, 115], valign: 'middle' }
           },
           {
             content: 'Qtde (ml/unid)',
-            styles: { fillColor: [105, 105, 105], valign: 'middle' }
+            styles: {
+              fillColor: [25, 140, 115],
+              valign: 'middle',
+              halign: 'center'
+            }
           },
           {
             content: 'Total',
-            styles: { fillColor: [105, 105, 105], valign: 'middle' }
+            styles: {
+              fillColor: [25, 140, 115],
+              valign: 'middle',
+              halign: 'center'
+            }
           },
           {
             content: 'Rendimento',
-            styles: { fillColor: [105, 105, 105], valign: 'middle' }
+            styles: { fillColor: [25, 140, 115], valign: 'middle' }
           },
           {
             content: 'Valor Aplicação',
-            styles: { fillColor: [105, 105, 105], valign: 'middle' }
+            styles: {
+              fillColor: [25, 140, 115],
+              valign: 'middle',
+              halign: 'center'
+            }
           }
         ]
       ],
       body: tableData,
       theme: 'grid',
-      margin: { top: 20 },
+      margin: { top: 20, left: 5, right: 5 },
       styles: { fontSize: 10 },
-      headStyles: { fillColor: [100, 100, 255] }
+      headStyles: { fillColor: [25, 140, 115] },
+      didDrawPage: () => {
+        const pageNumber = this.pdf.getNumberOfPages()
+        this.addHeader('RELATÓRIO DE PROCEDIMENTO', pageNumber)
+        this.addFooter(pageNumber)
+      }
     })
 
     const pdfOutput = this.pdf.output('arraybuffer')
     return Buffer.from(pdfOutput)
   }
+}
+
+export interface PdfGenerator {
+  generate(data: Record<string, any>[]): Promise<Buffer>
+}
+
+type PdfProductProps = {
+  name: string
+  quantity: string
+  price: string
+}
+
+type PdfGeneratorProps = {
+  serviceName: string
+  productName: string
+  productPrice: string
+  productQuantity: string
+  id: string
+  clinicId: string
+  productId: string
+  serviceId: string
+  rental: number
+  rentalPrice: number
 }
