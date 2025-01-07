@@ -1,16 +1,12 @@
 import { ProductRepositoryImp } from '@/modules/products/prisma/repositories/implementation/product-repository'
 import { ServiceInProductRepositoryImp } from '@/modules/services-in-products/prisma/repositories/implementation/service-in-product-repository'
 import prisma from '@/shared/prisma'
-import { LoggerImp } from '@/shared/providers/logger'
 import {
   PdfProcedimentProduct,
   PdfProduct
 } from '@/shared/providers/pdf-generator'
 import { Router } from 'express'
-import {
-  ReportPdfController,
-  ReportPdfControllerDecoratee
-} from '../controllers/report-pdf-controller'
+import { ReportPdfController } from '../controllers/report-pdf-controller'
 import { ReportProcedimentProductUseCase } from '../use-cases/report-precediment-product-use-case'
 import { ReportProductUseCase } from '../use-cases/report-product-use-case'
 
@@ -36,30 +32,30 @@ const reportProductController = new ReportPdfController(
   reportProcedimentProductUseCase
 )
 
-const loggerImp = new LoggerImp()
-const reportProductControllerDecoratee = new ReportPdfControllerDecoratee(
-  loggerImp,
-  reportProductController
-)
+// const loggerImp = new LoggerImp()
+// const reportProductControllerDecoratee = new ReportPdfControllerDecoratee(
+//   loggerImp,
+//   reportProductController
+// )
+
+// reportRouter.post(
+//   '/product-pdf',
+//   async (req, res) =>
+//     await reportProductControllerDecoratee.pdfProduct(req, res)
+// )
+
+// reportRouter.post(
+//   '/procediment-in-product',
+//   async (req, res) =>
+//     await reportProductControllerDecoratee.pdfProcediment(req, res)
+// )
 
 reportRouter.post(
   '/product-pdf',
-  async (req, res) =>
-    await reportProductControllerDecoratee.pdfProduct(req, res)
+  async (req, res) => await reportProductController.pdfProduct(req, res)
 )
 
 reportRouter.post(
   '/procediment-in-product',
-  async (req, res) =>
-    await reportProductControllerDecoratee.pdfProcediment(req, res)
+  async (req, res) => await reportProductController.pdfProcediment(req, res)
 )
-
-// reportRouter.post(
-//   '/product-pdf',
-//   async (req, res) => await reportProductController.pdfProduct(req, res)
-// )
-
-// reportRouter.get(
-//   '/procediment-in-product',
-//   async (req, res) => await reportProductController.pdfProcediment(req, res)
-// )

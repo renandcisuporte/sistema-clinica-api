@@ -19,7 +19,7 @@ export abstract class JsPdfGenerator implements PdfGenerator {
   }
 
   // Adiciona cabeçalho
-  protected addHeader(text: string, pageNumber: number) {
+  protected addHeader(text: string) {
     this.pdf.setFontSize(12)
     this.pdf.setFillColor(202, 202, 202)
     this.pdf.rect(0, 0, 212, 15, 'F')
@@ -30,16 +30,16 @@ export abstract class JsPdfGenerator implements PdfGenerator {
   }
 
   // Adiciona rodapé
-  protected addFooter(pageNumber: number) {
+  protected addFooter(pageNumber: number, pageTotal: string = '') {
     const pageHeight = this.pdf.internal.pageSize.height - 10
     this.pdf.setFontSize(8)
     this.pdf.text(
-      `Gerado em: ${new Date().toLocaleDateString()}\nPágina ${pageNumber} de ${this.pdf.getNumberOfPages()}`,
+      `Gerado em: ${new Date().toLocaleDateString()}\nPágina ${pageNumber} de ${pageTotal}`,
       5,
       pageHeight
     )
     this.pdf.text(
-      `Desenvolvido por Data Control Informatica (16) 3262-1365 / (16) 16 99760-3861`,
+      `DClinicas - By Data Control Informatica (16) 3262-1365 / (16) 16 99716-6880`,
       205,
       pageHeight,
       {
@@ -73,7 +73,7 @@ export class PdfProduct extends JsPdfGenerator implements PdfGenerator {
     }
 
     this.init()
-    this.addHeader('RELATÓRIO DE PRODUTOS', 1)
+    this.addHeader('RELATÓRIO DE PRODUTOS')
     autoTable(this.pdf, {
       head: [
         [
@@ -103,12 +103,13 @@ export class PdfProduct extends JsPdfGenerator implements PdfGenerator {
       styles: { fontSize: 10 },
       headStyles: { fillColor: [25, 140, 115] },
       didDrawPage: () => {
-        const pageHeight = this.pdf.getNumberOfPages()
-        this.addHeader('RELATÓRIO DE PRODUTOS', pageHeight)
-        this.addFooter(pageHeight)
+        const pageNumber = this.pdf.getNumberOfPages()
+        this.addHeader('RELATÓRIO DE PRODUTOS')
+        this.addFooter(pageNumber, '{total_page}')
       }
     })
 
+    this.pdf.putTotalPages('{total_page}')
     const pdfOutput = this.pdf.output('arraybuffer')
     return Buffer.from(pdfOutput)
   }
@@ -122,7 +123,6 @@ export class PdfProcedimentProduct
     let headGroup = ''
     let groupTotal = 0
     const tableData: RowInput[] = []
-
     for (const item of items) {
       const nextItem = items[items.indexOf(item) + 1]
 
@@ -197,7 +197,7 @@ export class PdfProcedimentProduct
     }
 
     this.init()
-    this.addHeader('RELATÓRIO DE PROCEDIMENTO', 1)
+    this.addHeader('RELATÓRIO DE PROCEDIMENTO')
     autoTable(this.pdf, {
       head: [
         [
@@ -242,10 +242,12 @@ export class PdfProcedimentProduct
       headStyles: { fillColor: [25, 140, 115] },
       didDrawPage: () => {
         const pageNumber = this.pdf.getNumberOfPages()
-        this.addHeader('RELATÓRIO DE PROCEDIMENTO', pageNumber)
-        this.addFooter(pageNumber)
+        this.addHeader('RELATÓRIO DE PROCEDIMENTO')
+        this.addFooter(pageNumber, '{total_page}')
       }
     })
+
+    this.pdf.putTotalPages('{total_page}')
 
     const pdfOutput = this.pdf.output('arraybuffer')
     return Buffer.from(pdfOutput)
