@@ -32,6 +32,24 @@ const reportProductController = new ReportPdfController(
   reportProcedimentProductUseCase
 )
 
+// const loggerImp = new LoggerImp()
+// const reportProductControllerDecoratee = new ReportPdfControllerDecoratee(
+//   loggerImp,
+//   reportProductController
+// )
+
+// reportRouter.post(
+//   '/product-pdf',
+//   async (req, res) =>
+//     await reportProductControllerDecoratee.pdfProduct(req, res)
+// )
+
+// reportRouter.post(
+//   '/procediment-in-product',
+//   async (req, res) =>
+//     await reportProductControllerDecoratee.pdfProcediment(req, res)
+// )
+
 reportRouter.post(
   '/product-pdf',
   async (req, res) => await reportProductController.pdfProduct(req, res)
@@ -41,8 +59,3 @@ reportRouter.post(
   '/procediment-in-product',
   async (req, res) => await reportProductController.pdfProcediment(req, res)
 )
-
-// reportRouter.get(
-//   '/procediment-in-product',
-//   async (req, res) => await reportProductController.pdfProcediment(req, res)
-// )

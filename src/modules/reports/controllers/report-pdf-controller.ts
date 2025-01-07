@@ -1,7 +1,35 @@
+import { Logger } from '@/shared/providers/logger'
 import { Request, Response } from 'express'
 import path from 'path'
 import { ReportProcedimentProductUseCaseInterface } from '../use-cases/report-precediment-product-use-case'
 import { ReportProductUseCaseInterface } from '../use-cases/report-product-use-case'
+
+export class ReportPdfControllerDecoratee {
+  constructor(
+    private readonly logger: Logger,
+    private readonly decoratee: ReportPdfController
+  ) {}
+
+  async pdfProduct(req: Request, res: Response) {
+    try {
+      await this.decoratee.pdfProduct(req, res)
+      await this.logger.log('pdf-product', { ok: 'ok' })
+    } catch (error: any) {
+      await this.logger.log('pdf-product-error', { ...error })
+      throw error
+    }
+  }
+
+  async pdfProcediment(req: Request, res: Response) {
+    try {
+      await this.decoratee.pdfProduct(req, res)
+      await this.logger.log('pdf-procediment', { ok: 'ok' })
+    } catch (error: any) {
+      await this.logger.log('pdf-procediment-error', { ...error })
+      throw error
+    }
+  }
+}
 
 export class ReportPdfController {
   constructor(
@@ -9,7 +37,7 @@ export class ReportPdfController {
     private readonly useCaseProcediment: ReportProcedimentProductUseCaseInterface
   ) {}
 
-  async pdfProduct(req: Request, res: Response): Promise<void> {
+  async pdfProduct(req: Request, res: Response) {
     const { clinicId } = req
     const { nameDesc, nameAsc } = req.body
 
@@ -32,7 +60,7 @@ export class ReportPdfController {
 
   async pdfProcediment(req: Request, res: Response): Promise<void> {
     const { clinicId } = req
-    const { nameDesc, nameAsc } = req.body
+    const { nameDesc, nameAsc, serviceId } = req.body
 
     const name = 'procediment-pdf.pdf'
     const namePath = path.join(
@@ -47,6 +75,7 @@ export class ReportPdfController {
 
     await this.useCaseProcediment.execute({
       clinicId,
+      serviceId,
       namePath,
       nameDesc,
       nameAsc

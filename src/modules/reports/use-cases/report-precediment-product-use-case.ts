@@ -18,7 +18,6 @@ export class ReportProcedimentProductUseCase
       const products = await this.repository.all({ limit, clinicId, ...rest })
 
       const direction = rest.nameAsc ? 1 : rest.nameDesc ? -1 : 0
-
       products.sort((a, b) => {
         const groupComparison =
           a.serviceName.localeCompare(b.serviceName) * direction
@@ -28,7 +27,14 @@ export class ReportProcedimentProductUseCase
         return a.productName.localeCompare(b.productName) * direction
       })
 
-      const pdfBuffer = await this.pdfGenerator.generate(products)
+      let productsFilter = [...products]
+      if (rest.serviceId) {
+        productsFilter = [
+          ...products.filter((item) => item.serviceId === rest.serviceId)
+        ]
+      }
+
+      const pdfBuffer = await this.pdfGenerator.generate(productsFilter)
       await fs.writeFile(rest.namePath, pdfBuffer)
     } catch (error) {
       console.log('Error generating PDF:', error)
@@ -44,6 +50,7 @@ export interface ReportProcedimentProductUseCaseInterface {
 type Input = {
   namePath: string
   clinicId: string
+  serviceId?: string
   nameDesc?: string
   nameAsc?: string
 }
