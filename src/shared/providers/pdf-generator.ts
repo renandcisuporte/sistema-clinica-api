@@ -11,11 +11,7 @@ export abstract class JsPdfGenerator implements PdfGenerator {
   abstract generate(data: Record<string, any>[]): Promise<Buffer>
 
   protected init() {
-    this.pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'mm',
-      format: 'a4'
-    })
+    this.pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
   }
 
   // Adiciona cabeçalho
@@ -35,7 +31,7 @@ export abstract class JsPdfGenerator implements PdfGenerator {
     const pageHeight = this.pdf.internal.pageSize.height - 10
     this.pdf.setFontSize(8)
     this.pdf.text(
-      `Gerado em: ${new Date().toLocaleDateString()}\nPágina ${pageNumber} de ${pageTotal}`,
+      `Gerado em: ${new Date().toLocaleString()}\nPágina ${pageNumber} de ${pageTotal}`,
       5,
       pageHeight
     )

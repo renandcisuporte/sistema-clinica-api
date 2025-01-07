@@ -5,6 +5,7 @@
   "prettier.printWidth": 80,
   "prettier.arrowParens": "always",
   "prettier.useEditorConfig": false,
+
   "[typescript]": {
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "explicit",
