@@ -23,6 +23,7 @@ export abstract class JsPdfGenerator implements PdfGenerator {
     this.pdf.setFontSize(12)
     this.pdf.setFillColor(202, 202, 202)
     this.pdf.rect(0, 0, 212, 15, 'F')
+
     const pageWidth = this.pdf.internal.pageSize.getWidth() // Largura da página
     const textWidth = this.pdf.getTextWidth(text) // Largura do texto
     const x = (pageWidth - textWidth) / 2 // Posição X centralizada

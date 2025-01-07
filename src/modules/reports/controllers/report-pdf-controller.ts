@@ -60,7 +60,7 @@ export class ReportPdfController {
 
   async pdfProcediment(req: Request, res: Response): Promise<void> {
     const { clinicId } = req
-    const { nameDesc, nameAsc } = req.body
+    const { nameDesc, nameAsc, serviceId } = req.body
 
     const name = 'procediment-pdf.pdf'
     const namePath = path.join(
@@ -75,6 +75,7 @@ export class ReportPdfController {
 
     await this.useCaseProcediment.execute({
       clinicId,
+      serviceId,
       namePath,
       nameDesc,
       nameAsc
