@@ -1,4 +1,7 @@
 {
-  "plugins": ["prettier-plugin-tailwindcss"],
-  "semi": false
+  "prettier.semi": false,
+  "prettier.trailingComma": "none",
+  "prettier.singleQuote": false,
+  "prettier.printWidth": 80,
+  "prettier.arrowParens": "always"
 }
