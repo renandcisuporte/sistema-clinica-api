@@ -1,6 +1,9 @@
 import jsPDF from 'jspdf'
 import autoTable, { RowInput } from 'jspdf-autotable'
 
+/**
+ *
+ */
 export abstract class JsPdfGenerator implements PdfGenerator {
   protected pdf!: jsPDF
 
