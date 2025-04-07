@@ -76,7 +76,8 @@ export class ServiceRepositoryImp implements ServicesRepository {
     const result = await this.db.service.findMany({
       where: { ...where },
       skip: Number((page - 1) * limit),
-      take: Number(limit)
+      take: Number(limit),
+      orderBy: { name: 'asc' }
     })
 
     return result.map(({ deletedAt, ...rest }) => ({ ...rest }))
