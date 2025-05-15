@@ -1,16 +1,16 @@
 services:
-  # dev:
-  #   image: renandci/clinics:development
-  #   ports:
-  #     - ${PORT:-3333}:${PORT:-3333}
-  #   command: sh -c "npm run dev"
-  #   volumes:
-  #     - ./:/app
-  #     - /app/node_modules
-  #   networks:
-  #     - shared
-  #   depends_on:
-  #     - db
+  dev:
+    image: esteticapi:latest
+    container_name: api
+    ports:
+      - ${PORT:-3333}:${PORT:-3333}
+    command: sh -c "./start.sh"
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    networks:
+      - shared
+
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -32,6 +32,7 @@ services:
   db:
     image: mysql:5.7
     command: --default-authentication-plugin=mysql_native_password
+    container_name: db
     ports:
       - 3306:3306
     volumes:
@@ -45,6 +46,7 @@ services:
 
   mailhog:
     image: mailhog/mailhog
+    container_name: mailhog
     ports:
       - 1025:1025
       - 8005:8025

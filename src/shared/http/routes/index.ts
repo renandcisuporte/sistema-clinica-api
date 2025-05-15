@@ -34,7 +34,7 @@ routes.use('/reports', authenticated, reportRouter)
 // routes.use('/reports', reportRouter)
 
 routes.use('/job', (req, res) => {
-  let mail = 'mail'
+  const mail = 'mail'
   queue.mail.push({
     email: 'teste@teste.com',
     subject: 'teste',
@@ -43,5 +43,3 @@ routes.use('/job', (req, res) => {
 
   res.status(200).json({ mail, message: 'Trabalho adicionado à fila' })
 })
-
-routes.use('/', (req, res) => res.send('Bem vindo a API'))

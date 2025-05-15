@@ -14,11 +14,20 @@ export class FindAllExpenseUseCase implements FindAllExpenseUseCaseInterface {
   constructor(protected readonly repository: ExpenseRepository) {}
 
   async execute(args: any): Promise<Output> {
-    const { clinicId, description = '', limit, page } = args
+    const {
+      clinicId,
+      description = '',
+      active: activeQuery,
+      type: typeQuery,
+      limit,
+      page
+    } = args
 
     const common = {
       clinicId,
       description,
+      active: ['true', 'false'].includes(activeQuery) ? activeQuery : undefined,
+      type: ['fixed', 'variable'].includes(typeQuery) ? typeQuery : undefined,
       limit,
       page
     }
@@ -36,7 +45,14 @@ export class FindAllExpenseUseCase implements FindAllExpenseUseCaseInterface {
       }),
       this.repository.count({ clinicId, active: 'true' }),
       this.repository.count({ clinicId, active: 'false' }),
-      this.repository.count({ clinicId, description }),
+      this.repository.count({
+        clinicId,
+        description,
+        active: ['true', 'false'].includes(activeQuery)
+          ? activeQuery
+          : undefined,
+        type: ['fixed', 'variable'].includes(typeQuery) ? typeQuery : undefined
+      }),
       this.repository.all(common)
     ])
 

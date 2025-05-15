@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+
+echo "docker compose down"
+docker compose down
+sleep 1
+
+echo "docker image rm"
+docker image rm esteticapi:latest
+sleep 1
+
+echo "docker build image"
+docker build -t esteticapi:latest -f ./Dockerfile .
+sleep 1
+
+echo "docker compose up"
+docker compose up -d --build
+sleep 1
+
+# echo "install dependencies"
+# docker compose exec -it dev "npm install"
+# sleep 1
+
+# echo "migrate database"
+# docker compose exec -it dev "npx prisma migrate deploy"
+# sleep 1
+
+# echo "generate prisma client"
+# docker compose exec dev "npx prisma generate"
+# sleep 1
+
+echo "DONE"

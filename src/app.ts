@@ -26,4 +26,5 @@ app.use(
 )
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerJson))
 app.use('/api', routes)
+app.use('/', (req, res) => res.send('Bem vindo a API'))
 app.use(validated, http)

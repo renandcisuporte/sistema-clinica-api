@@ -9,14 +9,16 @@ export class FindAllProductUseCase implements FindAllProductUseCaseInterface {
   constructor(protected readonly repository: ProductsRepository) {}
 
   async execute(args: any): Promise<Output> {
-    const { clinicId, name = '', limit, page } = args
+    const { clinicId, name = '', nameAsc, limit, page } = args
 
     const common = {
       clinicId,
       name,
+      nameAsc,
       limit,
       page
     }
+    console.log({ common })
 
     const [total, data] = await Promise.all([
       this.repository.count({ clinicId, name }),
