@@ -18,7 +18,6 @@ export class FindAllProductUseCase implements FindAllProductUseCaseInterface {
       limit,
       page
     }
-    console.log({ common })
 
     const [total, data] = await Promise.all([
       this.repository.count({ clinicId, name }),
